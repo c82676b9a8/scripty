@@ -1,146 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Login Page</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    background: #f0f2f5;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-  #login-container, #menu-container {
-    background: white;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    width: 300px;
-    text-align: center;
-  }
-  input {
-    width: 90%;
-    padding: 10px;
-    margin: 10px 0;
-    font-size: 16px;
-  }
-  button {
-    background: #007bff;
-    border: none;
-    padding: 12px 25px;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background 0.3s ease;
-  }
-  button:hover {
-    background: #0056b3;
-  }
-  #message {
-    color: red;
-    margin: 10px 0;
-    height: 20px;
-  }
-  a.download-btn {
-    display: inline-block;
-    margin-top: 20px;
-    background: #28a745;
-    color: white;
-    padding: 12px 25px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: background 0.3s ease;
-  }
-  a.download-btn:hover {
-    background: #1e7e34;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login - Scripty</title>
+  <style>
+    body {
+      background: #4b0082;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    #login-container, #menu {
+      background: #6a0dad;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 0 10px #32006a;
+      width: 300px;
+      text-align: center;
+    }
+    input {
+      width: 90%;
+      padding: 0.5rem;
+      margin: 0.5rem 0;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+    button {
+      background: #b19cd9;
+      border: none;
+      color: #4b0082;
+      padding: 0.7rem 1.2rem;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 1rem;
+      font-size: 1rem;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: #d1c4e9;
+    }
+    #error-msg {
+      color: #ff6b6b;
+      margin-top: 0.5rem;
+      min-height: 1.2rem;
+    }
+  </style>
 </head>
 <body>
+  <div id="login-container">
+    <h2>Login</h2>
+    <input id="username" type="text" placeholder="Username" autocomplete="off" />
+    <input id="password" type="password" placeholder="Password" autocomplete="off" />
+    <button id="login-btn">Login</button>
+    <div id="error-msg"></div>
+  </div>
 
-<div id="login-container">
-  <h2>Login</h2>
-  <input type="text" id="username" placeholder="Username" autocomplete="off" />
-  <input type="password" id="password" placeholder="Password" autocomplete="off" />
-  <button onclick="handleLogin()">Log In</button>
-  <div id="message"></div>
-</div>
+  <div id="menu" style="display:none;">
+    <h2>Welcome!</h2>
+    <button id="download-btn">Download run.bat</button>
+  </div>
 
-<div id="menu-container" style="display:none;">
-  <h2>Welcome!</h2>
-  <p>Click below to download your file:</p>
-  <a href="run.bat" download class="download-btn">Download run.bat</a>
-</div>
+  <script>
+    const loginBtn = document.getElementById('login-btn');
+    const errorMsg = document.getElementById('error-msg');
+    const loginContainer = document.getElementById('login-container');
+    const menu = document.getElementById('menu');
+    const downloadBtn = document.getElementById('download-btn');
 
-<script>
-const cooldownTime = 5000; // 5 seconds cooldown
-let lastAttempt = 0;
+    let cooldown = false;
 
-async function handleLogin() {
-  const now = Date.now();
-  if (now - lastAttempt < cooldownTime) {
-    showMessage("Please wait 5 seconds before trying again.");
-    return;
-  }
-  lastAttempt = now;
-  clearMessage();
+    async function fetchUserData() {
+      try {
+        const response = await fetch('/users');  // Your backend proxy endpoint
+        if (!response.ok) throw new Error('Failed to fetch user data');
+        const users = await response.json();
+        return users;
+      } catch (err) {
+        errorMsg.textContent = 'Server error, try again later.';
+        throw err;
+      }
+    }
 
-  const username = document.getElementById('username').value.trim();
-  const password = document.getElementById('password').value.trim();
+    function startCooldown() {
+      cooldown = true;
+      loginBtn.disabled = true;
+      setTimeout(() => {
+        cooldown = false;
+        loginBtn.disabled = false;
+      }, 5000);
+    }
 
-  if (!username || !password) {
-    showMessage("Please enter username and password.");
-    return;
-  }
+    loginBtn.addEventListener('click', async () => {
+      if (cooldown) return;
+      errorMsg.textContent = '';
 
-  try {
-    const response = await fetch('https://api.jsonbin.io/v3/b/6881eeb57b4b8670d8a67ea9/latest', {
-      headers: {
-        'X-Master-Key': '$2a$10$D9MnBNmGXxinptCs1jFHUuAxy9eG2DDpq4JW/0zwUCuS06Wn9OS8u'
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (!username || !password) {
+        errorMsg.textContent = 'Please fill in both fields.';
+        return;
+      }
+
+      try {
+        const users = await fetchUserData();
+
+        // users structure: { "someid": { username, password, hwid } }
+        const userEntry = Object.values(users).find(
+          (user) => user.username === username && user.password === password
+        );
+
+        if (userEntry) {
+          // Login success
+          loginContainer.style.display = 'none';
+          menu.style.display = 'block';
+        } else {
+          errorMsg.textContent = 'Invalid username or password.';
+          startCooldown();
+        }
+      } catch {
+        // errorMsg already set in fetchUserData()
       }
     });
-    const json = await response.json();
-    const users = json.record;
 
-    let loggedIn = false;
-    for (const key in users) {
-      const user = users[key];
-      if (user.username === username && user.password === password) {
-        loggedIn = true;
-        break;
-      }
-    }
-
-    if (loggedIn) {
-      showMenu();
-    } else {
-      showMessage("Invalid username or password.");
-    }
-
-  } catch (err) {
-    showMessage("Error connecting to server.");
-    console.error(err);
-  }
-}
-
-function showMenu() {
-  document.getElementById('login-container').style.display = 'none';
-  document.getElementById('menu-container').style.display = 'block';
-}
-
-function showMessage(msg) {
-  document.getElementById('message').textContent = msg;
-}
-
-function clearMessage() {
-  document.getElementById('message').textContent = '';
-}
-</script>
-
+    downloadBtn.addEventListener('click', () => {
+      // Download run.bat from the root (make sure run.bat is in your GitHub Pages or server root)
+      window.location.href = 'run.bat';
+    });
+  </script>
 </body>
 </html>
