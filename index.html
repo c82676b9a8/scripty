@@ -3,35 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Welcome to Scripty</title>
+  <title>Login - Scripty</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header>
-    <h1>Scripty</h1>
-    <p>Your simple GitHub Pages website is live!</p>
-    <a href="#learn-more" class="btn">Learn More</a>
-  </header>
-
-  <main id="learn-more">
-    <section>
-      <h2>What is Scripty?</h2>
-      <p>Scripty is a basic template website hosted freely using GitHub Pages. Customize this page to build your portfolio, landing page, or anything you like.</p>
-    </section>
-
-    <section>
-      <h2>How it works</h2>
-      <ul>
-        <li>Hosted on GitHub</li>
-        <li>Served with HTTPS via your custom domain</li>
-        <li>100% free and open source</li>
-      </ul>
-    </section>
-  </main>
-
-  <footer>
-    <p>Made with ❤️ using GitHub Pages</p>
-  </footer>
+  <div class="login-container">
+    <h2>Login</h2>
+    <form id="login-form">
+      <input type="text" id="username" placeholder="Username" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <button type="submit" id="login-btn">Login</button>
+      <p id="message"></p>
+    </form>
+  </div>
 
   <script src="script.js"></script>
 </body>
