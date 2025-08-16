@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Frontend Registration - Scripty</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login - Scripty</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
       background: #4b0082;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       color: white;
       display: flex;
       justify-content: center;
@@ -15,143 +15,118 @@
       height: 100vh;
       margin: 0;
     }
-
-    .container {
-      text-align: center;
-    }
-
-    .register-container {
-      display: none;  /* Hidden initially */
+    #login-container, #menu, #register-container {
       background: #6a0dad;
-      padding: 20px;
+      padding: 2rem;
       border-radius: 8px;
-      text-align: center;
+      box-shadow: 0 0 10px #32006a;
       width: 300px;
-      margin: 20px auto;
+      text-align: center;
     }
-
     input {
-      width: 80%;
-      padding: 10px;
-      margin: 10px 0;
+      width: 90%;
+      padding: 0.5rem;
+      margin: 0.5rem 0;
       border: none;
       border-radius: 4px;
+      font-size: 1rem;
     }
-
     button {
-      width: 80%;
-      padding: 10px;
-      background-color: #b19cd9;
+      background: #b19cd9;
       border: none;
       color: #4b0082;
+      padding: 0.7rem 1.2rem;
       font-weight: bold;
       border-radius: 6px;
       cursor: pointer;
+      margin-top: 1rem;
+      font-size: 1rem;
+      transition: background 0.3s ease;
     }
-
     button:hover {
-      background-color: #d1c4e9;
+      background: #d1c4e9;
     }
-
-    .error {
+    #error-msg {
       color: #ff6b6b;
+      margin-top: 0.5rem;
+      min-height: 1.2rem;
     }
-
-    .success {
-      color: #4caf50;
-    }
-
-    #register-btn {
-      background-color: #6a0dad;
-      color: white;
-      border: 2px solid white;
-    }
-
-    #register-btn:hover {
-      background-color: #b19cd9;
+    #register-container {
+      display: none;
     }
   </style>
 </head>
 <body>
+  <div id="login-container">
+    <h2>Login</h2>
+    <input id="username" type="text" placeholder="Username" autocomplete="off" />
+    <input id="password" type="password" placeholder="Password" autocomplete="off" />
+    <button id="login-btn">Login</button>
+    <div id="error-msg"></div>
+    <br />
+    <button id="register-btn">Register Here</button>
+  </div>
 
-  <div class="container">
-    <h2>Welcome to Scripty</h2>
-    <button id="show-register-btn">Register Here</button>  <!-- Initial small Register button -->
-    
-    <!-- Registration Form (Initially Hidden) -->
-    <div class="register-container" id="register-container">
-      <h3>Register</h3>
-      <input type="text" id="name" placeholder="Name" />
-      <input type="password" id="password" placeholder="Password" />
-      <input type="password" id="confirm-password" placeholder="Confirm Password" />
-      <button id="register-submit-btn">Register</button>
-      <div id="message"></div>
-    </div>
+  <div id="register-container">
+    <h2>Register</h2>
+    <input id="register-name" type="text" placeholder="Name" autocomplete="off" />
+    <input id="register-password" type="password" placeholder="Password" autocomplete="off" />
+    <input id="register-confirm-password" type="password" placeholder="Confirm Password" autocomplete="off" />
+    <button id="register-submit-btn">Register</button>
+    <div id="register-message"></div>
+  </div>
+
+  <div id="menu" style="display:none;">
+    <h2>Welcome!</h2>
+    <button id="download-btn">Download run.bat</button>
   </div>
 
   <script>
-    // Show the registration form when the user clicks "Register Here"
-    document.getElementById('show-register-btn').addEventListener('click', () => {
-      document.getElementById('register-container').style.display = 'block'; // Show form
-      document.getElementById('show-register-btn').style.display = 'none'; // Hide the Register Here button
+    document.getElementById('login-btn').addEventListener('click', () => {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      const errorMsg = document.getElementById('error-msg');
+
+      if (!username || !password) {
+        errorMsg.textContent = 'Please fill in both fields.';
+        return;
+      }
+
+      if (username === "TestUser" && password === "TestPassword123") {
+        document.getElementById('login-container').style.display = 'none';
+        document.getElementById('menu').style.display = 'block';
+      } else {
+        errorMsg.textContent = 'Invalid username or password.';
+      }
     });
 
-    // Handle user registration
-    document.getElementById('register-submit-btn').addEventListener('click', async () => {
-      const name = document.getElementById('name').value.trim();
-      const password = document.getElementById('password').value;
-      const confirmPassword = document.getElementById('confirm-password').value;
-      const messageDiv = document.getElementById('message');
+    document.getElementById('register-btn').addEventListener('click', () => {
+      document.getElementById('register-container').style.display = 'block';
+      document.getElementById('login-container').style.display = 'none';
+    });
 
-      // Clear previous messages
-      messageDiv.innerHTML = '';
-      
-      // Simple validation
+    document.getElementById('register-submit-btn').addEventListener('click', () => {
+      const name = document.getElementById('register-name').value.trim();
+      const password = document.getElementById('register-password').value;
+      const confirmPassword = document.getElementById('register-confirm-password').value;
+      const registerMessage = document.getElementById('register-message');
+      registerMessage.innerHTML = '';
+
       if (!name || !password || !confirmPassword) {
-        messageDiv.classList.add('error');
-        messageDiv.innerHTML = 'Please fill in all fields.';
+        registerMessage.classList.add('error');
+        registerMessage.innerHTML = 'Please fill in all fields.';
         return;
       }
 
       if (password !== confirmPassword) {
-        messageDiv.classList.add('error');
-        messageDiv.innerHTML = 'Passwords do not match.';
+        registerMessage.classList.add('error');
+        registerMessage.innerHTML = 'Passwords do not match.';
         return;
       }
 
-      // Prepare user data to be sent in the API call
-      const userData = {
-        [Date.now()]: {  // Using timestamp as user ID (just for example)
-          username: name,
-          password: password
-        }
-      };
-
-      try {
-        // Make the API call to store the user data
-        const response = await fetch('https://api.jsonbin.io/v3/b/68a02c4a43b1c97be91f8cc3', {
-          method: 'PUT',  // Use PUT to update the bin
-          headers: {
-            'X-Master-Key': '$2a$10$EGk.IxPEfMopz.WZYNyz7eCaLNIuQxh/pX5fUsZlKPkvUnJSIiB1.',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(userData),
-        });
-
-        if (response.ok) {
-          messageDiv.classList.add('success');
-          messageDiv.innerHTML = 'Registration successful!';
-        } else {
-          messageDiv.classList.add('error');
-          messageDiv.innerHTML = 'Failed to register. Please try again.';
-        }
-      } catch (error) {
-        messageDiv.classList.add('error');
-        messageDiv.innerHTML = 'Error connecting to the server.';
-        console.error(error);
-      }
+      registerMessage.classList.add('success');
+      registerMessage.innerHTML = 'Registration successful!';
     });
   </script>
-
 </body>
 </html>
