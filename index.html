@@ -67,6 +67,30 @@
     <button id="download-btn">Download run.bat</button>
   </div>
 
-  <script src="script.js"></script>
+  <script>
+    document.getElementById('login-btn').addEventListener('click', () => {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      const errorMsg = document.getElementById('error-msg');
+
+      errorMsg.textContent = '';
+
+      if (!username || !password) {
+        errorMsg.textContent = 'Please fill in both fields.';
+        return;
+      }
+
+      if (username === 'TestUser' && password === 'TestPassword123') {
+        document.getElementById('login-container').style.display = 'none';
+        document.getElementById('menu').style.display = 'block';
+      } else {
+        errorMsg.textContent = 'Invalid username or password.';
+      }
+    });
+
+    document.getElementById('download-btn').addEventListener('click', () => {
+      window.location.href = 'run.bat';
+    });
+  </script>
 </body>
 </html>
