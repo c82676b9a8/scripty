@@ -7,16 +7,14 @@ document.getElementById('login-btn').addEventListener('click', async () => {
 
     let cooldown = false;
 
-    // JSONBin API setup
-    const API_URL = 'https://api.jsonbin.io/v3/b/6881eeb57b4b8670d8a67ea9/latest';  // Your Bin ID
-    const API_KEY = '$2a$10$D9MnBNmGXxinptCs1jFHUuAxy9eG2DDpq4JW/0zwUCuS06Wn9OS8u';  // Your API Key
-
+    // Backend URL (replace with your live backend URL)
+    const API_URL = 'https://your-backend-url.com/users';
+  
     async function fetchUserData() {
         try {
             const response = await fetch(API_URL, {
                 method: 'GET',
                 headers: {
-                    'X-Master-Key': API_KEY,
                     'Content-Type': 'application/json'
                 }
             });
@@ -50,7 +48,7 @@ document.getElementById('login-btn').addEventListener('click', async () => {
 
     try {
         const users = await fetchUserData();
-        const userEntry = Object.values(users.record).find(
+        const userEntry = Object.values(users).find(
             (user) => user.username === username && user.password === password
         );
 
