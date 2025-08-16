@@ -4,6 +4,7 @@ document.getElementById('login-btn').addEventListener('click', async () => {
     const errorMsg = document.getElementById('error-msg');
     const loginContainer = document.getElementById('login-container');
     const menuContainer = document.getElementById('menu-container');
+    const loginBtn = document.getElementById('login-btn');
     let cooldown = false;
 
     const adfghasdfgh = "CaLNIuQxh/pX5f";
@@ -34,13 +35,25 @@ document.getElementById('login-btn').addEventListener('click', async () => {
         }
     }
 
+
     function startCooldown() {
         cooldown = true;
-        document.getElementById('login-btn').disabled = true;
-        setTimeout(() => {
-            cooldown = false;
-            document.getElementById('login-btn').disabled = false;
-        }, 5000);
+        loginBtn.disabled = true;
+
+        let countdown = 5;
+        loginBtn.innerText = `Try again in ${countdown}...`;
+
+        const countdownInterval = setInterval(() => {
+            countdown--;
+            loginBtn.innerText = `Try again in ${countdown}...`;
+
+            if (countdown <= 0) {
+                clearInterval(countdownInterval);
+                loginBtn.innerText = 'Login';
+                loginBtn.disabled = false;
+                cooldown = false;
+            }
+        }, 1000);
     }
 
     if (cooldown) return;
