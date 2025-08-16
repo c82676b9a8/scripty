@@ -7,9 +7,16 @@ document.getElementById('login-btn').addEventListener('click', async () => {
 
     let cooldown = false;
 
+    // JSONBin API setup
+    const API_URL = 'https://api.jsonbin.io/v3/b/6881eeb57b4b8670d8a67ea9/latest'; // Use the provided Bin ID
+    const API_KEY = '$2a$10$D9MnBNmGXxinptCs1jFHUuAxy9eG2DDpq4JW/0zwUCuS06Wn9OS8u'; // Use the provided API Key
+
     async function fetchUserData() {
         try {
-            const response = await fetch('/users');  // Your backend proxy endpoint
+            const response = await fetch(API_URL, {
+                headers: { 'X-Master-Key': API_KEY }
+            });
+
             if (!response.ok) throw new Error('Failed to fetch user data');
             const users = await response.json();
             return users;
@@ -39,7 +46,7 @@ document.getElementById('login-btn').addEventListener('click', async () => {
 
     try {
         const users = await fetchUserData();
-        const userEntry = Object.values(users).find(
+        const userEntry = Object.values(users.record).find(
             (user) => user.username === username && user.password === password
         );
 
