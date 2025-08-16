@@ -1,36 +1,61 @@
-const cooldownTime = 5000; // 5 seconds cooldown
-let lastAttempt = 0;
+document.getElementById('login-btn').addEventListener('click', async () => {
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
+    const errorMsg = document.getElementById('error-msg');
+    const loginContainer = document.getElementById('login-container');
+    const menu = document.getElementById('menu');
 
-async function login(username, password) {
-  const now = Date.now();
-  if (now - lastAttempt < cooldownTime) {
-    alert("Please wait 5 seconds before trying again.");
-    return;
-  }
-  lastAttempt = now;
+    let cooldown = false;
 
-  const response = await fetch('https://api.jsonbin.io/v3/b/6881eeb57b4b8670d8a67ea9/latest', {
-    headers: {
-      'X-Master-Key': '$2a$10$D9MnBNmGXxinptCs1jFHUuAxy9eG2DDpq4JW/0zwUCuS06Wn9OS8u'
+    async function fetchUserData() {
+        try {
+            const response = await fetch('/users');  // Your backend proxy endpoint
+            if (!response.ok) throw new Error('Failed to fetch user data');
+            const users = await response.json();
+            return users;
+        } catch (err) {
+            errorMsg.textContent = 'Server error, try again later.';
+            throw err;
+        }
     }
-  });
-  const data = await response.json();
-  const users = data.record;
 
-  for (const key in users) {
-    const user = users[key];
-    if (user.username === username && user.password === password) {
-      showMenu();
-      return;
+    function startCooldown() {
+        cooldown = true;
+        document.getElementById('login-btn').disabled = true;
+        setTimeout(() => {
+            cooldown = false;
+            document.getElementById('login-btn').disabled = false;
+        }, 5000);
     }
-  }
-  alert("Invalid username or password");
-}
 
-function showMenu() {
-  document.body.innerHTML = `
-    <h1>Welcome!</h1>
-    <p>Download your file below:</p>
-    <a href="run.bat" download>Download run.bat</a>
-  `;
-}
+    if (cooldown) return;
+
+    errorMsg.textContent = '';
+
+    if (!username || !password) {
+        errorMsg.textContent = 'Please fill in both fields.';
+        return;
+    }
+
+    try {
+        const users = await fetchUserData();
+        const userEntry = Object.values(users).find(
+            (user) => user.username === username && user.password === password
+        );
+
+        if (userEntry) {
+            // Login success
+            loginContainer.style.display = 'none';
+            menu.style.display = 'block';
+        } else {
+            errorMsg.textContent = 'Invalid username or password.';
+            startCooldown();
+        }
+    } catch {
+        // errorMsg already set in fetchUserData()
+    }
+});
+
+document.getElementById('download-btn').addEventListener('click', () => {
+    window.location.href = 'run.bat';  // Download run.bat file
+});
