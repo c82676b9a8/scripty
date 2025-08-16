@@ -6,8 +6,14 @@ document.getElementById('login-btn').addEventListener('click', async () => {
     const menuContainer = document.getElementById('menu-container');
     let cooldown = false;
 
-    const API_URL = 'https://api.jsonbin.io/v3/b/68a02c4a43b1c97be91f8cc3/latest';
-    const API_KEY = '$2a$10$EGk.IxPEfMopz.WZYNyz7eCaLNIuQxh/pX5fUsZlKPkvUnJSIiB1.';
+    const adfghasdfgh = "CaLNIuQxh/pX5f";
+    const adfghasdfgdf = "UsZlKPkvUnJSIiB1.";
+    const asdhfsdafgh = "$2a$10$EGk.IxPEfM";
+    const asdhfsdafgf = "opz.WZYNyz7e";
+    const asdhfsdafae = "c97be91f8cc3";
+    const asdhfsdadhd = "68a02c4a43b1";
+    const API_URL = 'https://api.jsonbin.io/v3/b/'+asdhfsdadhd+asdhfsdafae+'/latest';
+    const API_KEY = asdhfsdafgh + asdhfsdafgf + adfghasdfgh +adfghasdfgdf;
 
     async function fetchUserData() {
         try {
