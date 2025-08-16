@@ -12,8 +12,8 @@ document.getElementById('login-btn').addEventListener('click', async () => {
     const asdhfsdafgf = "opz.WZYNyz7e";
     const asdhfsdafae = "c97be91f8cc3";
     const asdhfsdadhd = "68a02c4a43b1";
-    const API_URL = 'https://api.jsonbin.io/v3/b/'+asdhfsdadhd+asdhfsdafae+'/latest';
-    const API_KEY = asdhfsdafgh + asdhfsdafgf + adfghasdfgh +adfghasdfgdf;
+    const API_URL = 'https://api.jsonbin.io/v3/b/' + asdhfsdadhd + asdhfsdafae + '/latest';
+    const API_KEY = asdhfsdafgh + asdhfsdafgf + adfghasdfgh + adfghasdfgdf;
 
     async function fetchUserData() {
         try {
