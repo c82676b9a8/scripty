@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Register - Scripty</title>
+  <title>Frontend Registration - Scripty</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -68,7 +68,16 @@
   </div>
 
   <script>
-    document.getElementById('register-btn').addEventListener('click', () => {
+    const adfghasdfgh = "CaLNIuQxh/pX5f";
+    const adfghasdfgdf = "UsZlKPkvUnJSIiB1.";
+    const asdhfsdafgh = "$2a$10$EGk.IxPEfM";
+    const asdhfsdafgf = "opz.WZYNyz7e";
+    const asdhfsdafae = "c97be91f8cc3";
+    const asdhfsdadhd = "68a02c4a43b1";
+    const API_URL = 'https://api.jsonbin.io/v3/b/' + asdhfsdadhd + asdhfsdafae + '/latest';
+    const API_KEY = asdhfsdafgh + asdhfsdafgf + adfghasdfgh + adfghasdfgdf;
+
+    document.getElementById('register-btn').addEventListener('click', async () => {
       const name = document.getElementById('name').value.trim();
       const password = document.getElementById('password').value;
       const confirmPassword = document.getElementById('confirm-password').value;
@@ -88,11 +97,35 @@
         return;
       }
 
-      messageDiv.classList.add('success');
-      messageDiv.innerHTML = 'Registration successful!';
+      const userData = {
+        [Date.now()]: { 
+          username: name,
+          password: password
+        }
+      };
 
+      try {
+        const response = await fetch(API_URL, {
+          method: 'PUT',
+          headers: {
+            'X-Master-Key': API_KEY,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(userData),
+        });
 
-      console.log('User registered:', { name, password });
+        if (response.ok) {
+          messageDiv.classList.add('success');
+          messageDiv.innerHTML = 'Registration successful!';
+        } else {
+          messageDiv.classList.add('error');
+          messageDiv.innerHTML = 'Failed to register. Please try again.';
+        }
+      } catch (error) {
+        messageDiv.classList.add('error');
+        messageDiv.innerHTML = 'Error connecting to the server.';
+        console.error(error);
+      }
     });
   </script>
 
