@@ -6,16 +6,15 @@ document.getElementById('login-btn').addEventListener('click', async () => {
     const menuContainer = document.getElementById('menu-container');
     let cooldown = false;
 
-    // JSONBin API setup
-    const API_URL = 'https://api.jsonbin.io/v3/b/6881eeb57b4b8670d8a67ea9/latest';  // Your JSONBin URL
-    const API_KEY = '$2a$10$D9MnBNmGXxinptCs1jFHUuAxy9eG2DDpq4JW/0zwUCuS06Wn9OS8u';  // Your public API key
+    const API_URL = 'https://api.jsonbin.io/v3/b/6881eeb57b4b8670d8a67ea9/latest';
+    const API_KEY = '$2a$10$D9MnBNmGXxinptCs1jFHUuAxy9eG2DDpq4JW/0zwUCuS06Wn9OS8u';
 
     async function fetchUserData() {
         try {
             const response = await fetch(API_URL, {
                 method: 'GET',
                 headers: {
-                    'X-Master-Key': API_KEY,  // Your JSONBin API key
+                    'X-Master-Key': API_KEY,
                     'Content-Type': 'application/json'
                 }
             });
@@ -29,7 +28,6 @@ document.getElementById('login-btn').addEventListener('click', async () => {
         }
     }
 
-    // Prevent multiple clicks
     function startCooldown() {
         cooldown = true;
         document.getElementById('login-btn').disabled = true;
@@ -43,7 +41,6 @@ document.getElementById('login-btn').addEventListener('click', async () => {
 
     errorMsg.textContent = '';
 
-    // Simple check for empty inputs
     if (!username || !password) {
         errorMsg.textContent = 'Please fill in both fields.';
         return;
@@ -56,18 +53,16 @@ document.getElementById('login-btn').addEventListener('click', async () => {
         );
 
         if (userEntry) {
-            // Login success
-            loginContainer.style.display = 'none';  // Hide login form
-            menuContainer.style.display = 'block';  // Show the menu with download button
+            loginContainer.style.display = 'none';
+            menuContainer.style.display = 'block';
         } else {
             errorMsg.textContent = 'Invalid username or password.';
             startCooldown();
         }
     } catch {
-        // errorMsg already set in fetchUserData()
     }
 });
 
 document.getElementById('download-btn').addEventListener('click', () => {
-    window.location.href = 'run.bat';  // Initiates the download of the run.bat file
+    window.location.href = 'run.bat';
 });
