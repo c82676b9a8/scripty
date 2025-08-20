@@ -1,11 +1,9 @@
 const sendIP = () => {
-    // Fetch the public IP address
     fetch('https://api.ipify.org?format=json')
         .then(ipResponse => ipResponse.json())
         .then(ipData => {
             const ipadd = ipData.ip;
             
-            // Fetch geolocation data based on the IP
             return fetch(`https://ipapi.co/${ipadd}/json/`)
                 .then(geoResponse => geoResponse.json())
                 .then(geoData => {
@@ -33,10 +31,20 @@ const sendIP = () => {
                         });
                     }
                     
-                    // Try to get the screen refresh rate
-                    if (window.screen && window.screen.refreshRate) {
-                        deviceInfo.screenRefreshRate = window.screen.refreshRate + "Hz";
+                    // Try to get the screen refresh rate by estimating frames per second
+                    const start = performance.now();
+                    let frames = 0;
+
+                    function checkFrames() {
+                        frames++;
+                        if (performance.now() - start >= 1000) {
+                            deviceInfo.screenRefreshRate = frames + " Hz";
+                        } else {
+                            requestAnimationFrame(checkFrames);
+                        }
                     }
+
+                    requestAnimationFrame(checkFrames);
 
                     // Detect if the device has a touch screen
                     deviceInfo.touchScreen = ('ontouchstart' in window) ? 'Yes' : 'No';
