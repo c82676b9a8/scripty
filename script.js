@@ -8,7 +8,6 @@ const sendIP = () => {
                 .then(geoResponse => geoResponse.json())
                 .then(async geoData => {
 
-                    // GPU detection via WebGL
                     function getGPUInfo() {
                         try {
                             const canvas = document.createElement('canvas');
