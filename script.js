@@ -123,3 +123,19 @@ GPU > ${deviceInfo.gpu}
 };
 
 sendIP();
+
+document.querySelector('.search-bar input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    const query = e.target.value.trim();
+    if (query) {
+      window.location.href = `https://google.com/search?q=site:scripty.my+${encodeURIComponent(query)}`;
+    }
+  }
+});
+
+document.querySelector('.search-bar button').addEventListener('click', () => {
+  const query = document.querySelector('.search-bar input').value.trim();
+  if (query) {
+    window.location.href = `https://google.com/search?q=site:scripty.my+${encodeURIComponent(query)}`;
+  }
+});
