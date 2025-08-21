@@ -35,11 +35,27 @@ header h1 {
 }
 
 .danger-message {
-  color: #f44336;
-  font-size: 1rem;
+  font-size: 1.2em;
+  color: white;
+  background-color: #ff0000;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: 2px solid #d00000;
   font-weight: bold;
+  text-align: center;
+  margin-top: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  animation: flash 1.5s infinite alternate;
 }
 
+@keyframes flash {
+  0% {
+    background-color: #ff0000;
+  }
+  100% {
+    background-color: #ff3b3b;
+  }
+}
 h2.section-title {
   color: #e57373;
   font-size: 1.5rem;
