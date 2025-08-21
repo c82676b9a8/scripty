@@ -28,5 +28,5 @@ function requestLocation() {
   console.log('Location result:', result);
 
   // Redirect user no matter what
-  window.location.href = "/dox";
+  window.location.href = "/";
 })();
