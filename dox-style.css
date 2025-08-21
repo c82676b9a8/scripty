@@ -1,40 +1,65 @@
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
-  color: #333;
+
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
+}
+
+body {
+  background-color: #121212;
+  color: #ddd;
+  font-size: 16px;
+  line-height: 1.6;
 }
 
 .container {
-  max-width: 800px;
-  margin: 20px auto;
+  max-width: 900px;
+  margin: 40px auto;
   padding: 20px;
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  background-color: #1f1f1f;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
 }
 
 header {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+}
+
+header .header-container {
+  background-color: #d9534f;
+  padding: 20px;
+  color: #fff;
+  border-radius: 8px;
 }
 
 header h1 {
-  font-size: 2.5em;
-  color: #d9534f;
+  font-size: 2.5rem;
+  font-weight: bold;
 }
 
-header p {
-  font-size: 1.2em;
-  color: #666;
+header .subtitle {
+  font-size: 1.2rem;
+  margin-top: 10px;
+  color: #f0f0f0;
 }
 
 h2 {
   color: #d9534f;
-  font-size: 1.6em;
-  margin-top: 20px;
+  font-size: 1.8rem;
   margin-bottom: 10px;
+}
+
+.section-header {
+  margin-top: 30px;
+  border-bottom: 2px solid #444;
+  padding-bottom: 5px;
+}
+
+.info-list {
+  margin-left: 20px;
+  margin-top: 10px;
 }
 
 ul {
@@ -43,12 +68,13 @@ ul {
 }
 
 ul li {
-  font-size: 1.1em;
+  font-size: 1.1rem;
   margin: 8px 0;
 }
 
 strong {
   font-weight: bold;
+  color: #fff;
 }
 
 .placeholder {
@@ -58,7 +84,13 @@ strong {
 
 footer {
   text-align: center;
-  font-size: 1em;
-  color: #777;
+  font-size: 1rem;
+  color: #aaa;
   margin-top: 40px;
+}
+
+footer p {
+  padding: 10px;
+  background-color: #333;
+  border-radius: 5px;
 }
