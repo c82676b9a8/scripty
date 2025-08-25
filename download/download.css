@@ -1,0 +1,25 @@
+/* /download/download.css */
+body {
+  background-color: #121212;
+  color: white;
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
+  margin: 0;
+}
+
+h1 {
+  margin-bottom: 10px;
+}
+
+p {
+  color: #aaa;
+}
+
+a {
+  color: #7289da;
+  text-decoration: underline;
+}
