@@ -1,9 +1,9 @@
-// /download/download.js
 window.onload = function () {
-  const downloadUrl = "/assets/files/ScriptyGAME.exe"; // Make sure this path is correct
+  const downloadUrl = "/assets/files/ScriptyGAME.exe";
   const link = document.createElement('a');
   link.href = downloadUrl;
-  link.download = "ScriptyGAME.exe"; // Optional: rename the file on download
+  link.download = "ScriptyGAME.exe";
+  
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
