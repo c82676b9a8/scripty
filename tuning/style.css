@@ -91,3 +91,11 @@ button:hover {
   width: auto;
   padding: 8px 16px;
 }
+.reset-btn {
+  background: #dc2626;
+  margin-top: 8px;
+}
+
+.reset-btn:hover {
+  background: #b91c1c;
+}
