@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GTA V Tuning Shop</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>🚗 GTA V Tuning Shop</h1>
+
+    <form id="tuningForm">
+      <label>Engine (15k per stage, max 5)
+        <input type="number" id="engine" min="0" max="5" value="0">
+      </label>
+
+      <label><input type="checkbox" id="turbo"> Turbo (50k)</label>
+      <label>Transmission (7.5k per stage, max 3)
+        <input type="number" id="transmission" min="0" max="3" value="0">
+      </label>
+
+      <label>Suspension (5k per stage, max 4)
+        <input type="number" id="suspension" min="0" max="4" value="0">
+      </label>
+
+      <label>Brakes (4.5k per stage, max 3)
+        <input type="number" id="brakes" min="0" max="3" value="0">
+      </label>
+
+      <label><input type="checkbox" id="headlights"> Headlights (12k)</label>
+      <label><input type="checkbox" id="tinting"> Window Tinting (3k)</label>
+      <label><input type="checkbox" id="spz"> SPZ (3k)</label>
+      <label><input type="checkbox" id="horn"> Horn (2k)</label>
+
+      <label>Bodywork (5k per part)
+        <input type="number" id="bodywork" min="0" max="10" value="0">
+      </label>
+
+      <label>Color (4k per respray)
+        <input type="number" id="color" min="0" max="5" value="0">
+      </label>
+
+      <button type="button" onclick="calculateTotal()">💰 Calculate Price</button>
+      <p id="totalPrice"></p>
+    </form>
+
+    <div id="confirmBox" class="hidden">
+      <p>Did you pay?</p>
+      <button onclick="sendWebhook()">✅ Yes</button>
+      <button onclick="resetForm()">❌ No</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
