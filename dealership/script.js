@@ -57,15 +57,27 @@ function makeCard(car) {
 
   const displayName = car.name.replace(/_/g, " ");
 
+  const imgSrc = `photos/larp_${fileName}.png`;
+
   el.innerHTML = `
-    <img class="thumb" src="photos/larp_${fileName}.png" alt="${displayName}">
+    <img class="thumb" src="${imgSrc}" alt="${displayName}">
     <div class="card-body">
       <div class="name">${displayName}</div>
       <div class="price">$${car.price.toLocaleString()}</div>
     </div>
   `;
+
+  // Add click listener on the image
+  const img = el.querySelector("img");
+  img.addEventListener("click", () => {
+    window.open(imgSrc, "_blank");
+  });
+
   return el;
 }
+
+
+
 
 function render() {
   const grid = document.getElementById("grid");
