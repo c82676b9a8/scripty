@@ -50,10 +50,17 @@ const CARS = [
 function makeCard(car) {
   const el = document.createElement("article");
   el.className = "card";
+
+  const fileName = car.name
+    .replace(/[^a-z0-9]+/gi, "_")
+    .replace(/^_+|_+$/g, "");
+
+  const displayName = car.name.replace(/_/g, " ");
+
   el.innerHTML = `
-    <img class="thumb" src="photos/larp_${car.name.replace(/[^a-z0-9]/gi,'')}.png" alt="${car.name}">
+    <img class="thumb" src="photos/larp_${fileName}.png" alt="${displayName}">
     <div class="card-body">
-      <div class="name">${car.name}</div>
+      <div class="name">${displayName}</div>
       <div class="price">$${car.price.toLocaleString()}</div>
     </div>
   `;
