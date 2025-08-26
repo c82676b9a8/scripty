@@ -40,7 +40,7 @@ const CARS = [
   { name: "Dubsta_6x6", price: 160000 },
   { name: "Vapid_Sandking_Classic", price: 65000 },
   { name: "Terminus", price: 115000 },
-  { name: "Burrito", price: 40000 },
+  { name: "Burrito (2)", price: 42000 },
   { name: "Bati_801", price: 45000 },
   { name: "BF400", price: 15000 },
   { name: "Faggio", price: 1200 },
