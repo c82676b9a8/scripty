@@ -72,7 +72,7 @@ function sendWebhook() {
   addIfChecked("headlights", "Headlights");
   addIfChecked("spz", "SPZ");
   addIfChecked("horn", "Horn");
-  addIfChecked("akrapovic", "Akrapovič");
+  addIfChecked("akrapovic", "Akrapovic");
   addIfChecked("livery", "Livery");
   addIfChecked("tire_smoke", "Tire smoke");
 
