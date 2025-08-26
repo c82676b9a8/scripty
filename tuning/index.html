@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GTA V Tuning Shop</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>🚗 GTA V Tuning Shop</h1>
+
+    <form id="tuningForm">
+      <!-- Engine -->
+      <div class="option-card">
+        <label for="engine">Engine (15k per stage, max 5)</label>
+        <select id="engine">
+          <option value="0">Stock</option>
+          <option value="1">Stage 1</option>
+          <option value="2">Stage 2</option>
+          <option value="3">Stage 3</option>
+          <option value="4">Stage 4</option>
+          <option value="5">Stage 5</option>
+        </select>
+      </div>
+
+      <!-- Turbo -->
+      <div class="option-card">
+        <label><input type="checkbox" id="turbo"> Turbo (50k)</label>
+      </div>
+
+      <!-- Transmission -->
+      <div class="option-card">
+        <label for="transmission">Transmission (7.5k per stage, max 3)</label>
+        <select id="transmission">
+          <option value="0">Stock</option>
+          <option value="1">Stage 1</option>
+          <option value="2">Stage 2</option>
+          <option value="3">Stage 3</option>
+        </select>
+      </div>
+
+      <!-- Suspension -->
+      <div class="option-card">
+        <label for="suspension">Suspension (5k per stage, max 4)</label>
+        <select id="suspension">
+          <option value="0">Stock</option>
+          <option value="1">Stage 1</option>
+          <option value="2">Stage 2</option>
+          <option value="3">Stage 3</option>
+          <option value="4">Stage 4</option>
+        </select>
+      </div>
+
+      <!-- Brakes -->
+      <div class="option-card">
+        <label for="brakes">Brakes (4.5k per stage, max 3)</label>
+        <select id="brakes">
+          <option value="0">Stock</option>
+          <option value="1">Stage 1</option>
+          <option value="2">Stage 2</option>
+          <option value="3">Stage 3</option>
+        </select>
+      </div>
+
+      <!-- Single upgrades -->
+      <div class="option-card"><label><input type="checkbox" id="headlights"> Headlights (12k)</label></div>
+      <div class="option-card"><label><input type="checkbox" id="tinting"> Window Tinting (3k)</label></div>
+      <div class="option-card"><label><input type="checkbox" id="spz"> SPZ (3k)</label></div>
+      <div class="option-card"><label><input type="checkbox" id="horn"> Horn (2k)</label></div>
+
+      <!-- Bodywork -->
+      <div class="option-card">
+        <label for="bodywork">Bodywork (5k per part)</label>
+        <select id="bodywork">
+          <option value="0">None</option>
+          <option value="1">1 Part</option>
+          <option value="2">2 Parts</option>
+          <option value="3">3 Parts</option>
+          <option value="4">4 Parts</option>
+          <option value="5">5 Parts</option>
+        </select>
+      </div>
+
+      <!-- Color -->
+      <div class="option-card">
+        <label for="color">Color (4k per respray)</label>
+        <select id="color">
+          <option value="0">None</option>
+          <option value="1">1 Respray</option>
+          <option value="2">2 Resprays</option>
+          <option value="3">3 Resprays</option>
+          <option value="4">4 Resprays</option>
+          <option value="5">5 Resprays</option>
+        </select>
+      </div>
+
+      <button type="button" onclick="calculateTotal()">💰 Calculate Price</button>
+      <p id="totalPrice"></p>
+    </form>
+
+    <div id="confirmBox" class="hidden">
+      <p>Did you pay?</p>
+      <button onclick="sendWebhook()">✅ Yes</button>
+      <button onclick="resetForm()">❌ No</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
