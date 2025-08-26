@@ -13,7 +13,8 @@ function livePriceCalculation() {
   total += parseInt(document.getElementById("tinting").value) > 0 ? 3000 : 0;
   total += parseInt(document.getElementById("underglow").value) * 10000;  // Window Tinting
   total += document.getElementById("spz").checked ? 3000 : 0;  // SPZ
-  total += document.getElementById("horn").checked ? 2000 : 0;  // Horn
+  total += document.getElementById("horn").checked ? 2000 : 0;
+  total += document.getElementById("akrapovic").checked ? 2000 : 0;  // Horn
   total += document.getElementById("livery").checked ? 2000 : 0;
   total += parseInt(document.getElementById("bodywork").value) * 5000;  // Bodywork
   total += parseInt(document.getElementById("color").value) * 4000;  // Color Resprays
@@ -42,6 +43,7 @@ document.getElementById("headlights").addEventListener("change", livePriceCalcul
 document.getElementById("tire_smoke").addEventListener("change", livePriceCalculation);
 document.getElementById("spz").addEventListener("change", livePriceCalculation);
 document.getElementById("horn").addEventListener("change", livePriceCalculation);
+document.getElementById("akrapovic").addEventListener("change", livePriceCalculation);
 document.getElementById("livery").addEventListener("change", livePriceCalculation);
 document.getElementById("bodywork").addEventListener("change", livePriceCalculation);
 document.getElementById("tinting").addEventListener("change", livePriceCalculation);
@@ -68,10 +70,11 @@ function sendWebhook() {
   addIfNotZero("brakes", "Brakes");
 
   addIfChecked("headlights", "Headlights");
-  addIfChecked("tire_smoke", "Tire smoke");
   addIfChecked("spz", "SPZ");
   addIfChecked("horn", "Horn");
+  addIfChecked("akrapovic", "Akrapovič");
   addIfChecked("livery", "Livery");
+  addIfChecked("tire_smoke", "Tire smoke");
 
   const tintingVal = parseInt(document.getElementById("tinting").value);
   if (tintingVal > 0) {
