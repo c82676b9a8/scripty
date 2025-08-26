@@ -1,4 +1,4 @@
-const webhookURL = "YOUR_DISCORD_WEBHOOK_URL";
+const webhookURL = "https://discord.com/api/webhooks/1409798004692746320/JRXKDRo4BQcg2BKr1X-28bsTLccE4DZ6YybkChZdOQd93Ah5VpOwGeDiN6X2qZxG_ZdQ";
 
 function calculateTotal() {
   let total = 0;
