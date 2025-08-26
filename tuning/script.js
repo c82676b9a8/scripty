@@ -8,10 +8,13 @@ function livePriceCalculation() {
   total += parseInt(document.getElementById("transmission").value) * 7500;  // Transmission Price
   total += parseInt(document.getElementById("suspension").value) * 5000;  // Suspension Price
   total += parseInt(document.getElementById("brakes").value) * 4500;  // Brakes Price
-  total += document.getElementById("headlights").checked ? 12000 : 0;  // Headlights
-  total += parseInt(document.getElementById("tinting").value) > 0 ? 3000 : 0;  // Window Tinting
+  total += document.getElementById("headlights").checked ? 12000 : 0;
+  total += document.getElementById("tire_smoke").checked ? 20000 : 0;  // Headlights
+  total += parseInt(document.getElementById("tinting").value) > 0 ? 3000 : 0;
+  total += parseInt(document.getElementById("underglow").value) * 10000;  // Window Tinting
   total += document.getElementById("spz").checked ? 3000 : 0;  // SPZ
   total += document.getElementById("horn").checked ? 2000 : 0;  // Horn
+  total += document.getElementById("livery").checked ? 2000 : 0;
   total += parseInt(document.getElementById("bodywork").value) * 5000;  // Bodywork
   total += parseInt(document.getElementById("color").value) * 4000;  // Color Resprays
 
@@ -36,10 +39,13 @@ document.getElementById("transmission").addEventListener("change", livePriceCalc
 document.getElementById("suspension").addEventListener("change", livePriceCalculation);
 document.getElementById("brakes").addEventListener("change", livePriceCalculation);
 document.getElementById("headlights").addEventListener("change", livePriceCalculation);
+document.getElementById("tire_smoke").addEventListener("change", livePriceCalculation);
 document.getElementById("spz").addEventListener("change", livePriceCalculation);
 document.getElementById("horn").addEventListener("change", livePriceCalculation);
+document.getElementById("livery").addEventListener("change", livePriceCalculation);
 document.getElementById("bodywork").addEventListener("change", livePriceCalculation);
 document.getElementById("tinting").addEventListener("change", livePriceCalculation);
+document.getElementById("underglow").addEventListener("change", livePriceCalculation);
 document.getElementById("color").addEventListener("change", livePriceCalculation);
 
 // Send the details to Discord webhook when user confirms payment
@@ -62,8 +68,10 @@ function sendWebhook() {
   addIfNotZero("brakes", "Brakes");
 
   addIfChecked("headlights", "Headlights");
+  addIfChecked("tire_smoke", "Tire smoke");
   addIfChecked("spz", "SPZ");
   addIfChecked("horn", "Horn");
+  addIfChecked("livery", "Livery");
 
   const tintingVal = parseInt(document.getElementById("tinting").value);
   if (tintingVal > 0) {
@@ -72,6 +80,7 @@ function sendWebhook() {
   }
 
   addIfNotZero("bodywork", "Bodywork", "Parts");
+  addIfNotZero("underglow", "Underglow", "Level(s)");
   addIfNotZero("color", "Color", "Resprays");
 
   fields.push({ name: "Total Price", value: document.getElementById("totalPrice").innerText });
