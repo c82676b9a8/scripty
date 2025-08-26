@@ -2,7 +2,7 @@ const webhookURL = "https://discord.com/api/webhooks/1409798004692746320/JRXKDRo
 
 function calculateTotal() {
   let total = 0;
-  total += parseInt(document.getElementById("engine").value) * 15000;
+  total += (parseInt(document.getElementById("engine").value) || 0) * 15000;
   total += document.getElementById("turbo").checked ? 50000 : 0;
   total += parseInt(document.getElementById("transmission").value) * 7500;
   total += parseInt(document.getElementById("suspension").value) * 5000;
