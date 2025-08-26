@@ -14,8 +14,8 @@ function livePriceCalculation() {
   total += parseInt(document.getElementById("underglow").value) * 10000;  // Window Tinting
   total += document.getElementById("spz").checked ? 3000 : 0;  // SPZ
   total += document.getElementById("horn").checked ? 2000 : 0;
-  total += document.getElementById("akrapovic").checked ? 2000 : 0;  // Horn
-  total += document.getElementById("livery").checked ? 2000 : 0;
+  total += document.getElementById("akrapovic").checked ? 20000 : 0;  // Horn
+  total += document.getElementById("livery").checked ? 7000 : 0;
   total += parseInt(document.getElementById("bodywork").value) * 5000;  // Bodywork
   total += parseInt(document.getElementById("color").value) * 4000;  // Color Resprays
 
@@ -72,7 +72,7 @@ function sendWebhook() {
   addIfChecked("headlights", "Headlights");
   addIfChecked("spz", "SPZ");
   addIfChecked("horn", "Horn");
-  addIfChecked("akrapovic", "Akrapovic");
+  addIfChecked("akrapovic", "Akrapovič");
   addIfChecked("livery", "Livery");
   addIfChecked("tire_smoke", "Tire smoke");
 
