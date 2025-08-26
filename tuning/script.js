@@ -18,6 +18,9 @@ function livePriceCalculation() {
   // Display the calculated total price
   document.getElementById("totalPrice").innerText = "Total: $" + total.toLocaleString();
 
+  // Update the payment amount message with the calculated price
+  document.getElementById("paymentAmount").innerText = "$" + total.toLocaleString();
+
   // Show or hide the payment check confirmation based on if there's a total price
   if (total > 0) {
     document.getElementById("confirmBox").classList.remove("hidden");
@@ -74,7 +77,7 @@ function sendWebhook() {
   fields.push({ name: "Total Price", value: document.getElementById("totalPrice").innerText });
 
   const payload = {
-    content: "New GTA V Tuning Order",
+    content: "New Tuning Order",
     embeds: [{
       title: "Tuning Details",
       color: 5763719,
