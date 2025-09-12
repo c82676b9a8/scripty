@@ -1,115 +1,183 @@
-<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>error</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #ffffff;
+            color: #000000;
+            line-height: 1.6;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+        }
+        code {
+            background-color: #f5f5f5;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        p {
+            margin-bottom: 15px;
+        }
+        ul, ol {
+            margin-bottom: 15px;
+            padding-left: 20px;
+        }
+        blockquote {
+            border-left: 4px solid #ddd;
+            margin: 0;
+            padding-left: 15px;
+            color: #666;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+    <div id="content">
+        <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>404 - Page Not Found</title>
   <style>
-    /* General Body Styling */
     body {
       display: flex;
       align-items: center;
       justify-content: center;
       height: 100vh;
-      background: #121b28; /* Darker background */
-      color: #e6edf5;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
-      flex-direction: column;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: radial-gradient(circle at top, #2b1a40, #0d0812);
+      color: #f2e9ff;
       text-align: center;
+      flex-direction: column;
+    }
+
+    .emoji {
+      font-size: 5rem;
+      margin-bottom: 20px;
+      animation: float 6s ease-in-out infinite;
+      opacity: 0.8;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
     }
 
     h1 {
-      font-size: 3rem;
+      font-size: 6rem;
+      margin: 0;
+      font-weight: 900;
+      background: linear-gradient(90deg, #a855f7, #7e22ce, #c084fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 20px rgba(168,85,247,0.6); }
+      to   { text-shadow: 0 0 40px rgba(192,132,252,0.9); }
+    }
+
+    p {
+      font-size: 1.2rem;
       margin-bottom: 30px;
-      font-weight: bold;
+      opacity: 0.85;
     }
 
-    /* Button Container */
-    .btn-container {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      width: 100%;
-      max-width: 400px; /* Restrict width */
-    }
-
-    /* Main Button Style (Go Back to Home) */
     .btn-main {
-      padding: 15px 0;
-      background-color: #4ea1ff;
-      color: white;
-      border: 2px solid #4ea1ff;
+      display: inline-block;
+      padding: 16px 40px;
       border-radius: 50px;
       font-size: 1.4rem;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.3s ease-in-out;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-      width: 100%;
-      margin: 5px 0;
-    }
-
-    /* Secondary Buttons */
-    .btn-secondary {
-      padding: 12px 0;
-      background-color: #338ccf;
-      color: white;
-      border: 2px solid #338ccf;
-      border-radius: 50px;
-      font-size: 1.1rem;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.3s ease-in-out;
-      width: 100%;
-    }
-
-    /* Hover Effects */
-    .btn-main:hover, .btn-secondary:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-    }
-
-    /* Links with Button Style */
-    .btn-link {
-      background-color: transparent;
-      border: 2px solid transparent;
-      color: #4ea1ff;
-      font-size: 1.2rem;
-      font-weight: 500;
-      padding: 12px 0;
+      font-weight: 700;
       text-decoration: none;
-      cursor: pointer;
-      transition: all 0.3s ease-in-out;
+      color: #fff;
+      background: linear-gradient(135deg, #a855f7, #7e22ce);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+      transition: all 0.3s ease;
+      margin-bottom: 25px;
     }
 
-    .btn-link:hover {
-      text-decoration: underline;
-      color: #338ccf;
+    .btn-main:hover {
+      background: linear-gradient(135deg, #7e22ce, #a855f7);
+      transform: translateY(-4px);
+    }
+    .btn-footer {
+      display: inline-block;
+      padding: 10px 22px;
+      border-radius: 30px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-decoration: none;
+      color: #fff;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.2);
+      margin: 0 8px;
+      transition: all 0.3s ease;
     }
 
-    /* Responsive Design */
+    .btn-footer:hover {
+      background: rgba(255,255,255,0.2);
+      transform: translateY(-3px);
+    }
+
+    .footer-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+
     @media (max-width: 600px) {
-      h1 {
-        font-size: 2rem;
-      }
-      .btn-main, .btn-secondary {
-        font-size: 1.2rem;
-      }
+      h1 { font-size: 4rem; }
+      p { font-size: 1rem; }
+      .btn-main { font-size: 1.1rem; padding: 14px 30px; }
+      .btn-footer { font-size: 0.85rem; padding: 8px 18px; }
+      .emoji { font-size: 3.5rem; }
     }
   </style>
 </head>
 <body>
-  <div>
-    <h1>404 - Page Not Found</h1>
-    <div class="btn-container">
-      <!-- Main "Go Back to Home" Button -->
-      <button class="btn-main" onclick="window.location.href='/'">Go Back to Home</button>
-      
-      <!-- Secondary "Tuning" and "Dealership" Buttons -->
-      <a href="https://scripty.my/tuning" class="btn-secondary">Go to Tuning Page</a>
-      <a href="https://scripty.my/dealership" class="btn-secondary">Go to Dealership Page</a>
-    </div>
+  <div class="emoji">🔍</div>
+
+  <h1>404</h1>
+  <p>Oops! The page you're looking for doesn't exist.</p>
+
+  <a href="/" class="btn-main">Go Back Home</a>
+
+  <div class="footer-buttons">
+    <a href="https://scripty.my/tuning" class="btn-footer">🚗 Tuning</a>
+    <a href="https://scripty.my/dealership" class="btn-footer">🏪 Dealership</a>
   </div>
+</body>
+</html>
+    </div>
 </body>
 </html>
