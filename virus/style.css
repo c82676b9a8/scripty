@@ -41,7 +41,6 @@ button#reset{border-left:3px solid var(--accent-2)}
 .log{max-height:240px;overflow:auto;background:linear-gradient(180deg, rgba(3,7,13,0.6), rgba(3,7,13,0.45));padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.02);font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;font-size:13px;margin-top:8px}
 .foot{color:var(--muted);font-size:13px;margin-top:12px}
 
-/* Glitch effect */
 .glitch{position:relative}
 .glitch::before,.glitch::after{content:attr(data-text);position:absolute;left:0;top:0;width:100%;overflow:hidden;clip-path:polygon(0 0,100% 0,100% 70%,0 70%);}
 .glitch::before{transform:translate(-2px,-2px);color:var(--accent);mix-blend-mode:screen;opacity:0.9;filter:blur(0.6px)}

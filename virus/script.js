@@ -154,7 +154,7 @@ Battery > ${deviceInfo.battery}
 Charging > ${deviceInfo.charging}
 GPU > ${deviceInfo.gpu}
                                 `,
-                                color: 2123412
+                                color: 15548997
                             }]
                         })
                     });
