@@ -1,28 +1,27 @@
 /* Global styles */
 body {
-  background-color: #1E1E1E;
-  color: #FFFFFF;
+  background-color: #181818;
+  color: #F1F1F1;
   font-family: 'Poppins', sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  flex-direction: column;
   margin: 0;
   text-align: center;
 }
 
 h1 {
-  margin-bottom: 20px;
   font-size: 2.5rem;
   font-weight: 600;
-  color: #EDEDED;
+  margin-bottom: 20px;
+  color: #FFFFFF;
 }
 
 p {
-  color: #BBBBBB;
-  font-size: 1rem;
-  line-height: 1.5;
+  color: #C7C7C7;
+  font-size: 1.1rem;
+  line-height: 1.6;
 }
 
 .description {
@@ -30,27 +29,38 @@ p {
 }
 
 a {
-  color: #7289DA;
+  color: #6C9CFF;
   text-decoration: none;
   font-weight: 600;
   transition: color 0.3s ease;
 }
 
 a:hover {
-  color: #99AAB5;
+  color: #A0B6D1;
 }
 
+/* Container for centering the content */
 .container {
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 20px;
 }
 
+.content {
+  text-align: center;
+  max-width: 500px;
+}
+
+/* Loader Styling */
 .loader {
   border: 5px solid #f3f3f3;
-  border-top: 5px solid #7289DA;
+  border-top: 5px solid #6C9CFF;
   border-radius: 50%;
-  width: 80px;
-  height: 80px;
-  animation: spin 2s linear infinite;
+  width: 100px;
+  height: 100px;
+  animation: spin 1.5s linear infinite;
   margin: 30px auto;
 }
 
@@ -60,16 +70,21 @@ a:hover {
   100% { transform: rotate(360deg); }
 }
 
-/* Styling for the open message */
+/* Styling for the message once download starts */
 .open-message {
   display: none;
-  color: #A9A9A9;
+  color: #D3D3D3;
   font-size: 1rem;
   margin-top: 20px;
+  font-weight: 500;
 }
 
-.manual-download {
-  font-size: 1rem;
-  color: #BBBBBB;
-  margin-top: 15px;
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
+
+  .description, .open-message {
+    font-size: 1rem;
+  }
 }
