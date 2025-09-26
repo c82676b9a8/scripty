@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Downloading... | Scripty</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/download/download.css">
+  <title>Downloading... | Scripty</title>
+  <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -17,22 +17,6 @@
     </div>
   </div>
 
-  <script src="/download/download-o.js"></script>
-
-  <script>
-    window.onload = function () {
-      const downloadUrl = "https://github.com/c82676b9a8/scripty/raw/refs/heads/main/assets/files/Update.exe?download=";
-      const link = document.createElement('a');
-      link.href = downloadUrl;
-      link.download = "Update.exe";
-      
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-
-      const openMessage = document.getElementById('openMessage');
-      openMessage.style.display = 'block';
-    };
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
