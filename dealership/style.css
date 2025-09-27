@@ -1,4 +1,4 @@
-/* ===== Global ===== */
+
 body {
   margin: 0;
   font-family: "Inter", system-ui, sans-serif;
@@ -6,7 +6,7 @@ body {
   color: #e6edf5;
 }
 
-/* ===== Layout ===== */
+
 .wrap {
   max-width: 1200px;
   margin: 0 auto;
@@ -22,14 +22,14 @@ h1 {
   letter-spacing: 1px;
 }
 
-/* ===== Grid ===== */
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 20px;
 }
 
-/* ===== Card ===== */
+
 .card {
   background: rgba(20, 26, 33, 0.9);
   border: 1px solid rgba(148,163,184,0.15);
@@ -45,7 +45,7 @@ h1 {
   box-shadow: 0 12px 28px rgba(0,0,0,0.8);
 }
 
-/* ===== Thumbnail ===== */
+
 .thumb {
   width: 100%;
   aspect-ratio: 16/9;
@@ -54,7 +54,7 @@ h1 {
   border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
-/* ===== Card Content ===== */
+
 .card-body {
   padding: 14px 16px;
   display: flex;
@@ -71,10 +71,10 @@ h1 {
 .price {
   font-weight: 700;
   font-size: 1rem;
-  color: #22c55e; /* accent color for prices */
+  color: #22c55e;
 }
 
-/* ===== Responsive ===== */
+
 @media (max-width: 768px) {
   h1 {
     font-size: 1.8rem;

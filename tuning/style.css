@@ -1,4 +1,4 @@
-/* ===== Global Styles ===== */
+
 body {
   background: linear-gradient(135deg, #0f172a, #1e293b);
   color: #f1f5f9;
@@ -10,7 +10,7 @@ body {
   padding: 40px;
 }
 
-/* ===== Container ===== */
+
 .container {
   background: rgba(30, 41, 59, 0.85);
   padding: 30px 35px;
@@ -25,7 +25,7 @@ body {
   transform: translateY(-3px);
 }
 
-/* ===== Heading ===== */
+
 h1 {
   text-align: center;
   margin-bottom: 30px;
@@ -35,7 +35,7 @@ h1 {
   letter-spacing: 1px;
 }
 
-/* ===== Option Cards ===== */
+
 .option-card {
   background: #1e293b;
   padding: 14px 18px;
@@ -53,7 +53,7 @@ h1 {
   font-weight: 600;
 }
 
-/* ===== Select & Inputs ===== */
+
 select {
   margin-top: 6px;
   display: block;
@@ -76,7 +76,7 @@ input[type="checkbox"] {
   transform: scale(1.2);
 }
 
-/* ===== Buttons ===== */
+
 button {
   display: inline-block;
   border: none;
@@ -110,7 +110,7 @@ button:not(.reset-btn):hover {
   background: linear-gradient(135deg, #b91c1c, #7f1d1d);
 }
 
-/* ===== Price Display ===== */
+
 #totalPrice {
   margin-top: 20px;
   font-size: 22px;
@@ -122,7 +122,7 @@ button:not(.reset-btn):hover {
   border-radius: 10px;
 }
 
-/* ===== Confirm Box ===== */
+
 #confirmBox {
   margin-top: 25px;
   text-align: center;
