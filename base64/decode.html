@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Base64 Decoder</title>
+  <link rel="stylesheet" href="decode.css">
+</head>
+<body>
+<div class="container">
+  <div class="top-bar">
+    <button class="active">Decode</button>
+    <button onclick="window.location.href='encode.html'">Encode</button>
+  </div>
+
+  <div class="card">
+    <h1>Base64 Decoder</h1>
+    <textarea id="input" placeholder="Paste your Base64 string here..."></textarea>
+    <button class="action" id="decodeBtn">Decode</button>
+    <div id="result">Decoded output will appear here...</div>
+    <div class="hint">Supports UTF-8 and file decoding.</div>
+    <input type="file" id="fileInput">
+  </div>
+</div>
+<script src="decode.js"></script>
+</body>
+</html>

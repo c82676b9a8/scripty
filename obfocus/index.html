@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Python Obfuscator — Modern & Powerful</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="card">
+    <div class="card-header">
+      <h1>
+        <span class="icon">🐍</span>
+        Python Obfuscator
+      </h1>
+      <p class="tagline">Transform your Python code with base64 string encoding, identifier renaming, and minification. Quick, powerful, and effective.</p>
+    </div>
+
+    <div class="grid">
+      <div>
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <div class="panel-title">Input Python Code</div>
+              <div class="panel-subtitle">Paste your script to obfuscate</div>
+            </div>
+            <div class="status warning">
+              <span class="icon">⚠️</span>
+              Experimental
+            </div>
+          </div>
+          <textarea id="inputCode" placeholder="# Paste your Python code here..."></textarea>
+        </div>
+
+        <div class="options">
+          <div class="option-group">
+            <div class="option-label">
+              <input type="checkbox" id="optMinify" checked>
+              <span>Minify Code</span>
+              <span class="badge">Remove comments & whitespace</span>
+            </div>
+            <div class="option-label">
+              <input type="checkbox" id="optStrings" checked>
+              <span>Encode Strings</span>
+              <span class="badge">Convert to base64</span>
+            </div>
+            <div class="option-label">
+              <input type="checkbox" id="optRename" checked>
+              <span>Rename Identifiers</span>
+              <span class="badge">Functions, variables, classes</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button id="btnObf">
+            <span class="icon">⚙️</span>
+            Obfuscate Code
+          </button>
+          <button class="ghost" id="btnExample">
+            <span class="icon">📋</span>
+            Load Example
+          </button>
+          <button class="ghost" id="btnClear">
+            <span class="icon">🗑️</span>
+            Clear
+          </button>
+        </div>
+
+        <div class="note">
+          <strong>Important Note:</strong> This tool uses text transformations rather than a full parser. It works best on smaller scripts and may not handle all edge cases. Always backup your original code before obfuscating.
+        </div>
+      </div>
+
+      <div>
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <div class="panel-title">Obfuscated Output</div>
+              <div class="panel-subtitle">Copy or download the result</div>
+            </div>
+            <div class="status success">
+              <span class="icon">🔒</span>
+              Obfuscated
+            </div>
+          </div>
+          <textarea id="outputCode" readonly placeholder="Obfuscated output will appear here..."></textarea>
+        </div>
+
+        <div class="output-actions">
+          <button id="btnCopy">
+            <span class="icon">📄</span>
+            Copy to Clipboard
+          </button>
+          <button class="ghost" id="btnDownload">
+            <span class="icon">💾</span>
+            Download .py
+          </button>
+          <button class="ghost" id="btnRestore">
+            <span class="icon">↩️</span>
+            Quick Restore
+          </button>
+        </div>
+
+        <div class="note">
+          <strong>Restoration Note:</strong> The restore feature attempts to decode base64 and revert simple renames. Success is not guaranteed for all obfuscated code.
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script src="script.js"></script>
+</body>
+</html>
