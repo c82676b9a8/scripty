@@ -27,12 +27,14 @@ body {
   color: #e50914;
 }
 
+
 /* Subtitle */
 .container p {
   font-size: 1.2rem;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
   color: #bbbbbb;
 }
+
 
 /* Download button */
 .download-btn {
