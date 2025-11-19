@@ -1,4 +1,4 @@
-const btn = document.querySelector('.download-btn');
+const btn = document.querySelector('btn-primary');
 
 const p1  = "https:";
 const sighjdfsd  = "scord.c";
