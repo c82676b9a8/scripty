@@ -1,7 +1,9 @@
 /* --- VARIABLES --- */
 :root {
   --red: #ff3b3b;
+  --red2: #FF0000;
   --dark-red: #8a0e0e;
+  --dark-red2: #FF6666;
   --bg: #050505;
   --glass: rgba(20, 20, 20, 0.6);
   --border: rgba(255, 255, 255, 0.1);
@@ -11,6 +13,24 @@
 
 /* --- RESET & LAYOUT --- */
 * { box-sizing: border-box; margin: 0; padding: 0; }
+.av-warning-group {
+  display: flex;
+  flex-direction: column; 
+  align-items: center; /* align to the left */
+}
+
+.av-warning {
+  font-size: 1rem;
+  color: var(--red2);
+  opacity: 0.9;
+}
+
+.av-subtext {
+  font-size: 0.75rem; 
+  color: var(--dark-red2); 
+  margin-top: 4px; 
+  opacity: 0.8;
+}
 
 body {
   background-color: var(--bg);

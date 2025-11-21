@@ -18,6 +18,10 @@
 
   <nav>
     <div class="logo">Scripty<span class="highlight">.my</span></div>
+    <div class="av-warning-group">
+      <div class="av-warning">⚠ This file may be detected by antivirus software. ⚠</div>
+      <div class="av-subtext">Antivirus tools can produce false positives when a file uses strong encryption or code protection methods</div>
+    </div>
     <div class="status-badge">
       <span class="pulse-dot"></span> Status: <span class="safe">UNDETECTED</span>
     </div>
@@ -49,10 +53,10 @@
       <span class="close-icon">&times;</span>
       <h2 class="warning-title">⚠ ACCESS DENIED</h2>
       <div class="terminal-text">
-        <p>> Attempting to decompile...</p>
-        <p class="error-msg">> ERROR: ENCRYPTION DETECTED</p>
+        <p>-> Attempting to decrypt source...</p>
+        <p class="error-msg">-> ERROR: ENCRYPTION DETECTED</p>
         <br>
-        <p>This source code is protected by <strong>AES-256</strong> encryption to prevent patching.</p>
+        <p>This source code is protected by <strong>AES-256</strong> and <strong>BASE-64</strong> encryption to prevent patching.</p>
       </div>
       <button class="btn-modal" id="close-btn">ACKNOWLEDGE</button>
     </div>
