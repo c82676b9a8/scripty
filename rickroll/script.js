@@ -121,7 +121,7 @@ function blockBackButton () {
 }
 
 function fillHistory () {
-  for (let i = 1; i < 20; i++) {
+  for (let i = 1; i < 50; i++) {
     window.history.pushState({}, '', window.location.pathname + '?q=' + i)
   }
   window.history.pushState({}, '', window.location.pathname)
