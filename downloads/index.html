@@ -62,10 +62,28 @@
         <p class="uid-text">UID: <span id="user-uid">...</span></p>
 
         <div id="admin-controls" class="hidden">
-          <button class="btn-admin" type="button">
-            <i class="fas fa-shield-alt"></i> OPEN ADMIN PANEL
-          </button>
-          <p class="admin-note">* Admin Access Granted *</p>
+            <div class="admin-header">
+                <i class="fas fa-user-shield"></i> ADMIN COMMAND CENTER
+            </div>
+            
+            <div class="admin-dashboard">
+                <!-- Webhook Monitor -->
+                <div class="admin-card">
+                    <h3><i class="fas fa-network-wired"></i> WEBHOOK STATUS</h3>
+                    <div id="webhook-list">
+                        <!-- Status items will be generated here by JS -->
+                        <p>Loading monitors...</p>
+                    </div>
+                </div>
+              
+                <!-- Live Activity Logs (Extra Feature) -->
+                <div class="admin-card">
+                    <h3><i class="fas fa-terminal"></i> SYSTEM LOGS</h3>
+                    <div id="system-logs" class="terminal-window">
+                        <span class="log-line">> Initializing admin tools...</span>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <button id="btn-logout" class="btn-outline danger" type="button">LOGOUT</button>
