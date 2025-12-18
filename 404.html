@@ -3,57 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 Error</title>
-    <link rel="icon" type="image/png" href="favicon.png">
+    <title>Page Not Found</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            background-color: #000000;
-            color: #ffffff;
-            margin: 0;
-            height: 100vh;
-            
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            text-align: center;
-        }
-
-        h1 {
-            font-size: 3rem;
-            font-weight: normal;
-            letter-spacing: 2px;
-            margin-bottom: 5px; 
-        }
+        /* --- SHARED & ERROR STYLES --- */
+        body { background-color: #000; color: #fff; margin: 0; font-family: 'JetBrains Mono', monospace; height: 100vh; overflow: hidden; }
+        .hidden { display: none !important; }
         
-        p {
-            font-size: 1rem;
-            color: #aaaaaa;
-            margin: 0 0 25px 0; 
-        }
+        /* 404 ERROR VIEW */
+        #view-error { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; text-align: center; }
+        #view-error h1 { font-size: 3rem; margin-bottom: 5px; letter-spacing: 2px; }
+        #view-error p { color: #aaa; margin-bottom: 25px; }
+        #view-error a { color: #fff; text-decoration: none; border: 1px solid #fff; padding: 10px 20px; transition: 0.3s; }
+        #view-error a:hover { background: #fff; color: #000; }
 
-        a {
-            color: #ffffff;
-            text-decoration: none;
-            font-size: 1rem;
-            border: 1px solid #ffffff; 
-            padding: 10px 20px;
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        a:hover {
-            background-color: #ffffff; 
-            color: #050203;
-        }
+        /* PROFILE VIEW */
+        #view-profile { opacity: 0; transition: opacity 0.5s; height: 100%; display: flex; align-items: center; justify-content: center; }
+        :root { --accent: #ff0000; --text-main: #ffffff; }
+        .bg-animation { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: radial-gradient(circle at center, rgba(20,0,0,0.5) 0%, #000 100%); }
+        .stars { width: 2px; height: 2px; background: transparent; box-shadow: 125px 236px #FFF, 784px 1253px var(--accent), 345px 765px #FFF, 120px 800px var(--accent); animation: animStar 50s linear infinite; }
+        
+        #main-card { display: none; width: 350px; padding: 40px 20px; background: rgba(10, 10, 10, 0.75); border: 1px solid rgba(255, 255, 255, 0.1); border-bottom: 3px solid var(--accent); border-radius: 15px; backdrop-filter: blur(15px); text-align: center; box-shadow: 0 0 50px rgba(0,0,0,0.5); animation: fadeIn 1.5s ease; }
+        .pfp { width: 100px; height: 100px; border-radius: 50%; border: 2px solid var(--accent); margin: 0 auto 15px; background-size: cover; background-position: center; box-shadow: 0 0 25px var(--accent); }
+        .profile-name { font-size: 1.8rem; margin-bottom: 5px; text-shadow: 0 0 15px var(--accent); font-weight: bold; }
+        .tagline { font-size: 0.8rem; color: #aaa; margin-bottom: 25px; letter-spacing: 1px; }
+        .social-link { display: block; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); padding: 12px; border-radius: 6px; color: #ccc; text-decoration: none; transition: all 0.3s; margin-bottom: 10px; font-size: 0.9rem; }
+        .social-link:hover { background: rgba(255, 255, 255, 0.08); border-color: var(--accent); color: var(--text-main); box-shadow: 0 0 15px var(--accent); transform: translateY(-2px); }
+        
+        #overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; display: flex; align-items: center; justify-content: center; cursor: pointer; background: rgba(0,0,0,0.8); }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes animStar { from { transform: translateY(0px); } to { transform: translateY(-2000px); } }
     </style>
 </head>
 <body>
 
-    <h1>404 Error</h1>
-    <p>The requested resource could not be found on this server.</p>
-    <a href="/">Go Back Home</a>
+    <!-- VIEW 1: STANDARD 404 ERROR (Default Hidden) -->
+    <div id="view-error" class="hidden">
+        <h1>404 Error</h1>
+        <p>The requested resource could not be found.</p>
+        <a href="/">Go Back Home</a>
+    </div>
 
+    <!-- VIEW 2: PROFILE VIEWER (Default Hidden) -->
+    <div id="view-profile" class="hidden">
+        <div class="bg-animation"><div class="stars"></div></div>
+        <audio id="bg-music" loop></audio>
+        
+        <div id="main-card">
+            <div id="pfp" class="pfp"></div>
+            <div id="username" class="profile-name">...</div>
+            <div id="tagline" class="tagline"></div>
+            <div id="socials-container"></div>
+        </div>
+
+        <div id="overlay">
+            <div style="font-size:1.2rem; text-shadow:0 0 10px rgba(255,255,255,0.5);">[ click to enter ]</div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCKf_8-NFJcO7xmFcwlEFHAgl1LTTEPuQw",
+            authDomain: "guns-lol-522c3.firebaseapp.com",
+            projectId: "guns-lol-522c3",
+            storageBucket: "guns-lol-522c3.firebasestorage.app",
+            messagingSenderId: "454575547882",
+            appId: "1:454575547882:web:966473881f1ef1c5b1be93"
+        };
+        
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // --- ROUTING LOGIC ---
+        const path = window.location.pathname; 
+        
+        // Check if this is a profile URL (starts with /p/)
+        if (path.startsWith('/p/')) {
+            const username = path.replace('/p/', '').replace('/', '').toLowerCase();
+            loadProfile(username);
+        } else {
+            // Not a profile URL -> Show Standard 404
+            showStandard404();
+        }
+
+        async function loadProfile(username) {
+            if (!username) { showStandard404(); return; }
+
+            document.getElementById('view-profile').classList.remove('hidden');
+
+            try {
+                const q = query(collection(db, "profiles"), where("username", "==", username));
+                const snapshot = await getDocs(q);
+
+                if (snapshot.empty) {
+                    document.getElementById('view-profile').classList.add('hidden');
+                    showStandard404();
+                    return;
+                }
+
+                const d = snapshot.docs[0].data();
+                document.title = d.username;
+                document.getElementById('username').innerText = d.username;
+                document.getElementById('tagline').innerText = d.tagline || "";
+                document.getElementById('pfp').style.backgroundImage = `url('${d.pfp}')`;
+                
+                document.documentElement.style.setProperty('--accent', d.accent || '#ff0000');
+                document.documentElement.style.setProperty('--text-main', d.textColor || '#ffffff');
+
+                const music = document.getElementById('bg-music');
+                if (d.audio) music.src = d.audio;
+                music.volume = 0.3;
+
+                const c = document.getElementById('socials-container');
+                if (d.socials) {
+                    d.socials.split(",").forEach(s => {
+                        if (!s.includes("|")) return;
+                        const [name, url] = s.split("|");
+                        const a = document.createElement('a');
+                        a.href = url.trim();
+                        a.innerText = name.trim();
+                        a.className = 'social-link';
+                        a.target = "_blank";
+                        c.appendChild(a);
+                    });
+                }
+
+                document.getElementById('view-profile').style.opacity = 1;
+
+                const overlay = document.getElementById('overlay');
+                const mainCard = document.getElementById('main-card');
+
+                overlay.addEventListener('click', () => {
+                    overlay.style.opacity = '0';
+                    setTimeout(() => {
+                        overlay.style.display = 'none';
+                        mainCard.style.display = 'block';
+                        music.play().catch(() => {});
+                    }, 300);
+                });
+
+            } catch (e) {
+                console.error(e);
+                showStandard404();
+            }
+        }
+
+        function showStandard404() {
+            document.getElementById('view-error').classList.remove('hidden');
+            document.title = "404 Error";
+        }
+    </script>
 </body>
 </html>

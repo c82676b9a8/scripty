@@ -74,13 +74,8 @@
             
             <button onclick="saveAndRequest()">SAVE & UPDATE</button>
 
-            <!-- VIEW PAGE: /p/username -->
-            <button
-              class="btn-secondary"
-              onclick="window.open('/p/' + document.getElementById('username').value.toLowerCase().trim(), '_blank')"
-            >
-              View My Page ↗
-            </button>
+            <!-- VIEW PAGE -->
+            <button class="btn-secondary" onclick="window.open('/p/' + document.getElementById('username').value.toLowerCase().trim(), '_blank')">View My Page ↗</button>
 
             <button class="btn-secondary" onclick="logout()">LOGOUT</button>
         </div>
@@ -202,17 +197,7 @@
             };
             try {
                 await setDoc(doc(db, "profiles", currentUser.uid), data);
-                await fetch("YOUR_DISCORD_WEBHOOK_URL_HERE", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        embeds: [{
-                            title: "📝 Profile Update",
-                            color: 16711680,
-                            description: `User **${data.username}** saved their profile.`
-                        }]
-                    })
-                });
+                // ADD YOUR WEBHOOK IF YOU WANT NOTIFICATIONS
                 alert("Saved!");
             } catch (e) {
                 console.error(e);
