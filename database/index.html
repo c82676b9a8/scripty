@@ -11,8 +11,6 @@
         h2 { color: #ff3333; text-align: center; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 2px; }
         .label { font-size: 0.75rem; color: #888; margin-bottom: 5px; display: block; margin-top: 15px; }
         input[type="text"], input[type="email"], input[type="password"] { width: 100%; padding: 12px; background: #111; border: 1px solid #333; color: #fff; border-radius: 6px; font-family: inherit; box-sizing: border-box; }
-        input[type="file"] { width: 100%; padding: 10px; background: #111; border: 1px solid #333; color: #888; border-radius: 6px; font-family: inherit; box-sizing: border-box; cursor: pointer; }
-        input[type="file"]::-webkit-file-upload-button { background: #222; border: none; color: #fff; padding: 8px 12px; border-radius: 4px; cursor: pointer; }
         input:focus { border-color: #ff3333; outline: none; background: #151515; }
         .color-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 5px; }
         .color-input { display: flex; align-items: center; background: #111; border: 1px solid #333; padding: 5px; border-radius: 6px; }
@@ -21,7 +19,6 @@
         
         button { width: 100%; padding: 12px; margin-top: 20px; background: #ff3333; color: #000; font-weight: bold; cursor: pointer; text-transform: uppercase; border: none; border-radius: 6px; }
         button:hover { background: #cc0000; }
-        button:disabled { background: #555; cursor: not-allowed; }
         .btn-secondary { background: transparent; border: 1px solid #333; color: #666; margin-top: 10px; }
         .btn-secondary:hover { color: #fff; border-color: #666; background: #111; }
         
@@ -30,8 +27,6 @@
         
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 999; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
         .modal-box { background: #111; padding: 25px; border: 1px solid #333; border-radius: 10px; width: 300px; text-align: center; box-shadow: 0 0 30px rgba(255, 51, 51, 0.2); }
-        
-        .upload-hint { font-size: 0.7rem; color: #666; margin-top: 3px; }
     </style>
 </head>
 <body>
@@ -55,22 +50,17 @@
         <!-- EDITOR -->
         <div id="editor-section" class="hidden">
             <h2>Profile Editor</h2>
-            
             <span class="label">Username (Unique URL)</span>
             <input type="text" id="username" placeholder="e.g. scripty">
             
             <span class="label">Tagline</span>
             <input type="text" id="tagline" placeholder="e.g. FULL STACK DEV">
             
-            <!-- FILE UPLOAD: Profile Picture -->
-            <span class="label">Profile Picture</span>
-            <input type="file" id="pfp-file" accept="image/*">
-            <div class="upload-hint">Or paste URL: <input type="text" id="pfp-url" placeholder="https://..." style="margin-top:5px; font-size:0.8rem; padding:8px;"></div>
+            <span class="label">Profile Picture (URL)</span>
+            <input type="text" id="pfp" placeholder="https://imgur.com/...">
             
-            <!-- FILE UPLOAD: Audio -->
-            <span class="label">Background Music</span>
-            <input type="file" id="audio-file" accept="audio/*">
-            <div class="upload-hint">Or paste URL: <input type="text" id="audio-url" placeholder="https://..." style="margin-top:5px; font-size:0.8rem; padding:8px;"></div>
+            <span class="label">Background Music (MP3 URL)</span>
+            <input type="text" id="audio" placeholder="https://files.catbox.moe/...">
             
             <span class="label">Colors</span>
             <div class="color-grid">
@@ -87,8 +77,9 @@
             <span class="label">Socials (Name|URL, Name|URL)</span>
             <input type="text" id="socials" placeholder="Discord|https://discord.gg/...">
             
-            <button onclick="saveAndRequest()" id="save-btn">SAVE & UPDATE</button>
+            <button onclick="saveAndRequest()">SAVE & UPDATE</button>
 
+            <!-- VIEW BUTTON -->
             <button class="btn-secondary" onclick="window.open('/p/' + document.getElementById('username').value.toLowerCase().trim(), '_blank')">View My Page ↗</button>
 
             <button class="btn-secondary" onclick="logout()">LOGOUT</button>
@@ -109,8 +100,8 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
+        // !!! PASTE YOUR FIREBASE CONFIG HERE !!!
         const firebaseConfig = {
             apiKey: "AIzaSyCKf_8-NFJcO7xmFcwlEFHAgl1LTTEPuQw",
             authDomain: "guns-lol-522c3.firebaseapp.com",
@@ -123,7 +114,6 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-        const storage = getStorage(app);
         const msg = document.getElementById('status-msg');
         let isRegistering = false, currentUser = null;
 
@@ -179,11 +169,9 @@
                 const snap = await getDoc(doc(db, "profiles", user.uid));
                 if (snap.exists()) {
                     const d = snap.data();
-                    document.getElementById('username').value = d.username || "";
-                    document.getElementById('tagline').value = d.tagline || "";
-                    document.getElementById('pfp-url').value = d.pfp || "";
-                    document.getElementById('audio-url').value = d.audio || "";
-                    document.getElementById('socials').value = d.socials || "";
+                    ['username','tagline','pfp','audio','socials'].forEach(k => {
+                        document.getElementById(k).value = d[k] || "";
+                    });
                     document.getElementById('accent-color').value = d.accent || "#ff0000";
                     document.getElementById('text-color').value = d.textColor || "#ffffff";
                 }
@@ -195,13 +183,6 @@
             }
         });
 
-        // UPLOAD FILE FUNCTION
-        async function uploadFile(file, path) {
-            const storageRef = ref(storage, path);
-            await uploadBytes(storageRef, file);
-            return await getDownloadURL(storageRef);
-        }
-
         window.saveAndRequest = async () => {
             if (!currentUser) return;
             const username = document.getElementById('username').value.toLowerCase().trim();
@@ -209,55 +190,35 @@
                 alert("Username needed!");
                 return;
             }
-
-            const saveBtn = document.getElementById('save-btn');
-            saveBtn.disabled = true;
-            saveBtn.innerText = "UPLOADING...";
-
+            const data = {
+                username,
+                tagline: document.getElementById('tagline').value,
+                pfp: document.getElementById('pfp').value,
+                audio: document.getElementById('audio').value,
+                socials: document.getElementById('socials').value,
+                accent: document.getElementById('accent-color').value,
+                textColor: document.getElementById('text-color').value,
+                uid: currentUser.uid,
+                email: currentUser.email
+            };
             try {
-                // 1. Handle PFP (File or URL)
-                let pfpUrl = document.getElementById('pfp-url').value;
-                const pfpFile = document.getElementById('pfp-file').files[0];
-                if (pfpFile) {
-                    msg.innerText = "Uploading image...";
-                    pfpUrl = await uploadFile(pfpFile, `users/${currentUser.uid}/pfp.${pfpFile.name.split('.').pop()}`);
-                }
-
-                // 2. Handle Audio (File or URL)
-                let audioUrl = document.getElementById('audio-url').value;
-                const audioFile = document.getElementById('audio-file').files[0];
-                if (audioFile) {
-                    msg.innerText = "Uploading music...";
-                    audioUrl = await uploadFile(audioFile, `users/${currentUser.uid}/audio.${audioFile.name.split('.').pop()}`);
-                }
-
-                // 3. Save to Firestore
-                msg.innerText = "Saving profile...";
-                const data = {
-                    username,
-                    tagline: document.getElementById('tagline').value,
-                    pfp: pfpUrl,
-                    audio: audioUrl,
-                    socials: document.getElementById('socials').value,
-                    accent: document.getElementById('accent-color').value,
-                    textColor: document.getElementById('text-color').value,
-                    uid: currentUser.uid,
-                    email: currentUser.email
-                };
                 await setDoc(doc(db, "profiles", currentUser.uid), data);
-                
-                msg.innerText = "Saved!";
-                msg.style.color = "#00ff00";
-                alert("Profile saved!");
-
+                // PASTE WEBHOOK URL HERE
+                await fetch("YOUR_DISCORD_WEBHOOK_URL_HERE", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        embeds: [{
+                            title: "📝 Profile Update",
+                            color: 16711680,
+                            description: `User **${data.username}** saved their profile.`
+                        }]
+                    })
+                });
+                alert("Saved!");
             } catch (e) {
                 console.error(e);
-                alert("Error: " + e.message);
-                msg.style.color = "#ff3333";
-                msg.innerText = "Error saving";
-            } finally {
-                saveBtn.disabled = false;
-                saveBtn.innerText = "SAVE & UPDATE";
+                alert("Error saving: " + e.message);
             }
         };
     </script>
