@@ -3,327 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multi-PC Control | Potkan</title>
+    <title>Potkan Portal</title>
     <style>
-        /* (Keep your existing CSS styles perfectly intact) */
-        :root { --bg: #0f172a; --card: #1e293b; --text: #e2e8f0; --accent: #3b82f6; --danger: #ef4444; --success: #22c55e; --warn: #eab308; }
-        body { background-color: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
-        h1 { background: linear-gradient(135deg, var(--accent), #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 2.5rem; margin-bottom: 2rem; text-transform: uppercase; }
-        
-        .pc-selector {
-            width: 100%; max-width: 600px; margin-bottom: 30px;
-            background: var(--card); padding: 20px; border-radius: 12px;
-            border: 1px solid var(--accent);
-            text-align: center;
-        }
-        .pc-selector select { width: 100%; padding: 15px; font-size: 1.1rem; background: #0f172a; color: white; border: 1px solid #334155; border-radius: 8px; margin-top: 10px; }
-
-        /* Dashboard hidden until PC selected */
-        #mainDashboard { display: none; width: 100%; max-width: 1200px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        
-        /* Your Card/Button CSS */
-        .card { background: var(--card); padding: 20px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); }
-        .card-header { font-size: 1.2rem; font-weight: bold; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
-        .grid-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        button { padding: 12px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; color: white; background: #334155; width: 100%; }
-        button:hover { filter: brightness(1.2); }
-        .btn-danger { background: var(--danger); }
-        .btn-success { background: var(--success); }
-        .btn-warn { background: var(--warn); color: black; }
-        .btn-info { background: var(--accent); }
-        .btn-gray { background: #475569; }
-        .full-width { grid-column: span 2; }
-
-        /* LOGS CSS */
-        .logs-container {
-            width: 100%; max-width: 1200px; margin-top: 25px;
-            background: #0f172a; border: 1px solid #334155; border-radius: 12px; padding: 20px; box-sizing: border-box;
-        }
-        .log-title { color: #94a3b8; font-size: 0.9rem; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
-        .log-list { list-style: none; padding: 0; margin: 0; max-height: 200px; overflow-y: auto; }
-        .log-item { padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.05); font-family: monospace; font-size: 0.9rem; color: #ccc; display: flex; justify-content: space-between; }
-        .log-item:last-child { border-bottom: none; }
-        .log-time { color: #64748b; font-size: 0.8rem; }
-        .log-cmd { color: var(--accent); font-weight: bold; }
+        body { background-color: #0f172a; color: #e2e8f0; font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+        .card { background: #1e293b; padding: 40px; border-radius: 16px; border: 1px solid #3b82f6; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        h1 { margin-top: 0; color: #3b82f6; }
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #0f172a; border: 1px solid #334155; color: white; border-radius: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: #3b82f6; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        button:hover { filter: brightness(1.1); }
+        .btn-sec { background: #475569; }
+        #publicMessage { display: none; }
+        #repeatPassField { display: none; } /* Hidden by default */
     </style>
 </head>
 <body>
 
-    <h1>🚀 Multi-PC Command</h1>
-
-    <!-- STEP 1: SELECT PC -->
-    <div class="pc-selector">
-        <h3>🎯 Select Target PC (Category)</h3>
-        <select id="categorySelect" onchange="selectPC()">
-            <option value="">🔄 Loading PC List...</option>
-        </select>
-        <p id="targetStatus" style="margin-top:10px; color:#aaa; font-size:0.9rem;">Please select a PC to control.</p>
-    </div>
-
-    <!-- STEP 2: DASHBOARD -->
-    <div id="mainDashboard" class="dashboard"> 
+    <!-- LOGIN FORM -->
+    <div id="loginForm" class="card">
+        <h1 id="formTitle">🔒 Secure Login</h1>
         
-        <!-- POWER -->
-        <div class="card">
-            <div class="card-header">⚡ Power</div>
-            <div class="grid-buttons">
-                <button class="btn-info" onclick="cmd('lock_pc')">🔒 Lock</button>
-                <button class="btn-warn" onclick="cmd('restart_pc')">🔄 Restart</button>
-                <button class="btn-danger full-width" onclick="confirmAction('shutdown_pc')">🛑 Shutdown</button>
-                <button class="btn-danger full-width" onclick="confirmAction('bsod')">💀 BSOD</button>
-                <button class="btn-danger" onclick="toggleInput(true)">🚫 Block Input</button>
-                <button class="btn-success" onclick="toggleInput(false)">✅ Restore Input</button>
-                <button class="btn-danger" onclick="askBlacklist()">❌ Blacklist App</button>
-                <button class="btn-success" onclick="askWhitelist()">✅ Whitelist App</button>
-            </div>
-        </div>
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="password" placeholder="Password">
+        
+        <!-- REPEAT PASSWORD (Hidden initially) -->
+        <input type="password" id="repeatPassword" placeholder="Repeat Password" style="display:none;">
 
-        <!-- MEDIA -->
-        <div class="card">
-            <div class="card-header">🔊 Media</div>
-            <div class="grid-buttons">
-                <button class="btn-gray" onclick="cmd('mute')">🔇 Mute</button>
-                <button class="btn-success" onclick="cmd('unmute')">🔊 Unmute</button>
-                <button class="btn-info full-width" onclick="askTTS()">🗣️ Speak</button>
-                <div class="full-width">
-                    <input type="range" min="0" max="100" value="50" onchange="setVolume(this.value)" style="width:100%">
-                </div>
-            </div>
-        </div>
-
-        <!-- PRANKS -->
-        <div class="card">
-            <div class="card-header">👻 Fun</div>
-            <div class="grid-buttons">
-                <button class="btn-warn full-width" onclick="cmd('jumpscare')">👻 Jumpscare</button>
-                <button class="btn-info full-width" onclick="askMsgBox()">💬 Fake Error</button>
-                <button class="btn-success full-width" onclick="askURL()">🌐 Open URL</button>
-                <button class="btn-warn" onclick="askBlockURL()">🌐 Block Site</button>
-                <button class="btn-gray" onclick="askUnblockURL()">🔓 Unblock Site</button>
-            </div>
-        </div>
-
-        <!-- DISCORD -->
-        <div class="card">
-            <div class="card-header">💬 Communication</div>
-            <button class="btn-info" onclick="cmd('ping_channel')">🏓 Ping This PC</button>
-            <p style="font-size:0.8rem; color:#aaa; margin-top:10px;">
-                Commands sent to: <span id="activeChannelName" style="color:var(--accent)">None</span>
-            </p>
-        </div>
-
+        <button id="mainBtn" onclick="handleMainBtn()">Login</button>
+        <button class="btn-sec" onclick="toggleMode()">Switch to Register</button>
+        
+        <p id="errorMsg" style="color: #ef4444; margin-top: 10px; font-size: 0.9rem;"></p>
     </div>
 
-    <!-- LOGS CONTAINER -->
-    <div class="logs-container">
-        <div class="log-title">Command History</div>
-        <ul class="log-list" id="logList">
-            <li class="log-item">
-                <span class="log-cmd">System Ready</span>
-                <span class="log-time">Now</span>
-            </li>
-        </ul>
+    <!-- PUBLIC PAGE -->
+    <div id="publicMessage" class="card" style="border-color: #22c55e;">
+        <h1>🚀 Potkan Tools</h1>
+        <p>Welcome! We are currently preparing our exclusive product line.</p>
+        <button class="btn-sec" onclick="logout()">Log Out</button>
     </div>
 
-    <!-- SCRIPT -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, set, get, child, push, onValue, limitToLast, query } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBhG3jjUoP6F-MHIqYKP7TvCh4FQ_Rfcd0",
             authDomain: "potkan-5132c.firebaseapp.com",
-            databaseURL: "https://potkan-5132c-default-rtdb.firebaseio.com/",
-            projectId: "potkan-5132c",
-            storageBucket: "potkan-5132c.firebasestorage.app",
-            messagingSenderId: "1049909900706",
-            appId: "1:1049909900706:web:f4d5b811a98760f0862efb"
+            projectId: "potkan-5132c"
         };
 
         const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-        const dbRef = ref(db);
+        const auth = getAuth(app);
+        const ADMIN_UID = "YOUR_ADMIN_UID_HERE"; 
 
-        // GLOBAL VARIABLES
-        window.currentTargetID = null; 
-        window.currentPCName = "Unknown";
-        let discordStructure = {};
+        // STATE
+        let isRegisterMode = false;
 
-        // 1. LOAD STRUCTURE
-        get(child(dbRef, `discord_structure`)).then((snapshot) => {
-            const select = document.getElementById('categorySelect');
-            
-            if (snapshot.exists()) {
-                const fullData = snapshot.val();
-                
-                // Handle both old format (direct) and new format (with timestamp)
-                const discordStructure = fullData.structure || fullData; 
-                const lastTime = fullData.last_updated || "Unknown Time";
-
-                // Update the default option with the timestamp
-                select.innerHTML = `<option value="">-- Select PC (Updated: ${lastTime}) --</option>`;
-
-                // Loop Servers (Same logic as before)
-                for (const [serverName, categories] of Object.entries(discordStructure)) {
-                    if(serverName === "last_updated") continue; // Skip the timestamp key just in case
-
-                    const group = document.createElement('optgroup');
-                    group.label = serverName;
-                    
-                    for (const [catName, channels] of Object.entries(categories)) {
-                        const option = document.createElement('option');
-                        option.value = JSON.stringify({server: serverName, category: catName}); 
-                        option.innerText = `🖥️ ${catName}`;
-                        group.appendChild(option);
-                    }
-                    select.appendChild(group);
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                if (user.uid === ADMIN_UID) window.location.href = "panel.html";
+                else {
+                    document.getElementById('loginForm').style.display = 'none';
+                    document.getElementById('publicMessage').style.display = 'block';
                 }
             } else {
-                select.innerHTML = '<option>No Data Found</option>';
+                document.getElementById('loginForm').style.display = 'block';
+                document.getElementById('publicMessage').style.display = 'none';
             }
         });
 
-        // 2. HANDLE SELECTION
-        window.selectPC = function() {
-            const select = document.getElementById('categorySelect');
-            const val = select.value;
-            const dashboard = document.getElementById('mainDashboard');
-            const status = document.getElementById('targetStatus');
-            const activeName = document.getElementById('activeChannelName');
+        window.toggleMode = () => {
+            isRegisterMode = !isRegisterMode;
+            const title = document.getElementById('formTitle');
+            const mainBtn = document.getElementById('mainBtn');
+            const repeatField = document.getElementById('repeatPassword');
+            const switchBtn = document.querySelector('.btn-sec');
 
-            if (!val) {
-                dashboard.style.display = "none";
-                status.innerText = "Select a PC to continue.";
-                return;
-            }
-
-            const data = JSON.parse(val);
-            const server = data.server;
-            const category = data.category;
-            window.currentPCName = category;
-            
-            // FIND 'remote-access' CHANNEL ID
-            const channels = discordStructure[server][category];
-            let foundID = null;
-            let foundName = "";
-
-            const targetNames = ["remote-access", "𝕣𝕖𝕞𝕠𝕥𝕖-𝕒𝕔𝕔𝕖𝕤𝕤", "cmd", "terminal"];
-            
-            for (const [id, name] of Object.entries(channels)) {
-                if (targetNames.includes(name.toLowerCase())) {
-                    foundID = id;
-                    foundName = name;
-                    break;
-                }
-            }
-
-            if (foundID) {
-                window.currentTargetID = foundID;
-                dashboard.style.display = "grid"; 
-                status.innerText = `✅ Connected to: ${category} (via #${foundName})`;
-                status.style.color = "#22c55e";
-                activeName.innerText = `#${foundName}`;
-                addLog(`Connected to PC: ${category}`);
+            if (isRegisterMode) {
+                title.innerText = "📝 Register Account";
+                mainBtn.innerText = "Register";
+                switchBtn.innerText = "Back to Login";
+                repeatField.style.display = "block";
             } else {
-                dashboard.style.display = "none";
-                status.innerText = `❌ Error: Could not find 'remote-access' channel in '${category}'.`;
-                status.style.color = "#ef4444";
+                title.innerText = "🔒 Secure Login";
+                mainBtn.innerText = "Login";
+                switchBtn.innerText = "Switch to Register";
+                repeatField.style.display = "none";
             }
         };
 
-        // 3. LOGGING SYSTEM
-        const logsRef = query(ref(db, 'logs'), limitToLast(10));
-        
-        onValue(logsRef, (snapshot) => {
-            const list = document.getElementById('logList');
-            list.innerHTML = ""; 
-            if(snapshot.exists()) {
-                const data = snapshot.val();
-                Object.values(data).reverse().forEach(log => {
-                    const li = document.createElement('li');
-                    li.className = 'log-item';
-                    const timeStr = new Date(log.timestamp).toLocaleTimeString();
-                    li.innerHTML = `<span class="log-cmd">> ${log.message}</span><span class="log-time">${timeStr}</span>`;
-                    list.appendChild(li);
-                });
-            }
-        });
+        window.handleMainBtn = () => {
+            const e = document.getElementById('email').value;
+            const p = document.getElementById('password').value;
+            const p2 = document.getElementById('repeatPassword').value;
+            const err = document.getElementById('errorMsg');
 
-        function addLog(msg) {
-            push(ref(db, 'logs'), { message: msg, timestamp: Date.now() });
-        }
-
-        // 4. COMMANDS
-        window.cmd = function(type) {
-            if(!window.currentTargetID) return alert("No Target Selected!");
-            writeDB({ type: type, target_id: window.currentTargetID });
-            addLog(`[${window.currentPCName}] Executed: ${type}`);
-        };
-
-        window.confirmAction = function(type) {
-            if(confirm("Confirm dangerous action?")) cmd(type);
-        };
-        
-        window.askTTS = function() {
-            const t = prompt("Text:");
-            if(t) {
-                writeDB({type:'tts', text:t, target_id: window.currentTargetID});
-                addLog(`[${window.currentPCName}] TTS: "${t}"`);
+            if (isRegisterMode) {
+                // REGISTER LOGIC
+                if (p !== p2) {
+                    err.innerText = "Passwords do not match!";
+                    return;
+                }
+                createUserWithEmailAndPassword(auth, e, p)
+                    .then(cred => alert("Registered! UID: " + cred.user.uid))
+                    .catch(e => err.innerText = e.message);
+            } else {
+                // LOGIN LOGIC
+                signInWithEmailAndPassword(auth, e, p)
+                    .catch(e => err.innerText = e.message);
             }
         };
 
-        window.askURL = function() {
-            const u = prompt("URL:");
-            if(u) {
-                writeDB({type:'open_url', url:u, target_id: window.currentTargetID});
-                addLog(`[${window.currentPCName}] Open URL`);
-            }
-        };
-
-        window.askMsgBox = function() {
-            const t = prompt("Message:");
-            if(t) {
-                writeDB({type:'msgbox', text:t, target_id: window.currentTargetID});
-                addLog(`[${window.currentPCName}] MsgBox Sent`);
-            }
-        };
-
-        window.setVolume = function(val) {
-            if(!window.currentTargetID) return;
-            writeDB({type:'volume', value:val, target_id: window.currentTargetID});
-        };
-
-        function writeDB(data) {
-            data.timestamp = Date.now();
-            set(ref(db, 'queue/pending'), data);
-        };
-        window.askBlockURL = function() {
-            const d = prompt("Domain to block (e.g. facebook.com):");
-            if(d) writeDB({type:'block_url', domain:d, target_id: window.currentTargetID});
-        };
-
-        window.askUnblockURL = function() {
-            const d = prompt("Domain to unblock:");
-            if(d) writeDB({type:'unblock_url', domain:d, target_id: window.currentTargetID});
-        };
-
-        window.askBlacklist = function() {
-            const n = prompt("Process to kill (e.g. notepad.exe):");
-            if(n) writeDB({type:'blacklist', name:n, target_id: window.currentTargetID});
-        };
-
-        window.toggleInput = function(block) {
-            const type = block ? 'disable_input' : 'enable_input';
-            writeDB({type: type, target_id: window.currentTargetID});
-        };
-        window.askWhitelist = function() {
-         const n = prompt("Process to restore (e.g. notepad.exe):");
-            if(n) {
-                writeDB({type:'whitelist', name:n, target_id: window.currentTargetID});
-                addLog(`Whitelisted: ${n}`);
-            }
-        };
-
+        window.logout = () => signOut(auth);
     </script>
 </body>
 </html>
