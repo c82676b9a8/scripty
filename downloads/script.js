@@ -170,134 +170,100 @@ window.addEventListener("DOMContentLoaded", () => {
     });
 
     // --- Admin Panel Functions ---
-        // --- Admin Panel Functions (NEW v2.0) ---
     function initAdminPanel() {
-        console.log("Admin Panel Initialized (Full Mode)");
-        
-        // Elements
-        const adminOverlay = document.getElementById('admin-overlay');
-        const modal = document.getElementById("auth-modal");
-        
-        // Show the full screen overlay
-        if(adminOverlay) {
-            adminOverlay.classList.remove('hidden');
-        }
-        
-        // Close existing login modal if open
-        if(modal) modal.style.display = "none";
-
-        // Start systems
+        console.log("Admin Panel Initialized");
         checkWebhooks();
-        startRealLogs();
-        
-        // Simulate live user count changes
-        setInterval(() => {
-            const el = document.getElementById('stat-users');
-            if(el) {
-                let current = parseInt(el.innerText);
-                let change = Math.floor(Math.random() * 5) - 2; 
-                el.innerText = current + change;
-            }
-        }, 5000);
-    }
-
-    // Close Admin Panel Logic
-    const closeAdminBtn = document.getElementById('close-admin-btn');
-    if(closeAdminBtn) {
-        closeAdminBtn.addEventListener('click', () => {
-            document.getElementById('admin-overlay').classList.add('hidden');
-        });
+        startFakeLogs();
     }
 
     async function checkWebhooks() {
         const listContainer = document.getElementById("webhook-list");
         if (!listContainer) return;
         
-        listContainer.innerHTML = '<div style="color:#888; padding:10px;">Scanning network endpoints...</div>';
+        listContainer.innerHTML = ""; // Clear loading text
 
-        let html = '';
-        
         for (const hook of DISCORD_WEBHOOKS) {
-            // We simulate a check. Real checks often fail due to CORS without a backend proxy.
-            // We assume ONLINE if the URL is valid to prevent false errors in the UI.
-            const isOnline = true; 
+            const item = document.createElement("div");
+            item.className = "webhook-item";
             
-            html += `
-            <div class="webhook-row">
+            // Default to "Checking..."
+            item.innerHTML = `
                 <span class="webhook-name">${hook.name}</span>
-                <span class="webhook-status-badge ${isOnline ? 'active' : ''}">
-                    ${isOnline ? 'ONLINE' : 'OFFLINE'}
-                </span>
-            </div>`;
-        }
-        
-        // Artificial delay to look like it's scanning
-        setTimeout(() => {
-            listContainer.innerHTML = html;
-        }, 800);
-    }
-
-    function startRealLogs() {
-        const terminal = document.getElementById("real-logs-terminal");
-        if (!terminal) return;
-
-        terminal.innerHTML = ""; // Clear
-
-        const actions = [
-            { text: "User login successful", type: "success" },
-            { text: "Failed login attempt (Wrong Password)", type: "error" },
-            { text: "GET /api/v1/status", type: "normal" },
-            { text: "File Download Initiated [CS2_External.exe]", type: "success" },
-            { text: "Webhook Triggered: IP Log", type: "normal" },
-            { text: "Suspicious activity detected (Anti-VM)", type: "error" },
-            { text: "New user registered", type: "success" },
-            { text: "Database sync complete", type: "normal" }
-        ];
-
-        function addLog() {
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString('en-GB', { hour12: false });
-            // Random IP
-            const ip = `${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*10)}.${Math.floor(Math.random()*255)}`;
-            // Random action
-            const action = actions[Math.floor(Math.random() * actions.length)];
-
-            const logLine = document.createElement("div");
-            logLine.className = "log-entry";
-            logLine.innerHTML = `
-                <span class="log-time">[${timeStr}]</span>
-                <span class="log-ip">${ip}</span>
-                <span class="log-action ${action.type}">${action.text}</span>
+                <div class="status-indicator">
+                    <span class="dot orange"></span> CHECKING
+                </div>
             `;
+            listContainer.appendChild(item);
 
-            terminal.appendChild(logLine);
-            terminal.scrollTop = terminal.scrollHeight; // Auto scroll
-
-            // Limit history
-            if(terminal.children.length > 50) {
-                terminal.removeChild(terminal.firstChild);
+            // Check the webhook
+            try {
+                // 'no-cors' mode is used here to prevent strict CORS errors in browser console,
+                // but it means we can't read the status perfectly (result is 'opaque').
+                // However, if the fetch succeeds without throwing, the endpoint is likely reachable.
+                // For a true status check, you'd typically need a backend proxy.
+                // We'll try a direct fetch first.
+                const response = await fetch(hook.url);
+                const statusDiv = item.querySelector(".status-indicator");
+                
+                if (response.ok) {
+                    statusDiv.innerHTML = `<span class="dot green"></span> ONLINE`;
+                } else {
+                    statusDiv.innerHTML = `<span class="dot red"></span> OFFLINE (${response.status})`;
+                }
+            } catch (error) {
+                const statusDiv = item.querySelector(".status-indicator");
+                // Because browsers block cross-origin requests to Discord, 
+                // we often end up here even if the hook is valid.
+                // We'll mark it red for "Network/CORS Error".
+                statusDiv.innerHTML = `<span class="dot red"></span> NET-ERR`;
+                console.warn(`Webhook check failed for ${hook.name}:`, error);
             }
         }
-
-        // Loop with random intervals for realism
-        function scheduleNext() {
-            addLog();
-            setTimeout(scheduleNext, Math.random() * 2500 + 500);
-        }
-        
-        // Start
-        for(let i=0; i<5; i++) addLog(); // Pre-fill a few
-        scheduleNext();
     }
 
-    // --- Particles (PRESERVED) ---
+    function startFakeLogs() {
+        const logBox = document.getElementById("system-logs");
+        if (!logBox) return;
+        
+        // Prevent duplicate intervals if function runs twice
+        if (window.logInterval) clearInterval(window.logInterval);
+
+        const messages = [
+            "Scanning integrity...",
+            "User database synced.",
+            "Checking update server...",
+            "Authorized access detected.",
+            "Secure connection established.",
+            "Packet trace complete.",
+            "Webhook latency: 24ms",
+            "Encryption keys rotated."
+        ];
+
+        window.logInterval = setInterval(() => {
+            const msg = messages[Math.floor(Math.random() * messages.length)];
+            const time = new Date().toLocaleTimeString();
+            const line = document.createElement("span");
+            line.className = "log-line";
+            line.innerText = `[${time}] > ${msg}`;
+            
+            logBox.appendChild(line);
+            logBox.scrollTop = logBox.scrollHeight; // Auto scroll
+            
+            // Keep log short
+            if (logBox.children.length > 15) {
+                logBox.removeChild(logBox.firstChild);
+            }
+        }, 2500);
+    }
+
+    // --- Particles ---
     const canvas = document.getElementById("particles");
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     const particles = [];
-    const density = 22000; 
+    const density = 22000; // higher = fewer particles
 
     function resize() {
         canvas.width = window.innerWidth;
@@ -343,11 +309,7 @@ window.addEventListener("DOMContentLoaded", () => {
     window.addEventListener("resize", () => {
         resize();
         spawn();
-        if (window.innerWidth > 768) {
-            const navLinks = document.getElementById("navLinks");
-            if(navLinks) navLinks.classList.remove("active");
-        }
-        const hamburger = document.getElementById("hamburgerBtn");
-        if(hamburger) hamburger.setAttribute("aria-expanded", "false");
+        if (window.innerWidth > 768) navLinks?.classList.remove("active");
+        hamburger?.setAttribute("aria-expanded", "false");
     });
 });
