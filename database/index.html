@@ -25,7 +25,6 @@
         .hidden { display: none !important; }
         .forgot-link { display: block; text-align: right; font-size: 0.75rem; color: #666; margin-top: 5px; cursor: pointer; text-decoration: underline; }
         
-        /* Modal */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 999; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
         .modal-box { background: #111; padding: 25px; border: 1px solid #333; border-radius: 10px; width: 300px; text-align: center; box-shadow: 0 0 30px rgba(255, 51, 51, 0.2); }
     </style>
@@ -38,9 +37,11 @@
         <!-- AUTH -->
         <div id="auth-section">
             <h2 id="auth-title">Login</h2>
-            <input type="email" id="email" placeholder="Email Address"> <div style="height:10px"></div>
+            <input type="email" id="email" placeholder="Email Address">
+            <div style="height:10px"></div>
             <input type="password" id="password" placeholder="Password">
-            <span class="forgot-link" onclick="openResetModal()">Reset Password?</span> <div style="height:10px"></div>
+            <span class="forgot-link" onclick="openResetModal()">Reset Password?</span>
+            <div style="height:10px"></div>
             <input type="password" id="confirm-password" placeholder="Confirm Password" class="hidden">
             <button onclick="handleAuth()" id="auth-btn">ENTER SYSTEM</button>
             <button class="btn-secondary" onclick="toggleAuthMode()" id="toggle-btn">Need an account? Register</button>
@@ -59,16 +60,28 @@
             <input type="text" id="audio" placeholder="https://...">
             <span class="label">Colors</span>
             <div class="color-grid">
-                <div class="color-input"><input type="color" id="accent-color" value="#ff0000"><span class="color-label">Accent</span></div>
-                <div class="color-input"><input type="color" id="text-color" value="#ffffff"><span class="color-label">Text</span></div>
+                <div class="color-input">
+                    <input type="color" id="accent-color" value="#ff0000">
+                    <span class="color-label">Accent</span>
+                </div>
+                <div class="color-input">
+                    <input type="color" id="text-color" value="#ffffff">
+                    <span class="color-label">Text</span>
+                </div>
             </div>
             <span class="label">Socials (Name|URL, Name|URL)</span>
             <input type="text" id="socials" placeholder="Discord|https://discord.gg/...">
             
             <button onclick="saveAndRequest()">SAVE & UPDATE</button>
-            
-            <!-- THE VIEW BUTTON -->
-            <button class="btn-secondary" onclick="window.open('/' + document.getElementById('username').value, '_blank')">View My Page ↗</button>
+
+            <!-- VIEW PAGE: /p/username -->
+            <button
+              class="btn-secondary"
+              onclick="window.open('/p/' + document.getElementById('username').value.toLowerCase().trim(), '_blank')"
+            >
+              View My Page ↗
+            </button>
+
             <button class="btn-secondary" onclick="logout()">LOGOUT</button>
         </div>
     </div>
@@ -78,7 +91,7 @@
         <div class="modal-box">
             <h3 style="color:#fff; margin-top:0;">Reset Password</h3>
             <input type="email" id="reset-email" placeholder="Email Address">
-            <button onclick="sendResetEmail()">Send Link</button>/database/
+            <button onclick="sendResetEmail()">Send Link</button>
             <button class="btn-secondary" onclick="closeResetModal()">Cancel</button>
         </div>
     </div>
@@ -88,7 +101,6 @@
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // --- PASTE FIREBASE CONFIG HERE ---
         const firebaseConfig = {
             apiKey: "AIzaSyCKf_8-NFJcO7xmFcwlEFHAgl1LTTEPuQw",
             authDomain: "guns-lol-522c3.firebaseapp.com",
@@ -105,12 +117,21 @@
         let isRegistering = false, currentUser = null;
 
         window.handleAuth = async () => {
-            const email = document.getElementById('email').value, pass = document.getElementById('password').value;
-            if(isRegistering && pass !== document.getElementById('confirm-password').value) return alert("Passwords don't match");
+            const email = document.getElementById('email').value;
+            const pass = document.getElementById('password').value;
+            if (isRegistering && pass !== document.getElementById('confirm-password').value) {
+                alert("Passwords don't match");
+                return;
+            }
             try {
-                if(isRegistering) await createUserWithEmailAndPassword(auth, email, pass);
-                else await signInWithEmailAndPassword(auth, email, pass);
-            } catch(e) { alert(e.message); }
+                if (isRegistering) {
+                    await createUserWithEmailAndPassword(auth, email, pass);
+                } else {
+                    await signInWithEmailAndPassword(auth, email, pass);
+                }
+            } catch (e) {
+                alert(e.message);
+            }
         };
 
         window.toggleAuthMode = () => {
@@ -123,20 +144,33 @@
         };
 
         window.logout = () => signOut(auth);
+
         window.openResetModal = () => document.getElementById('reset-modal').classList.remove('hidden');
         window.closeResetModal = () => document.getElementById('reset-modal').classList.add('hidden');
-        window.sendResetEmail = async () => { try { await sendPasswordResetEmail(auth, document.getElementById('reset-email').value); alert("Link Sent!"); window.closeResetModal(); } catch(e){ alert(e.message); }};
+
+        window.sendResetEmail = async () => {
+            const email = document.getElementById('reset-email').value;
+            try {
+                await sendPasswordResetEmail(auth, email);
+                alert("Reset link sent");
+                window.closeResetModal();
+            } catch (e) {
+                alert(e.message);
+            }
+        };
 
         onAuthStateChanged(auth, async (user) => {
-            if(user) {
+            if (user) {
                 currentUser = user;
                 document.getElementById('auth-section').classList.add('hidden');
                 document.getElementById('editor-section').classList.remove('hidden');
                 msg.innerText = `User: ${user.email}`;
                 const snap = await getDoc(doc(db, "profiles", user.uid));
-                if(snap.exists()) {
+                if (snap.exists()) {
                     const d = snap.data();
-                    ['username','tagline','pfp','audio','socials'].forEach(k => document.getElementById(k).value = d[k] || "");
+                    ['username','tagline','pfp','audio','socials'].forEach(k => {
+                        document.getElementById(k).value = d[k] || "";
+                    });
                     document.getElementById('accent-color').value = d.accent || "#ff0000";
                     document.getElementById('text-color').value = d.textColor || "#ffffff";
                 }
@@ -149,27 +183,41 @@
         });
 
         window.saveAndRequest = async () => {
-            if(!currentUser) return;
+            if (!currentUser) return;
+            const username = document.getElementById('username').value.toLowerCase().trim();
+            if (!username) {
+                alert("Username needed!");
+                return;
+            }
             const data = {
-                username: document.getElementById('username').value.toLowerCase().trim(),
+                username,
                 tagline: document.getElementById('tagline').value,
                 pfp: document.getElementById('pfp').value,
                 audio: document.getElementById('audio').value,
                 socials: document.getElementById('socials').value,
                 accent: document.getElementById('accent-color').value,
                 textColor: document.getElementById('text-color').value,
-                uid: currentUser.uid, email: currentUser.email
+                uid: currentUser.uid,
+                email: currentUser.email
             };
-            if(!data.username) return alert("Username needed!");
             try {
                 await setDoc(doc(db, "profiles", currentUser.uid), data);
-                // PASTE WEBHOOK HERE
                 await fetch("YOUR_DISCORD_WEBHOOK_URL_HERE", {
-                    method: "POST", headers:{"Content-Type":"application/json"},
-                    body: JSON.stringify({embeds:[{title:"📝 Update", color:16711680, description:`User **${data.username}** saved.`}]})
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        embeds: [{
+                            title: "📝 Profile Update",
+                            color: 16711680,
+                            description: `User **${data.username}** saved their profile.`
+                        }]
+                    })
                 });
                 alert("Saved!");
-            } catch(e) { console.error(e); alert("Error saving"); }
+            } catch (e) {
+                console.error(e);
+                alert("Error saving");
+            }
         };
     </script>
 </body>

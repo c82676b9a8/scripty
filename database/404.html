@@ -8,16 +8,89 @@
     <style>
         :root { --accent: #ff0000; --text-main: #ffffff; }
         * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
-        body { background-color: #000; color: var(--text-main); font-family: 'JetBrains Mono', monospace; height: 100vh; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.5s; overflow: hidden; }
-        .bg-animation { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: radial-gradient(circle at center, rgba(20,0,0,0.5) 0%, #000 100%); }
-        .stars { width: 2px; height: 2px; background: transparent; box-shadow: 125px 236px #FFF, 784px 1253px var(--accent), 345px 765px #FFF, 120px 800px var(--accent); animation: animStar 50s linear infinite; }
-        #main-card { display: none; width: 350px; padding: 40px 20px; background: rgba(10, 10, 10, 0.75); border: 1px solid rgba(255, 255, 255, 0.1); border-bottom: 3px solid var(--accent); border-radius: 15px; backdrop-filter: blur(15px); text-align: center; box-shadow: 0 0 50px rgba(0,0,0,0.5); animation: fadeIn 1.5s ease; }
-        .pfp { width: 100px; height: 100px; border-radius: 50%; border: 2px solid var(--accent); margin: 0 auto 15px; background-size: cover; background-position: center; box-shadow: 0 0 25px var(--accent); }
-        h1 { font-size: 1.8rem; margin-bottom: 5px; text-shadow: 0 0 15px var(--accent); }
-        .tagline { font-size: 0.8rem; color: #aaa; margin-bottom: 25px; letter-spacing: 1px; }
-        .social-link { display: block; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); padding: 12px; border-radius: 6px; color: #ccc; text-decoration: none; transition: all 0.3s; margin-bottom: 10px; font-size: 0.9rem; }
-        .social-link:hover { background: rgba(255, 255, 255, 0.08); border-color: var(--accent); color: var(--text-main); box-shadow: 0 0 15px var(--accent); transform: translateY(-2px); }
-        #overlay { position:fixed; top:0; left:0; width:100%; height:100%; z-index:9999; display:flex; align-items:center; justify-content:center; cursor:pointer; }
+        body {
+            background-color: #000;
+            color: var(--text-main);
+            font-family: 'JetBrains Mono', monospace;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.5s;
+            overflow: hidden;
+        }
+        .bg-animation {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background: radial-gradient(circle at center, rgba(20,0,0,0.5) 0%, #000 100%);
+        }
+        .stars {
+            width: 2px; height: 2px; background: transparent;
+            box-shadow: 125px 236px #FFF, 784px 1253px var(--accent), 345px 765px #FFF, 120px 800px var(--accent);
+            animation: animStar 50s linear infinite;
+        }
+
+        #main-card {
+            display: none; /* IMPORTANT: hidden until click */
+            width: 350px;
+            padding: 40px 20px;
+            background: rgba(10, 10, 10, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 3px solid var(--accent);
+            border-radius: 15px;
+            backdrop-filter: blur(15px);
+            text-align: center;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            animation: fadeIn 1.5s ease;
+        }
+        .pfp {
+            width: 100px; height: 100px; border-radius: 50%;
+            border: 2px solid var(--accent);
+            margin: 0 auto 15px;
+            background-size: cover; background-position: center;
+            box-shadow: 0 0 25px var(--accent);
+        }
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+            text-shadow: 0 0 15px var(--accent);
+        }
+        .tagline {
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-bottom: 25px;
+            letter-spacing: 1px;
+        }
+        .social-link {
+            display: block;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 12px;
+            border-radius: 6px;
+            color: #ccc;
+            text-decoration: none;
+            transition: all 0.3s;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+        .social-link:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--accent);
+            color: var(--text-main);
+            box-shadow: 0 0 15px var(--accent);
+            transform: translateY(-2px);
+        }
+        #overlay {
+            position:fixed; top:0; left:0; width:100%; height:100%;
+            z-index:9999; display:flex; align-items:center; justify-content:center;
+            cursor:pointer; background:rgba(0,0,0,0.8);
+        }
+        #error-msg {
+            display:none;
+            text-align:center;
+            color:#ff3333;
+        }
+
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes animStar { from { transform: translateY(0px); } to { transform: translateY(-2000px); } }
     </style>
@@ -25,20 +98,27 @@
 <body>
     <div class="bg-animation"><div class="stars"></div></div>
     <audio id="bg-music" loop></audio>
+
     <div id="main-card">
         <div id="pfp" class="pfp"></div>
         <h1 id="username">...</h1>
         <div id="tagline" class="tagline"></div>
         <div id="socials-container"></div>
     </div>
-    <div id="overlay"><div style="font-size:1.2rem; text-shadow:0 0 10px rgba(255,255,255,0.5);">[ click to enter ]</div></div>
-    <div id="error-msg" style="display:none; text-align:center; color:#ff3333;"><h1>404</h1><p>User Not Found</p></div>
+
+    <div id="overlay">
+        <div style="font-size:1.2rem; text-shadow:0 0 10px rgba(255,255,255,0.5);">[ click to enter ]</div>
+    </div>
+
+    <div id="error-msg">
+        <h1>404</h1>
+        <p>User Not Found</p>
+    </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // --- PASTE FIREBASE CONFIG HERE ---
         const firebaseConfig = {
             apiKey: "AIzaSyCKf_8-NFJcO7xmFcwlEFHAgl1LTTEPuQw",
             authDomain: "guns-lol-522c3.firebaseapp.com",
@@ -50,34 +130,74 @@
         
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        const username = window.location.pathname.replace(/^\/|\/$/g, '').toLowerCase();
+
+        // /p/username
+        const path = window.location.pathname;      // e.g. /p/scripty
+        const username = path.replace(/^\/p\//, '').replace(/\/$/, '').toLowerCase();
 
         async function loadProfile() {
-            if(!username) { document.body.style.opacity=1; document.getElementById('error-msg').style.display='block'; document.getElementById('overlay').style.display='none'; return; }
-            
+            if (!username) {
+                showError();
+                return;
+            }
+
             const q = query(collection(db, "profiles"), where("username", "==", username));
             const snapshot = await getDocs(q);
 
-            if(snapshot.empty) {
-                document.getElementById('error-msg').style.display='block'; document.getElementById('overlay').style.display='none'; document.body.style.opacity=1;
-            } else {
-                const d = snapshot.docs[0].data();
-                document.title = d.username;
-                document.getElementById('username').innerText = d.username;
-                document.getElementById('tagline').innerText = d.tagline;
-                document.getElementById('pfp').style.backgroundImage = `url('${d.pfp}')`;
-                document.documentElement.style.setProperty('--accent', d.accent || '#ff0000');
-                document.documentElement.style.setProperty('--text-main', d.textColor || '#ffffff');
-                if(d.audio) document.getElementById('bg-music').src = d.audio;
-                
-                const c = document.getElementById('socials-container');
-                if(d.socials) d.socials.split(",").forEach(s=>{ if(s.includes("|")){ const[n,u]=s.split("|"); const a=document.createElement('a'); a.href=u.trim(); a.innerText=n.trim(); a.className='social-link'; a.target="_blank"; c.appendChild(a); }});
-                
-                document.getElementById('main-card').style.display = 'block';
-                document.getElementById('overlay').addEventListener('click', ()=>{ document.getElementById('overlay').style.display='none'; document.getElementById('bg-music').play().catch(()=>{}); });
-                document.body.style.opacity = 1;
+            if (snapshot.empty) {
+                showError();
+                return;
             }
+
+            const d = snapshot.docs[0].data();
+            document.title = d.username;
+            document.getElementById('username').innerText = d.username;
+            document.getElementById('tagline').innerText = d.tagline || "";
+            document.getElementById('pfp').style.backgroundImage = `url('${d.pfp}')`;
+
+            document.documentElement.style.setProperty('--accent', d.accent || '#ff0000');
+            document.documentElement.style.setProperty('--text-main', d.textColor || '#ffffff');
+
+            const music = document.getElementById('bg-music');
+            if (d.audio) music.src = d.audio;
+            music.volume = 0.3;
+
+            const c = document.getElementById('socials-container');
+            if (d.socials) {
+                d.socials.split(",").forEach(s => {
+                    if (!s.includes("|")) return;
+                    const [name, url] = s.split("|");
+                    const a = document.createElement('a');
+                    a.href = url.trim();
+                    a.innerText = name.trim();
+                    a.className = 'social-link';
+                    a.target = "_blank";
+                    c.appendChild(a);
+                });
+            }
+
+            const overlay = document.getElementById('overlay');
+            const mainCard = document.getElementById('main-card');
+
+            document.body.style.opacity = 1;
+
+            overlay.addEventListener('click', () => {
+                overlay.style.opacity = '0';
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                    mainCard.style.display = 'block';
+                    music.play().catch(() => {});
+                }, 300);
+            });
         }
+
+        function showError() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('main-card').style.display = 'none';
+            document.getElementById('error-msg').style.display = 'block';
+            document.body.style.opacity = 1;
+        }
+
         loadProfile();
     </script>
 </body>
