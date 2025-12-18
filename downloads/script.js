@@ -21,7 +21,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-const ADMIN_UID = "YOUR_ACTUAL_ADMIN_UID_STRING_HERE";
+const ADMIN_UID = "geFvGxBvYsUEBrT0ZPKBXRZ9gOr1";
 
 window.addEventListener("DOMContentLoaded", () => {
   // --- Hamburger ---
