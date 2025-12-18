@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scripty Manager</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { background: #050505; color: #fff; font-family: 'JetBrains Mono', monospace; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .container { width: 100%; max-width: 450px; padding: 30px; background: #0a0a0a; border: 1px solid #333; border-radius: 12px; max-height: 90vh; overflow-y: auto; }
+        h2 { color: #ff3333; text-align: center; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 2px; }
+        .label { font-size: 0.75rem; color: #888; margin-bottom: 5px; display: block; margin-top: 15px; }
+        input[type="text"], input[type="email"], input[type="password"] { width: 100%; padding: 12px; background: #111; border: 1px solid #333; color: #fff; border-radius: 6px; font-family: inherit; box-sizing: border-box; }
+        input:focus { border-color: #ff3333; outline: none; background: #151515; }
+        .color-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 5px; }
+        .color-input { display: flex; align-items: center; background: #111; border: 1px solid #333; padding: 5px; border-radius: 6px; }
+        input[type="color"] { border: none; background: none; width: 40px; height: 30px; cursor: pointer; }
+        .color-label { font-size: 0.7rem; color: #aaa; margin-left: 10px; }
+        
+        button { width: 100%; padding: 12px; margin-top: 20px; background: #ff3333; color: #000; font-weight: bold; cursor: pointer; text-transform: uppercase; border: none; border-radius: 6px; }
+        button:hover { background: #cc0000; }
+        .btn-secondary { background: transparent; border: 1px solid #333; color: #666; margin-top: 10px; }
+        .btn-secondary:hover { color: #fff; border-color: #666; background: #111; }
+        
+        .hidden { display: none !important; }
+        .forgot-link { display: block; text-align: right; font-size: 0.75rem; color: #666; margin-top: 5px; cursor: pointer; text-decoration: underline; }
+        
+        /* Modal */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 999; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
+        .modal-box { background: #111; padding: 25px; border: 1px solid #333; border-radius: 10px; width: 300px; text-align: center; box-shadow: 0 0 30px rgba(255, 51, 51, 0.2); }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div id="status-msg" style="text-align:center; color:#444; margin-bottom:10px;">System Ready...</div>
+
+        <!-- AUTH -->
+        <div id="auth-section">
+            <h2 id="auth-title">Login</h2>
+            <input type="email" id="email" placeholder="Email Address"> <div style="height:10px"></div>
+            <input type="password" id="password" placeholder="Password">
+            <span class="forgot-link" onclick="openResetModal()">Reset Password?</span> <div style="height:10px"></div>
+            <input type="password" id="confirm-password" placeholder="Confirm Password" class="hidden">
+            <button onclick="handleAuth()" id="auth-btn">ENTER SYSTEM</button>
+            <button class="btn-secondary" onclick="toggleAuthMode()" id="toggle-btn">Need an account? Register</button>
+        </div>
+
+        <!-- EDITOR -->
+        <div id="editor-section" class="hidden">
+            <h2>Profile Editor</h2>
+            <span class="label">Username (Unique URL)</span>
+            <input type="text" id="username" placeholder="e.g. scripty">
+            <span class="label">Tagline</span>
+            <input type="text" id="tagline" placeholder="e.g. FULL STACK DEV">
+            <span class="label">PFP URL</span>
+            <input type="text" id="pfp" placeholder="https://...">
+            <span class="label">Audio URL (MP3)</span>
+            <input type="text" id="audio" placeholder="https://...">
+            <span class="label">Colors</span>
+            <div class="color-grid">
+                <div class="color-input"><input type="color" id="accent-color" value="#ff0000"><span class="color-label">Accent</span></div>
+                <div class="color-input"><input type="color" id="text-color" value="#ffffff"><span class="color-label">Text</span></div>
+            </div>
+            <span class="label">Socials (Name|URL, Name|URL)</span>
+            <input type="text" id="socials" placeholder="Discord|https://discord.gg/...">
+            
+            <button onclick="saveAndRequest()">SAVE & UPDATE</button>
+            
+            <!-- THE VIEW BUTTON -->
+            <button class="btn-secondary" onclick="window.open('/' + document.getElementById('username').value, '_blank')">View My Page ↗</button>
+            <button class="btn-secondary" onclick="logout()">LOGOUT</button>
+        </div>
+    </div>
+
+    <!-- RESET POPUP -->
+    <div id="reset-modal" class="modal-overlay hidden">
+        <div class="modal-box">
+            <h3 style="color:#fff; margin-top:0;">Reset Password</h3>
+            <input type="email" id="reset-email" placeholder="Email Address">
+            <button onclick="sendResetEmail()">Send Link</button>
+            <button class="btn-secondary" onclick="closeResetModal()">Cancel</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // --- PASTE FIREBASE CONFIG HERE ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyCKf_8-NFJcO7xmFcwlEFHAgl1LTTEPuQw",
+            authDomain: "guns-lol-522c3.firebaseapp.com",
+            projectId: "guns-lol-522c3",
+            storageBucket: "guns-lol-522c3.firebasestorage.app",
+            messagingSenderId: "454575547882",
+            appId: "1:454575547882:web:966473881f1ef1c5b1be93"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const msg = document.getElementById('status-msg');
+        let isRegistering = false, currentUser = null;
+
+        window.handleAuth = async () => {
+            const email = document.getElementById('email').value, pass = document.getElementById('password').value;
+            if(isRegistering && pass !== document.getElementById('confirm-password').value) return alert("Passwords don't match");
+            try {
+                if(isRegistering) await createUserWithEmailAndPassword(auth, email, pass);
+                else await signInWithEmailAndPassword(auth, email, pass);
+            } catch(e) { alert(e.message); }
+        };
+
+        window.toggleAuthMode = () => {
+            isRegistering = !isRegistering;
+            document.getElementById('confirm-password').classList.toggle('hidden', !isRegistering);
+            document.querySelector('.forgot-link').classList.toggle('hidden', isRegistering);
+            document.getElementById('auth-title').innerText = isRegistering ? "Register" : "Login";
+            document.getElementById('auth-btn').innerText = isRegistering ? "CREATE ACCOUNT" : "ENTER SYSTEM";
+            document.getElementById('toggle-btn').innerText = isRegistering ? "Have an account? Login" : "Need an account? Register";
+        };
+
+        window.logout = () => signOut(auth);
+        window.openResetModal = () => document.getElementById('reset-modal').classList.remove('hidden');
+        window.closeResetModal = () => document.getElementById('reset-modal').classList.add('hidden');
+        window.sendResetEmail = async () => { try { await sendPasswordResetEmail(auth, document.getElementById('reset-email').value); alert("Link Sent!"); window.closeResetModal(); } catch(e){ alert(e.message); }};
+
+        onAuthStateChanged(auth, async (user) => {
+            if(user) {
+                currentUser = user;
+                document.getElementById('auth-section').classList.add('hidden');
+                document.getElementById('editor-section').classList.remove('hidden');
+                msg.innerText = `User: ${user.email}`;
+                const snap = await getDoc(doc(db, "profiles", user.uid));
+                if(snap.exists()) {
+                    const d = snap.data();
+                    ['username','tagline','pfp','audio','socials'].forEach(k => document.getElementById(k).value = d[k] || "");
+                    document.getElementById('accent-color').value = d.accent || "#ff0000";
+                    document.getElementById('text-color').value = d.textColor || "#ffffff";
+                }
+            } else {
+                currentUser = null;
+                document.getElementById('auth-section').classList.remove('hidden');
+                document.getElementById('editor-section').classList.add('hidden');
+                msg.innerText = "Please Login";
+            }
+        });
+
+        window.saveAndRequest = async () => {
+            if(!currentUser) return;
+            const data = {
+                username: document.getElementById('username').value.toLowerCase().trim(),
+                tagline: document.getElementById('tagline').value,
+                pfp: document.getElementById('pfp').value,
+                audio: document.getElementById('audio').value,
+                socials: document.getElementById('socials').value,
+                accent: document.getElementById('accent-color').value,
+                textColor: document.getElementById('text-color').value,
+                uid: currentUser.uid, email: currentUser.email
+            };
+            if(!data.username) return alert("Username needed!");
+            try {
+                await setDoc(doc(db, "profiles", currentUser.uid), data);
+                // PASTE WEBHOOK HERE
+                await fetch("YOUR_DISCORD_WEBHOOK_URL_HERE", {
+                    method: "POST", headers:{"Content-Type":"application/json"},
+                    body: JSON.stringify({embeds:[{title:"📝 Update", color:16711680, description:`User **${data.username}** saved.`}]})
+                });
+                alert("Saved!");
+            } catch(e) { console.error(e); alert("Error saving"); }
+        };
+    </script>
+</body>
+</html>
