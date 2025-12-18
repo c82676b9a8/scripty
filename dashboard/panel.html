@@ -10,15 +10,25 @@
         body { background-color: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
         h1 { background: linear-gradient(135deg, var(--accent), #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 2.5rem; margin-bottom: 2rem; text-transform: uppercase; }
         
-        /* AUTH BAR (New) */
+        /* AUTH BAR (Fixed to Top-Left) */
         .auth-bar {
-            width: 100%; max-width: 1200px; display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 20px; color: #94a3b8; font-size: 0.9rem;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            flex-direction: column; /* Stack them or row them */
+            gap: 10px;
+            z-index: 1000;
+            background: rgba(30, 41, 59, 0.8);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.1);
         }
-        .logout-btn { padding: 8px 16px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 8px; cursor: pointer; transition: 0.2s; }
-        .logout-btn:hover { background: rgba(255,255,255,0.2); }
+        .user-email { color: #94a3b8; font-size: 0.85rem; font-weight: bold; }
+        .logout-btn { padding: 6px 12px; background: rgba(239, 68, 68, 0.2); border: 1px solid var(--danger); color: #fca5a5; border-radius: 6px; cursor: pointer; transition: 0.2s; font-size: 0.8rem; }
+        .logout-btn:hover { background: var(--danger); color: white; }
 
-        .pc-selector { width: 100%; max-width: 600px; margin-bottom: 30px; background: var(--card); padding: 20px; border-radius: 12px; border: 1px solid var(--accent); text-align: center; }
+        .pc-selector { width: 100%; max-width: 600px; margin-bottom: 30px; background: var(--card); padding: 20px; border-radius: 12px; border: 1px solid var(--accent); text-align: center; margin-top: 40px; /* Added margin for header */ }
         .pc-selector select { width: 100%; padding: 15px; font-size: 1.1rem; background: #0f172a; color: white; border: 1px solid #334155; border-radius: 8px; margin-top: 10px; }
 
         /* Dashboard hidden until PC selected */
@@ -49,9 +59,9 @@
 </head>
 <body>
 
-    <!-- AUTH BAR (Shows who is logged in) -->
+    <!-- AUTH BAR (Top Left) -->
     <div class="auth-bar">
-        <span id="userDisplay">Logged in as: ...</span>
+        <span id="userDisplay" class="user-email">Checking...</span>
         <button class="logout-btn" onclick="logout()">Log Out</button>
     </div>
 
@@ -154,18 +164,16 @@
         const dbRef = ref(db);
 
         // --- SECURITY: ADMIN CHECK ---
-        const ADMIN_UID = "sJSL8EjvFhMpoiD4yaAThWDKsf32"; // <--- CHANGE THIS TO YOUR UID
+        const ADMIN_UID = "YOUR_ADMIN_UID_HERE"; // <--- CHANGE THIS TO YOUR UID
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                // If logged in, check if admin
                 if (user.uid !== ADMIN_UID) {
-                    window.location.href = "index.html"; // Kick non-admins
+                    window.location.href = "index.html"; 
                 } else {
-                    document.getElementById('userDisplay').innerText = `Logged in as: ${user.email}`;
+                    document.getElementById('userDisplay').innerText = user.email;
                 }
             } else {
-                // Not logged in at all
                 window.location.href = "index.html"; 
             }
         });
@@ -176,8 +184,7 @@
             });
         };
 
-        // --- REST OF YOUR CODE (UNCHANGED) ---
-
+        // --- REST OF YOUR CODE ---
         // GLOBAL VARIABLES
         window.currentTargetID = null; 
         window.currentPCName = "Unknown";
@@ -232,7 +239,6 @@
             const category = data.category;
             window.currentPCName = category;
             
-            // Re-fetch structure to be safe (or use global var if you prefer)
             get(child(dbRef, `discord_structure`)).then((snap) => {
                 const fullData = snap.val();
                 const struct = fullData.structure || fullData;
