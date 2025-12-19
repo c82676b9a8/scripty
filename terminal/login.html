@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCRIPTY C2 :: SECURE LOGIN</title>
+    <style>
+        :root {
+            --bg-term: #0a0a0a;
+            --text-term: #0eff00;
+            --glow: rgba(14, 255, 0, 0.3);
+            --font-term: 'Courier New', monospace;
+            --accent-red: #ff3333;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #000;
+            overflow: hidden;
+            font-family: var(--font-term);
+            color: var(--text-term);
+        }
+
+        /* Fullscreen background effect */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(14, 255, 0, 0.02) 0px,
+                    rgba(14, 255, 0, 0.02) 1px,
+                    transparent 1px,
+                    transparent 2px
+                );
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Login Container */
+        .login-container {
+            width: 400px;
+            background: linear-gradient(135deg, var(--bg-term) 0%, #0f0f0f 100%);
+            border: 2px solid #1a3a1a;
+            padding: 30px;
+            box-shadow: 
+                inset 0 0 20px rgba(0, 0, 0, 0.8),
+                0 0 50px rgba(0, 0, 0, 0.7),
+                0 0 40px var(--glow);
+            z-index: 10;
+            position: relative;
+            text-align: center;
+        }
+
+        /* Header */
+        .login-header {
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px var(--glow);
+            margin-bottom: 25px;
+            border-bottom: 1px solid #1a3a1a;
+            padding-bottom: 15px;
+        }
+
+        /* Input Fields */
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .input-group input {
+            width: 100%;
+            background: rgba(10, 10, 10, 0.5);
+            border: 1px solid #1a3a1a;
+            color: var(--text-term);
+            font-family: var(--font-term);
+            font-size: 1rem;
+            padding: 12px;
+            outline: none;
+            text-shadow: 0 0 3px var(--glow);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: var(--text-term);
+            box-shadow: 0 0 15px var(--glow);
+        }
+
+        /* Button */
+        #loginButton {
+            width: 100%;
+            padding: 15px;
+            background: transparent;
+            border: 2px solid var(--text-term);
+            color: var(--text-term);
+            font-family: var(--font-term);
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            text-shadow: 0 0 8px var(--glow);
+            transition: background 0.3s, color 0.3s;
+        }
+
+        #loginButton:hover {
+            background: var(--text-term);
+            color: #000;
+        }
+
+        /* Status Message */
+        #statusMessage {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            height: 20px;
+            color: var(--accent-red);
+            text-shadow: 0 0 8px rgba(255, 51, 51, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <div class="login-header">C2 Access Protocol</div>
+        
+        <div class="input-group">
+            <label for="email">Identity [Email]</label>
+            <input type="email" id="email" autocomplete="email" required>
+        </div>
+
+        <div class="input-group">
+            <label for="password">Passphrase</label>
+            <input type="password" id="password" autocomplete="current-password" required>
+        </div>
+
+        <button id="loginButton">Authenticate</button>
+        
+        <div id="statusMessage"></div>
+    </div>
+
+    <!-- Firebase Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        // Same config from your index.html
+        const firebaseConfig = {
+            apiKey: "AIzaSyBhG3jjUoP6F-MHIqYKP7TvCh4FQ_Rfcd0",
+            authDomain: "potkan-5132c.firebaseapp.com",
+            databaseURL: "https://potkan-5132c-default-rtdb.firebaseio.com/",
+            projectId: "potkan-5132c",
+            storageBucket: "potkan-5132c.firebasestorage.app",
+            messagingSenderId: "1.049909900706e+12",
+            appId: "1:1.049909900706e+12:web:f4d5b811a98760f0862efb"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // DOM Elements
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const loginButton = document.getElementById('loginButton');
+        const statusMessage = document.getElementById('statusMessage');
+
+        const handleLogin = () => {
+            const email = emailInput.value;
+            const password = passwordInput.value;
+            
+            if (!email || !password) {
+                statusMessage.textContent = "CREDENTIALS REQUIRED";
+                return;
+            }
+
+            statusMessage.textContent = "AUTHENTICATING...";
+            
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    // Success
+                    statusMessage.textContent = "ACCESS GRANTED";
+                    statusMessage.style.color = "var(--text-term)";
+                    statusMessage.style.textShadow = "0 0 8px var(--glow)";
+                    
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1000);
+                })
+                .catch((error) => {
+                    // Failure
+                    statusMessage.textContent = "ACCESS DENIED";
+                    console.error("Firebase Auth Error:", error.code, error.message);
+                });
+        };
+
+        loginButton.addEventListener('click', handleLogin);
+        passwordInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                handleLogin();
+            }
+        });
+    </script>
+
+</body>
+</html>

