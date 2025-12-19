@@ -244,7 +244,7 @@
         <h1>Scripty RAT <span style="font-size:1rem; opacity:0.7; font-weight:400;">C2 PANEL</span></h1>
         <div style="display:flex; align-items:center; gap:15px;">
             <span id="userDisplay" class="user-info">Authenticating...</span>
-            <button class="logout-btn" style="height:34px; width:auto;">LOGOUT</button>
+            <button class="logout-btn" onclick="logout()">LOGOUT</button>
         </div>
     </div>
 
@@ -366,7 +366,17 @@
             }
         });
 
-        window.logout = () => signOut(auth).then(() => window.location.href = "index.html");
+        window.logout = function() {
+            signOut(auth)
+                .then(() => {
+                    console.log("Signed out successfully");
+                    window.location.href = "index.html";
+                })
+                .catch((error) => {
+                    console.error("Sign Out Error", error);
+                    alert("Error logging out: " + error.message);
+                });
+        };
 
         window.currentTargetID = null;
         window.currentPCName = "Unknown";
