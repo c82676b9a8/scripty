@@ -353,10 +353,13 @@
         const auth = getAuth(app); 
         const db = getDatabase(app);
         const dbRef = ref(db);
-        const ADMIN_UID = "sJSL8EjvFhMpoiD4yaAThWDKsf32"; 
+        const ADMIN_UIDS = [
+            "Zp3AZxKLcLNy7MvEYc9zxqc5Fr82",
+            "sJSL8EjvFhMpoiD4yaAThWDKsf32"
+        ]; 
 
         onAuthStateChanged(auth, (user) => {
-            if (user && user.uid === ADMIN_UID) {
+            if (user && ADMIN_UIDS.includes(user.uid)) {
                 document.getElementById('userDisplay').innerText = user.email;
             } else {
                 window.location.href = "index.html";

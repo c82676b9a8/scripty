@@ -292,7 +292,10 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app); 
         const db = getDatabase(app);
-        const ADMIN_UID = "sJSL8EjvFhMpoiD4yaAThWDKsf32"; 
+        const ADMIN_UIDS = [
+            "Zp3AZxKLcLNy7MvEYc9zxqc5Fr82",
+            "sJSL8EjvFhMpoiD4yaAThWDKsf32"
+        ]; 
 
         // STATE
         let currentTargetID = null;
@@ -309,7 +312,7 @@
 
         // AUTH
         onAuthStateChanged(auth, (user) => {
-            if (user && user.uid === ADMIN_UID) {
+            if (user && ADMIN_UIDS.includes(user.uid)) {
                 overlay.style.display = "none";
                 statusEl.innerHTML = "⬤ ONLINE";
                 statusEl.classList.add("online");
