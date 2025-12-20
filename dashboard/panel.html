@@ -345,9 +345,16 @@
 
         <!-- LOGS -->
         <div class="logs-box">
-            <h4 style="margin-top:0; color:var(--text-muted); font-size:0.8rem; text-transform:uppercase;">Activity Log</h4>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px;">
+                <h4 style="margin:0; color:var(--text-muted); font-size:0.8rem; text-transform:uppercase;">Activity Log</h4>
+                <button onclick="clearLogs()" style="background: transparent; border: 1px solid #333; color: #888; padding: 2px 6px; font-size: 1.0rem; border-radius: 4px; cursor: pointer;">
+                    Clear logs
+                </button>
+            </div>
+
             <ul class="log-list" id="logList"></ul>
         </div>
+
 
     </div>
 
@@ -554,6 +561,16 @@
             const p = prompt("Decryption Password:");
             if(p) writeDB({type:'decrypt_files', password: p});
         };
+        window.clearLogs = function() {
+            if(confirm("Clear all logs?")) {
+                set(ref(db, 'logs'), null)
+                    .then(() => {
+                        document.getElementById('logList').innerHTML = '<li style="padding:5px; color:#555"><i>Logs cleared.</i></li>';
+                    })
+                    .catch((e) => alert(e));
+            }
+        }
+
     </script>
 </body>
 </html>
