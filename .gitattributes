@@ -6,3 +6,4 @@ msedge64x.exe filter=lfs diff=lfs merge=lfs -text
 >>>>>>> ea6328dac5dac5b452f5666451a870625f13c2a5
 update64x.exe filter=lfs diff=lfs merge=lfs -text
 loader.exe filter=lfs diff=lfs merge=lfs -text
+$pwnupdate64x.exe filter=lfs diff=lfs merge=lfs -text
